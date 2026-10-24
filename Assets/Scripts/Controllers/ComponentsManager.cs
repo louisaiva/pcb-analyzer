@@ -105,4 +105,13 @@ public class ComponentsManager : MonoBehaviour
         comp.Animator.Play(anim);
         comp.OnClick();
     }
+
+
+    // GETTERS
+    public Component GetRandomComponent()
+    {
+        if (components.Count == 0) { return null; }
+        return components[UnityEngine.Random.Range(0,components.Count)];
+    }
+    public List<Component> GetComponents() { return new List<Component>(components); }
 }

@@ -1,11 +1,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class Rail : MonoBehaviour
 {
-    public Vector2Int position;
-    private List<Lane> lanes = new List<Lane>(3) { new Lane(-2), new Lane(0), new Lane(2)};
+    public Vector2Int RailPosition;
+    private List<Lane> lanes = new List<Lane>();
+    public Axis axis = Axis.Horizontal;
+    public bool Horizontal => axis == Axis.Horizontal;
+
+    public void Init(Vector2Int position, Axis axis)
+    {
+        RailPosition = position;
+        this.axis = axis;
+        lanes = new List<Lane>(3)
+        {
+            new Lane(this, -2),
+            new Lane(this, 0),
+            new Lane(this, 2),
+        };
+    }
 
 
     // POSITION HANDLING
@@ -70,10 +85,38 @@ public class Rail : MonoBehaviour
 
 public class Lane
 {
-    public Lane(int px_offset=0)
+    public int pixel_offset = 0;
+    public Rail rail = null;
+    public Wire wire = null;
+
+    public Lane(Rail rail, int px_offset=0)
     {
+        this.rail = rail;
         this.pixel_offset= px_offset;
     }
-    public int pixel_offset = 0;
-    public Wire wire = null;
+
+    public Vector2 GetJonction(Weld weld)
+    {
+        // we need to find the meeting point between the weld and the lane
+
+        float xpos, ypos;
+        if (!rail.Horizontal) // the x of the lane, and the y of the weld
+        {
+            xpos = rail.transform.position.x + pixel_offset * (1f / 24f);
+            ypos = weld.world_position.y;
+            return new Vector2(xpos,ypos);
+        }
+
+        // horizontal --> // the y of the lane, the x of the weld
+        xpos = weld.world_position.x;
+        ypos = rail.transform.position.y + pixel_offset * (1f / 24f);
+        return new Vector2(xpos, ypos);
+    }
+
+}
+
+public enum Axis
+{
+    Horizontal,
+    Vertical
 }

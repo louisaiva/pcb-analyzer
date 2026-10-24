@@ -1,14 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Component : MonoBehaviour
 {
+    public static int Prefix = 0;
 
     [Header("Data")]
     [SerializeField] private ComponentData data = null;
+    public Vector2Int CellPosition;
+    public Vector2Int RailPosition => CellPosition*2;
 
 
     [Header("Components")]
@@ -59,6 +63,21 @@ public class Component : MonoBehaviour
 
 
 
+    ///
+    //
+    ///  WELD HANDLING
+    //
+    ///
+    private List<Weld> welds = new List<Weld>();
+    public Weld GetRandomFreeWeld()
+    {
+        List<Weld> free_welds = welds.Where(w => !w.used).ToList();
+        if (free_welds.Count == 0) { return null; }
+        return free_welds[UnityEngine.Random.Range(0,free_welds.Count)];
+    }
+
+
+
 
     ///
     //
@@ -69,7 +88,8 @@ public class Component : MonoBehaviour
     public void FeedData(ComponentData data)
     {
         this.data = data;
-        this.name = data.name;
+        this.name = Prefix.ToString() + "_" + data.name;
+        Prefix++;
         this.animator.Play(data.name + "_idle", 1);
 
         // calculate the local offset based on the size vector
@@ -102,6 +122,44 @@ public class Component : MonoBehaviour
 
         // Debug.Log($"(Component) Feeding data into {name} :\n {data.GetDetails()}");
         // Debug.Log($"(Component) local positions are now : {bg_sr.transform.localPosition}     /    {sr.transform.localPosition}");
+
+    }
+
+    public void RefreshWelds()
+    {
+        // creates welds
+        welds.Clear();
+        foreach (WeldData wdata in data.welds)
+        {
+            Weld weld = new Weld
+            {
+                component = this,
+                world_position = calculate_weld_position(wdata.pixel),
+                exit_direction = wdata.exit,
+            };
+            welds.Add(weld);
+        }
+    }
+
+    private Vector2 calculate_weld_position(Vector2 pixel)
+    {
+        Vector2 position = new Vector2(animator.transform.position.x, animator.transform.position.y);
+        position.x += pixel.x * (1f / 24f);
+        position.y += pixel.y * (1f / 24f);
+        Debug.Log($"(Component) {name} has a new Weld with pixel offset {pixel} && world_pos {position}. Animator is located at {animator.transform.position}");
+        return position;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (welds.Count == 0) { return; }
+        
+        Gizmos.color = Color.red;
+        float radius = 0.03f;
+        foreach (Weld weld in welds)
+        {
+            Gizmos.DrawSphere(weld.world_position, radius);
+        }
     }
 
 }

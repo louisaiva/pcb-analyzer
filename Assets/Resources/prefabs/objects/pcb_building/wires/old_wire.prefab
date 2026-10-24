@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 2287905493371838939}
   - component: {fileID: 2552259197690004971}
   m_Layer: 0
-  m_Name: wire
+  m_Name: old_wire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -11,7 +11,8 @@ public class ComponentBank : MonoBehaviour
 
     public Component CreateRandomComponent(Transform parent)
     {
-        string template = get_random_template();
+        // string template = get_random_template();
+        string template = "IC66";
         return CreateComponentFromTemplate(template,parent);
     }
 
