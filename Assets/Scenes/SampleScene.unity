@@ -322,78 +322,91 @@ MonoBehaviour:
     offset: {x: 0, y: 0}
     bg_size: {x: 10, y: 11}
     max_HP: 1
+    welds: []
   - name: IC67
     type_of_component: chip
     size: {x: 8, y: 9}
     offset: {x: 0, y: 0}
     bg_size: {x: 10, y: 11}
     max_HP: 1
+    welds: []
   - name: IC89
     type_of_component: chip
     size: {x: 8, y: 9}
     offset: {x: 0, y: 0}
     bg_size: {x: 10, y: 11}
     max_HP: 1
+    welds: []
   - name: IC89
     type_of_component: chip
     size: {x: 8, y: 9}
     offset: {x: 0, y: 0}
     bg_size: {x: 10, y: 11}
     max_HP: 1
+    welds: []
   - name: MC7-1
     type_of_component: micro controller
     size: {x: 13, y: 16}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 20}
     max_HP: 3
+    welds: []
   - name: MC7-2
     type_of_component: micro controller
     size: {x: 13, y: 16}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 20}
     max_HP: 3
+    welds: []
   - name: MC7-4
     type_of_component: micro controller
     size: {x: 13, y: 17}
     offset: {x: 0, y: -1}
     bg_size: {x: 15, y: 20}
     max_HP: 3
+    welds: []
   - name: S35
     type_of_component: sensor
     size: {x: 13, y: 12}
     offset: {x: 0, y: 1}
     bg_size: {x: 15, y: 15}
     max_HP: 2
+    welds: []
   - name: S36
     type_of_component: sensor
     size: {x: 12, y: 13}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 15}
     max_HP: 2
+    welds: []
   - name: UAL-2000
     type_of_component: in_out
     size: {x: 12, y: 16}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 18}
     max_HP: 3
+    welds: []
   - name: 4B
     type_of_component: cpu
     size: {x: 18, y: 18}
     offset: {x: 0, y: 0}
     bg_size: {x: 20, y: 20}
     max_HP: 8
+    welds: []
   - name: Red5-o
     type_of_component: fan
     size: {x: 15, y: 15}
     offset: {x: 0, y: 0}
     bg_size: {x: 17, y: 17}
     max_HP: 3
+    welds: []
   - name: Fu24X
     type_of_component: memory
     size: {x: 25, y: 8}
     offset: {x: 0, y: 0}
     bg_size: {x: 29, y: 10}
     max_HP: 6
+    welds: []
   prefab: {fileID: 7403336656034193412, guid: bca3cf836c9184943b3aaa6ab11929f5, type: 3}
 --- !u!4 &182882399
 Transform:
@@ -1346,7 +1359,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'PCB flipper : web03 - components proc gen'
+  m_text: 'PCB flipper
+
+    web04
+
+    pcb proc gen'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1781,6 +1798,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &731871815
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 731871816}
+  m_Layer: 0
+  m_Name: parts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &731871816
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 731871815}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 781577853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &769754625
 GameObject:
   m_ObjectHideFlags: 0
@@ -1844,7 +1892,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 731871816}
+  - {fileID: 1731199835}
   m_Father: {fileID: 1247259377}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &781577854
@@ -2646,6 +2696,8 @@ MonoBehaviour:
     shards_min_max: {x: 0, y: 0}
     virus_min_max: {x: 0, y: 0}
   pcb_part_prefab: {fileID: 464693801687803716, guid: a343d0fadc2905548b8923674bb437b7, type: 3}
+  back_parts: {fileID: 731871816}
+  back_rails: {fileID: 1731199835}
   pcb_parts: []
   front_pcb: {fileID: 1795266389}
   back_pcb: {fileID: 781577854}
@@ -3502,6 +3554,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1731199834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1731199835}
+  m_Layer: 0
+  m_Name: rails
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1731199835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1731199834}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 781577853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1738126546
 GameObject:
   m_ObjectHideFlags: 0

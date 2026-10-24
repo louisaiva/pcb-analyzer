@@ -71,6 +71,8 @@ public class ComponentBank : MonoBehaviour
     public Vector2Int bg_size = new Vector2Int();
     public int max_HP = 1;
 
+    public List<WeldData> welds = new List<WeldData>();
+
     public string GetDetails()
     {
         string debug = "";
@@ -79,6 +81,13 @@ public class ComponentBank : MonoBehaviour
         debug += $"\n - max_HP : {max_HP}";
         debug += $"\n - size : {size}";
         debug += $"\n - bg_size : {bg_size}";
+
+        debug += $"\n - Potential weld count : {welds.Count}";
+        foreach (WeldData weld in welds)
+        {
+            debug += $"\n   - " + weld.GetDetails();
+        }
+
         return debug;
     }
     // public Sprite sprite;

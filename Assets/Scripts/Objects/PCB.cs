@@ -11,10 +11,15 @@ public class PCB : MonoBehaviour
     [Header("References")]
     public ComponentsManager Componer;
 
+    public static int cell_size = 20;
+    public static int inter_cell = 7;
+
 
     [Header("Generation Parameters")]
     public PCB_GenerationParameter gen_para;
     public SpriteRenderer pcb_part_prefab;
+    [SerializeField] private Transform back_parts;
+    [SerializeField] private Transform back_rails;
     [SerializeField] private List<SpriteRenderer> pcb_parts = new List<SpriteRenderer>();
 
 
@@ -34,24 +39,24 @@ public class PCB : MonoBehaviour
 
         // choose a random number from the gen parameters
         int comp_to_generate = UnityEngine.Random.Range(gen_para.components_min_max.x, gen_para.components_min_max.y+1);
-        GridGenerationHelper ggh = new GridGenerationHelper(comp_to_generate);
+        Board board = new Board(comp_to_generate);
 
         for (int i=0; i<comp_to_generate; i++)
         {
             Component comp = BoardController.Instance.CompBank.CreateRandomComponent(Componer.transform);
-            ggh.PositionComponentInFreeCell(comp, gen_para.cell_size, gen_para.inter_size);
+            board.PositionComponentInFreeCell(comp, PCB.cell_size, PCB.inter_cell);
         }
 
         // generate the pcb board
-        generate_pcb_board(ggh);
+        generate_pcb_board(board);
 
         Componer.GrabExistingComponents();
     }
 
-    private void generate_pcb_board(GridGenerationHelper ggh)
+    private void generate_pcb_board(Board board)
     {
         // we trim the grid so we have the smallest pcb
-        ggh.TrimRecursively(1);
+        board.TrimRecursively(1);
 
         // we place wires & rocks
 
@@ -60,7 +65,7 @@ public class PCB : MonoBehaviour
 
         // we build the grid + rails
         List<Vector2> rails_placed = new List<Vector2>();
-        foreach (GridCell cell in ggh.cells)
+        foreach (GridCell cell in board.cells)
         {
             // if (cell)
             SpriteRenderer sr = create_pcb_part(BoardController.Instance.PCB_PartsBank.GetCellSprite(cell.type), cell);
@@ -72,31 +77,30 @@ public class PCB : MonoBehaviour
         InstantiaterParameter instantiator = new InstantiaterParameter
         {
             prefab = pcb_part_prefab,
-            parent = back_pcb.transform,
-            cell_size = gen_para.cell_size,
-            inter_cell = gen_para.inter_size
+            parts_parent = back_parts,
+            rails_parent = back_rails
         };
-        ggh.BuildPCB_Outline(ref pcb_parts, instantiator);
+        board.BuildPCB_Outline(ref pcb_parts, instantiator);
 
     }
     private void build_rails_around(GridCell cell, ref List<Vector2> placed_rails)
     {
         // we build the rails of this
-        foreach (Vector2 pos in cell.GetMiddleRailsWorldPositions(gen_para.cell_size, gen_para.inter_size))
+        foreach (Vector2 pos in cell.GetMiddleRailsWorldPositions(PCB.cell_size, PCB.inter_cell))
         {
             if (placed_rails.Contains(pos)) { continue; }
             SpriteRenderer sr = create_pcb_line(BoardController.Instance.PCB_PartsBank.GetLineMid(), pos);
             pcb_parts.Add(sr);
             placed_rails.Add(pos);
         }
-        foreach (Vector2 pos in cell.GetVerticalRailsWorldPositions(gen_para.cell_size, gen_para.inter_size))
+        foreach (Vector2 pos in cell.GetVerticalRailsWorldPositions(PCB.cell_size, PCB.inter_cell))
         {
             if (placed_rails.Contains(pos)) { continue; }
             SpriteRenderer sr = create_pcb_line(BoardController.Instance.PCB_PartsBank.GetLineVertical(), pos);
             pcb_parts.Add(sr);
             placed_rails.Add(pos);
         }
-        foreach (Vector2 pos in cell.GetHorizontalRailsWorldPositions(gen_para.cell_size, gen_para.inter_size))
+        foreach (Vector2 pos in cell.GetHorizontalRailsWorldPositions(PCB.cell_size, PCB.inter_cell))
         {
             if (placed_rails.Contains(pos)) { continue; }
             SpriteRenderer sr = create_pcb_line(BoardController.Instance.PCB_PartsBank.GetLineHorizontal(), pos);
@@ -107,7 +111,7 @@ public class PCB : MonoBehaviour
     private SpriteRenderer create_pcb_line(Sprite sprite, Vector3 position, bool is_back = true)
     {
         SpriteRenderer sr = Instantiate(pcb_part_prefab);
-        sr.transform.SetParent(is_back ? back_pcb.transform : front_pcb.transform);
+        sr.transform.SetParent(is_back ? back_rails : front_pcb.transform);
         sr.sprite = sprite;
         sr.transform.localPosition = position;
         return sr;
@@ -115,9 +119,9 @@ public class PCB : MonoBehaviour
     private SpriteRenderer create_pcb_part(Sprite sprite, GridCell cell, bool is_back=true)
     {
         SpriteRenderer sr = Instantiate(pcb_part_prefab);
-        sr.transform.SetParent( is_back ? back_pcb.transform : front_pcb.transform );
+        sr.transform.SetParent( is_back ? back_parts : front_pcb.transform );
         sr.sprite = sprite;
-        sr.transform.localPosition = cell.GetWorldPosition(gen_para.cell_size, gen_para.inter_size);
+        sr.transform.localPosition = cell.GetWorldPosition(PCB.cell_size, PCB.inter_cell);
         return sr;
     }
 
@@ -214,14 +218,12 @@ public class PCB : MonoBehaviour
 [Serializable] public class PCB_GenerationParameter
 {
     public Vector2Int components_min_max = new Vector2Int();
-    public int cell_size = 18;
-    public int inter_size = 7;
     public Vector2Int total_life_min_max = new Vector2Int();
     public Vector2Int shards_min_max = new Vector2Int();
     public Vector2Int virus_min_max = new Vector2Int();
 }
 
-public class GridGenerationHelper
+public class Board
 {
     private static bool logs = false;
     public Vector2Int grid_size;
@@ -229,7 +231,7 @@ public class GridGenerationHelper
     
 
     // START
-    public GridGenerationHelper(int component_count)
+    public Board(int component_count)
     {
         // cells = new Dictionary<Vector2Int, string>();
         cells = new List<GridCell>();
@@ -282,7 +284,7 @@ public class GridGenerationHelper
     public void OccupyCell(GridCell cell, string comp_name)
     {
         // if (!TryGetCell(pos, out GridCell cell)) { return; }
-        if (cell.type != CellType.Empty) { Debug.LogError($"(GGH) Tried occupying the cell in {cell.Position} with {comp_name} but the it is a {cell.type} cell with value {cell.value} already !"); return; }
+        if (cell.type != CellType.Empty) { Debug.LogError($"(Board) Tried occupying the cell in {cell.Position} with {comp_name} but the it is a {cell.type} cell with value {cell.value} already !"); return; }
         cell.value = comp_name;
         cell.type = CellType.Component;
         if (logs) { Debug.Log(get_grid_details()); }
@@ -308,7 +310,7 @@ public class GridGenerationHelper
             int this_trimming = TrimOnce();
             if (this_trimming == 0) { continue_trimming = false; }
         }
-        if (logs) { Debug.Log($"(GGH) Recursive trimming removed {count_before_touching_anything-cells.Count} cells in {iterations} iterations. We now have only {cells.Count}"); }
+        if (logs) { Debug.Log($"(Board) Recursive trimming removed {count_before_touching_anything-cells.Count} cells in {iterations} iterations. We now have only {cells.Count}"); }
     }
     public int TrimOnce()
     {
@@ -327,7 +329,7 @@ public class GridGenerationHelper
             cells.Remove(to_delete[0]);
             to_delete.RemoveAt(0);
         }
-        if (logs) { Debug.Log($"(GGH) Trimmed grid. Removed {count_before_triming-cells.Count} cells"); }
+        if (logs) { Debug.Log($"(Board) Trimmed grid. Removed {count_before_triming-cells.Count} cells"); }
         return count_before_triming - cells.Count;
     }
 
@@ -459,7 +461,7 @@ public class GridGenerationHelper
                 else if (neighbours == 2) { build_outline_big_corner(position, translations, ref pcb_parts, instantior); }
                 else
                 {
-                    Debug.LogWarning("(GGH) Well we have to draw outlines for " + neighbours + " neighbours now : translations are " + string.Join("  //  ", translations));
+                    Debug.LogWarning("(Board) Well we have to draw outlines for " + neighbours + " neighbours now : translations are " + string.Join("  //  ", translations));
                 }
             }
         }
@@ -473,36 +475,36 @@ public class GridGenerationHelper
         if (neighbours == 0) { return; } // we touch nothing, we do nothing
         if (neighbours != 1) // bad news we need to draw more things ?
         {
-            Debug.LogWarning("(GGH) Well we have to draw multiples corners for " + neighbours + " exterior neighbours now : translations are " + string.Join("  //  ", translations));
+            Debug.LogWarning("(Board) Well we have to draw multiples corners for " + neighbours + " exterior neighbours now : translations are " + string.Join("  //  ", translations));
             return;
         }
 
         Sprite corner = BoardController.Instance.PCB_PartsBank.GetCornerMatchingWith(translations[0]);
-        Vector2 worldpos = GridCell.GetWorldPosition(position, instantior.cell_size, instantior.inter_cell);
+        Vector2 worldpos = GridCell.GetWorldPosition(position, PCB.cell_size, PCB.inter_cell);
         InstantiatePCB_Part(worldpos, corner, ref pcb_parts, instantior);
     }
     private void build_outline_edge(Vector2Int position, Vector2Int translation, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
         Sprite edge = BoardController.Instance.PCB_PartsBank.GetEdgeMatchingWith(translation);
-        Vector2 worldpos = GridCell.GetWorldPosition(position, instantior.cell_size, instantior.inter_cell);
+        Vector2 worldpos = GridCell.GetWorldPosition(position, PCB.cell_size, PCB.inter_cell);
         InstantiatePCB_Part(worldpos, edge, ref pcb_parts, instantior);
 
         // we place 2 rails if we can
-        float rail_translation = (instantior.cell_size + instantior.inter_cell) / 2f * (1f / 24f);
+        float rail_translation = (PCB.cell_size + PCB.inter_cell) / 2f * (1f / 24f);
         if (translation.x == 0f)
         {
             Vector2 left_rail = worldpos - new Vector2(rail_translation, 0f);
             if (!outlines_rails_pos.Contains(left_rail))
             {
                 Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
-                InstantiatePCB_Part(left_rail, rail, ref pcb_parts, instantior);
+                InstantiatePCB_Part(left_rail, rail, ref pcb_parts, instantior, is_rail:true);
                 outlines_rails_pos.Add(left_rail);
             }
             Vector2 right_rail = worldpos + new Vector2(rail_translation, 0f);
             if (!outlines_rails_pos.Contains(right_rail))
             {
                 Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
-                InstantiatePCB_Part(right_rail, rail, ref pcb_parts, instantior);
+                InstantiatePCB_Part(right_rail, rail, ref pcb_parts, instantior, is_rail:true);
                 outlines_rails_pos.Add(right_rail);
             }
         }
@@ -512,14 +514,14 @@ public class GridGenerationHelper
             if (!outlines_rails_pos.Contains(down_rail))
             {
                 Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
-                InstantiatePCB_Part(down_rail, rail, ref pcb_parts, instantior);
+                InstantiatePCB_Part(down_rail, rail, ref pcb_parts, instantior, is_rail:true);
                 outlines_rails_pos.Add(down_rail);
             }
             Vector2 up_rail = worldpos + new Vector2(0f, rail_translation);
             if (!outlines_rails_pos.Contains(up_rail))
             {
                 Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
-                InstantiatePCB_Part(up_rail, rail, ref pcb_parts, instantior);
+                InstantiatePCB_Part(up_rail, rail, ref pcb_parts, instantior, is_rail:true);
                 outlines_rails_pos.Add(up_rail);
             }
         }
@@ -527,27 +529,27 @@ public class GridGenerationHelper
     private void build_outline_big_corner(Vector2Int position, List<Vector2Int> translations, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
         Sprite big_corner = BoardController.Instance.PCB_PartsBank.GetBigCornerMatchingWith(translations);
-        Vector2 worldpos = GridCell.GetWorldPosition(position, instantior.cell_size, instantior.inter_cell);
+        Vector2 worldpos = GridCell.GetWorldPosition(position, PCB.cell_size, PCB.inter_cell);
         InstantiatePCB_Part(worldpos, big_corner, ref pcb_parts, instantior);
 
 
         // we place 2 rails if we can
-        float rail_translation = (instantior.cell_size + instantior.inter_cell) / 2f * (1f / 24f);
+        float rail_translation = (PCB.cell_size + PCB.inter_cell) / 2f * (1f / 24f);
         foreach (Vector2Int opposite_translation in translations)
         {
             Vector2Int translation = opposite_translation * new Vector2Int(-1,-1);
             Vector2 rail = worldpos + new Vector2( rail_translation*translation.x, rail_translation*translation.y );
             if (outlines_rails_pos.Contains(rail)) { continue; }
             Sprite sprite = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdgeFromBigCorner(big_corner, translation);
-            InstantiatePCB_Part(rail, sprite, ref pcb_parts, instantior);
+            InstantiatePCB_Part(rail, sprite, ref pcb_parts, instantior, is_rail: true);
             outlines_rails_pos.Add(rail);
         }
     }
 
-    private void InstantiatePCB_Part(Vector3 position, Sprite sprite, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
+    private void InstantiatePCB_Part(Vector3 position, Sprite sprite, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior, bool is_rail=false)
     {
         SpriteRenderer sr = GameObject.Instantiate(instantior.prefab);
-        sr.transform.SetParent(instantior.parent);
+        sr.transform.SetParent(is_rail ? instantior.rails_parent : instantior.parts_parent);
         sr.sprite = sprite;
         sr.transform.localPosition = position;
         pcb_parts.Add(sr);
@@ -558,9 +560,8 @@ public class GridGenerationHelper
 public class InstantiaterParameter
 {
     public SpriteRenderer prefab;
-    public Transform parent;
-    public int cell_size;
-    public int inter_cell;
+    public Transform parts_parent;
+    public Transform rails_parent;
 }
 
 
