@@ -141,8 +141,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ae170fd7b0f91dc42b9939b7a052cd14
+      spriteID: 51e9cd4ac7981134e8404a3701022b00
       internalID: 797080369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: buttons_1
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd933ab98201b3b459b36c83caf3b9d0
+      internalID: -1239429375
       vertices: []
       indices: 
       edges: []
@@ -166,6 +188,7 @@ TextureImporter:
         value: '{"sliceOnImport":true,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":48.0,"y":48.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
     nameFileIdTable:
       buttons_0: 797080369
+      buttons_1: -1239429375
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

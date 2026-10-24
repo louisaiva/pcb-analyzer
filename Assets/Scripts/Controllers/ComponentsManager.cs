@@ -17,15 +17,31 @@ public class ComponentsManager : MonoBehaviour
     [Header("Logs")]
     [SerializeField] private bool log_hovers = false;
 
+
+    // COMPONENTs GRABBING
     private void Start()
     {
-        foreach (Component comp in GetComponentsInChildren<Component>(includeInactive:true))
+        GrabExistingComponents();
+    }
+    public void DestroyExistingComponents()
+    {
+        foreach (Component comp in GetComponentsInChildren<Component>(includeInactive: false))
+        {
+            Destroy(comp.gameObject);
+        }
+        components.Clear();
+    }
+    public void GrabExistingComponents()
+    {
+        components.Clear();
+        foreach (Component comp in GetComponentsInChildren<Component>(includeInactive: false))
         {
             if (components.Contains(comp)) { continue; }
             components.Add(comp);
         }
     }
 
+    // HOVERING
     public void HoverComponent(Component comp)
     {
         if (comp == null) { return; }
@@ -62,7 +78,6 @@ public class ComponentsManager : MonoBehaviour
         hovered_component = null;
         if (log_hovers) { Debug.Log($"(CompManager) Unhover compoenent {comp.name}"); }
     }
-
     private static void SetAlphaOfComponent(Component comp, float alpha)
     {
         comp.Renderer.color = new Color
@@ -73,15 +88,13 @@ public class ComponentsManager : MonoBehaviour
             alpha
         );
     }
-
-
-    // GETTERS
     public bool HasHoveredComponent(out Component comp)
     {
         comp = hovered_component;
         return comp != null;
     }
 
+    // CLICKING
     public void ClickOnComponent(Component comp)
     {
 

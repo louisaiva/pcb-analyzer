@@ -11,6 +11,7 @@ public class BoardController : MonoBehaviour
 
     public ButtonsManager BtnManager;
     public ComponentsManager CompManager;
+    public ComponentBank CompBank;
     public PCB PCB;
 
     public void OnButtonHover(Button btn)

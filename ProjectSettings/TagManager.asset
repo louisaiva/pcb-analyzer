@@ -47,6 +47,9 @@ TagManager:
   - name: pcb
     uniqueID: 993328063
     locked: 0
+  - name: wires
+    uniqueID: 2296091097
+    locked: 0
   - name: composants
     uniqueID: 1963895717
     locked: 0
