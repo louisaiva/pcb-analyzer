@@ -93,4 +93,13 @@ public class PCB_PartsBank : MonoBehaviour
         }
         return full;
     }
+
+    internal Sprite GetCornerMatchingWith(Vector2Int neighbour)
+    {
+        if (neighbour == new Vector2Int(-1, -1)) { return corner_UR; }
+        if (neighbour == new Vector2Int(-1, 1)) { return corner_DR; }
+        if (neighbour == new Vector2Int(1, 1)) { return corner_DL; }
+        if (neighbour == new Vector2Int(1, -1)) { return corner_UL; }
+        return full;
+    }
 }

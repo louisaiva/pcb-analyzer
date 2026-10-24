@@ -223,7 +223,7 @@ public class PCB : MonoBehaviour
 
 public class GridGenerationHelper
 {
-    private static bool logs = true;
+    private static bool logs = false;
     public Vector2Int grid_size;
     public List<GridCell> cells;
     
@@ -412,6 +412,27 @@ public class GridGenerationHelper
     }
 
 
+    List<Vector2Int> exterior_neighbour_translations = new List<Vector2Int>()
+    {
+        Vector2Int.up + Vector2Int.right,
+        Vector2Int.down + Vector2Int.right,
+        Vector2Int.down + Vector2Int.left,
+        Vector2Int.up + Vector2Int.left,
+    };
+    public int GetExteriorNeighbours(Vector2Int position, out List<Vector2Int> translations)
+    {
+        translations = new List<Vector2Int>();
+        int count = 0;
+        foreach (Vector2Int translation in exterior_neighbour_translations)
+        {
+            if (!TryGetCell(position + translation, out GridCell neighbour)) { continue; }
+            translations.Add(translation);
+            count++;
+        }
+        return count;
+    }
+
+
     // BUILD THE OUTLINE
     private List<Vector2> outlines_rails_pos = new List<Vector2>();
     internal void BuildPCB_Outline(ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
@@ -448,6 +469,17 @@ public class GridGenerationHelper
     {
         // for now we do nothing
         // later we want to check if we have a neighbour in the 8 neighbours
+        int neighbours = GetExteriorNeighbours(position, out List<Vector2Int> translations);
+        if (neighbours == 0) { return; } // we touch nothing, we do nothing
+        if (neighbours != 1) // bad news we need to draw more things ?
+        {
+            Debug.LogWarning("(GGH) Well we have to draw multiples corners for " + neighbours + " exterior neighbours now : translations are " + string.Join("  //  ", translations));
+            return;
+        }
+
+        Sprite corner = BoardController.Instance.PCB_PartsBank.GetCornerMatchingWith(translations[0]);
+        Vector2 worldpos = GridCell.GetWorldPosition(position, instantior.cell_size, instantior.inter_cell);
+        InstantiatePCB_Part(worldpos, corner, ref pcb_parts, instantior);
     }
     private void build_outline_edge(Vector2Int position, Vector2Int translation, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
