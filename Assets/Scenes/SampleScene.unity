@@ -333,84 +333,248 @@ MonoBehaviour:
     offset: {x: 0, y: 0}
     bg_size: {x: 10, y: 11}
     max_HP: 1
-    welds: []
+    welds:
+    - pixel: {x: 2.5, y: -4}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 2.5, y: 4}
+      exit: {x: 0, y: 1}
+  - name: IC88
+    type_of_component: chip
+    size: {x: 8, y: 9}
+    offset: {x: 0, y: 0}
+    bg_size: {x: 10, y: 11}
+    max_HP: 1
+    welds:
+    - pixel: {x: -2, y: 4}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -1.5, y: 4}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -1, y: 4}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 2.5, y: -4}
+      exit: {x: 0, y: -1}
   - name: IC89
     type_of_component: chip
     size: {x: 8, y: 9}
     offset: {x: 0, y: 0}
     bg_size: {x: 10, y: 11}
     max_HP: 1
-    welds: []
-  - name: IC89
-    type_of_component: chip
-    size: {x: 8, y: 9}
-    offset: {x: 0, y: 0}
-    bg_size: {x: 10, y: 11}
-    max_HP: 1
-    welds: []
+    welds:
+    - pixel: {x: 0.5, y: -4}
+      exit: {x: 0, y: -1}
+    - pixel: {x: -2.5, y: 4}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 2.5, y: 4}
+      exit: {x: 0, y: 1}
   - name: MC7-1
     type_of_component: micro controller
     size: {x: 13, y: 16}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 20}
     max_HP: 3
-    welds: []
+    welds:
+    - pixel: {x: -6, y: -0.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -6, y: -2.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -6, y: -4.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: 6, y: 4.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 6, y: 2.5}
+      exit: {x: 1, y: 0}
   - name: MC7-2
     type_of_component: micro controller
     size: {x: 13, y: 16}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 20}
     max_HP: 3
-    welds: []
+    welds:
+    - pixel: {x: -6, y: -1.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -6, y: 1.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: 6, y: -1.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 6, y: 1.5}
+      exit: {x: 1, y: 0}
   - name: MC7-4
     type_of_component: micro controller
     size: {x: 13, y: 17}
     offset: {x: 0, y: -1}
     bg_size: {x: 15, y: 20}
     max_HP: 3
-    welds: []
+    welds:
+    - pixel: {x: -6, y: 0}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -6, y: 3}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -1, y: -8}
+      exit: {x: 0, y: -1}
+    - pixel: {x: -3, y: -8}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 6, y: -3}
+      exit: {x: 1, y: 0}
   - name: S35
     type_of_component: sensor
     size: {x: 13, y: 12}
     offset: {x: 0, y: 1}
     bg_size: {x: 15, y: 15}
     max_HP: 2
-    welds: []
+    welds:
+    - pixel: {x: -6, y: 0.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -6, y: 2.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: 6, y: 2.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 6, y: -3.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: -2, y: 5.5}
+      exit: {x: 0, y: 1}
   - name: S36
     type_of_component: sensor
     size: {x: 12, y: 13}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 15}
     max_HP: 2
-    welds: []
+    welds:
+    - pixel: {x: 0.5, y: 6}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -1.5, y: 6}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -5.5, y: 0}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -5.5, y: -2}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -0.5, y: -6}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 1.5, y: -6}
+      exit: {x: 0, y: -1}
   - name: UAL-2000
     type_of_component: in_out
     size: {x: 12, y: 16}
     offset: {x: 0, y: 0}
     bg_size: {x: 15, y: 18}
     max_HP: 3
-    welds: []
+    welds:
+    - pixel: {x: -0.5, y: 7.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -3.5, y: 7.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -5.5, y: -0.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -5.5, y: -2.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -5.5, y: -5.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: 1.5, y: -7.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: -1.5, y: -7.5}
+      exit: {x: 0, y: -1}
   - name: 4B
     type_of_component: cpu
     size: {x: 18, y: 18}
     offset: {x: 0, y: 0}
     bg_size: {x: 20, y: 20}
     max_HP: 8
-    welds: []
+    welds:
+    - pixel: {x: -2.5, y: 8.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -2.5, y: -8.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 2.5, y: 8.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 2.5, y: -8.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 4.5, y: 8.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 4.5, y: -8.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: -4.5, y: 8.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -4.5, y: -8.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 6.5, y: 8.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 6.5, y: -8.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: -6.5, y: 8.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: -6.5, y: -8.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: -8.5, y: -2.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -8.5, y: 2.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -8.5, y: 4.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -8.5, y: -4.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -8.5, y: -6.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -8.5, y: 6.5}
+      exit: {x: -1, y: 0}
+    - pixel: {x: 8.5, y: 6.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 8.5, y: -6.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 8.5, y: -4.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 8.5, y: 4.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 8.5, y: 2.5}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 8.5, y: -2.5}
+      exit: {x: 1, y: 0}
   - name: Red5-o
     type_of_component: fan
     size: {x: 15, y: 15}
     offset: {x: 0, y: 0}
     bg_size: {x: 17, y: 17}
     max_HP: 3
-    welds: []
+    welds:
+    - pixel: {x: -7, y: 0}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -7, y: 3}
+      exit: {x: -1, y: 0}
+    - pixel: {x: -7, y: -2}
+      exit: {x: -1, y: 0}
+    - pixel: {x: 7, y: 2}
+      exit: {x: 1, y: 0}
+    - pixel: {x: 7, y: 4}
+      exit: {x: 1, y: 0}
+    - pixel: {x: -5, y: -7}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 0, y: 7}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 1, y: 7}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 2, y: 7}
+      exit: {x: 0, y: 1}
   - name: Fu24X
     type_of_component: memory
     size: {x: 25, y: 8}
     offset: {x: 0, y: 0}
     bg_size: {x: 29, y: 10}
     max_HP: 6
-    welds: []
+    welds:
+    - pixel: {x: 0, y: -3.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: -3, y: -3.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 3, y: 3.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 7, y: 3.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 8, y: 3.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 9, y: 3.5}
+      exit: {x: 0, y: 1}
+    - pixel: {x: 4, y: -3.5}
+      exit: {x: 0, y: -1}
+    - pixel: {x: 5, y: -3.5}
+      exit: {x: 0, y: -1}
   prefab: {fileID: 7403336656034193412, guid: bca3cf836c9184943b3aaa6ab11929f5, type: 3}
 --- !u!4 &182882399
 Transform:
@@ -1363,11 +1527,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'PCB flipper
+  m_text: 'PCB flipper 0.5
 
-    web04
-
-    pcb proc gen'
+    wires first step'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3489,10 +3651,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c24f9bb10ac274b419d7551eadd464cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Welder
+  wires_to_generate: 7
   wire_prefab: {fileID: 7170396361786730663, guid: babf1d31a05c53843ab0a23cea4f9c08, type: 3}
   wires_parent: {fileID: 1680240826}
   wires: []
-  logs: 1
+  logs: 0
 --- !u!4 &1680240826
 Transform:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Welder : MonoBehaviour
 {
+    [Range(0,10), SerializeField] private int wires_to_generate = 1;
     public Wire wire_prefab;
     public Transform wires_parent;
 
@@ -12,22 +13,39 @@ public class Welder : MonoBehaviour
     [SerializeField] private bool logs = false;
 
 
-    public void WireBoard(Board board, ComponentsManager componer)
+    public void WireBoard(Board board, ComponentsManager componer, int max_iterations = 100)
     {
         ClearWires();
+
+        for (int i=0;i< wires_to_generate;i++)
+        {
+            int iterations = 0;
+            while (iterations < max_iterations)
+            {
+                if (Wire2RandomComponents(board, componer)) { break; }
+                iterations++;
+            }
+            if (iterations == max_iterations) { break; }
+        }
+
+    }
+    public bool Wire2RandomComponents(Board board, ComponentsManager componer)
+    {
 
         // gather 2 components just to try it (can wire the same component maybe oops)
         Component a = componer.GetRandomComponent();
         Component b = componer.GetRandomComponent();
 
-        WireComponents(a,b,board);
+        return WireComponents(a,b,board);
     }
     public bool WireComponents(Component a, Component b, Board board)
     {
         if (logs) { Debug.Log($"(Welder) Wiring 2 components {a.name} && {b.name}"); }
 
-        Weld start = a.GetRandomFreeWeld();
-        Weld exit = b.GetRandomFreeWeld();
+        // Weld start = a.GetRandomFreeWeld();
+        Weld start = a.GetClosestFreeWeldFrom(b);
+        Weld exit = b.GetClosestFreeWeldFrom(a);
+        if (start == null || exit == null) { return false; }
 
         if (logs) { Debug.Log($"(Welder) Chosen welds are :   [start] {start.world_position}   && [exit] {exit.world_position}"); }
 
