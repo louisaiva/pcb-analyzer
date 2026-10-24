@@ -13,6 +13,7 @@ public class BoardController : MonoBehaviour
     public ComponentsManager CompManager;
     public ComponentBank CompBank;
     public PCB PCB;
+    public PCB_PartsBank PCB_PartsBank;
 
     public void OnButtonHover(Button btn)
     {
