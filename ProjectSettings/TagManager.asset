@@ -2,7 +2,7 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags: []
   layers:
   - Default
@@ -11,8 +11,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Components
+  - Buttons
   - 
   - 
   - 
@@ -41,3 +41,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: background
+    uniqueID: 1932614571
+    locked: 0
+  - name: pcb
+    uniqueID: 993328063
+    locked: 0
+  - name: composants
+    uniqueID: 1963895717
+    locked: 0
+  - name: ui
+    uniqueID: 637457895
+    locked: 0
+  m_RenderingLayers:
+  - Default
