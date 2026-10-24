@@ -493,12 +493,12 @@ TextureImporter:
       name: pcb_parts_16
       rect:
         serializedVersion: 2
-        x: 320
-        y: 7
-        width: 20
-        height: 8
-      alignment: 9
-      pivot: {x: 0.5, y: 0.375}
+        x: 326
+        y: 0
+        width: 7
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -515,12 +515,12 @@ TextureImporter:
       name: pcb_parts_17
       rect:
         serializedVersion: 2
-        x: 340
-        y: 5
-        width: 20
-        height: 8
+        x: 346
+        y: 9
+        width: 7
+        height: 11
       alignment: 9
-      pivot: {x: 0.5, y: 0.625}
+      pivot: {x: 0.5, y: 0.09090909}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -537,12 +537,12 @@ TextureImporter:
       name: pcb_parts_18
       rect:
         serializedVersion: 2
-        x: 366
-        y: 0
-        width: 8
-        height: 20
+        x: 360
+        y: 6
+        width: 11
+        height: 7
       alignment: 9
-      pivot: {x: 0.375, y: 0.5}
+      pivot: {x: 0.90909094, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -559,12 +559,12 @@ TextureImporter:
       name: pcb_parts_19
       rect:
         serializedVersion: 2
-        x: 386
-        y: 0
-        width: 8
-        height: 20
+        x: 389
+        y: 6
+        width: 11
+        height: 7
       alignment: 9
-      pivot: {x: 0.625, y: 0.5}
+      pivot: {x: 0.09090909, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []

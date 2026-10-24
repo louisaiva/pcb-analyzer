@@ -413,9 +413,11 @@ public class GridGenerationHelper
 
 
     // BUILD THE OUTLINE
-
+    private List<Vector2> outlines_rails_pos = new List<Vector2>();
     internal void BuildPCB_Outline(ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
+        outlines_rails_pos.Clear();
+
         int min_x = cells.Min(c => c.x);
         int max_x = cells.Max(c => c.x);
         int min_y = cells.Min(c => c.y);
@@ -442,7 +444,6 @@ public class GridGenerationHelper
         }
 
     }
-
     private void build_outline_corner_or_nothing(Vector2Int position, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
         // for now we do nothing
@@ -453,12 +454,62 @@ public class GridGenerationHelper
         Sprite edge = BoardController.Instance.PCB_PartsBank.GetEdgeMatchingWith(translation);
         Vector2 worldpos = GridCell.GetWorldPosition(position, instantior.cell_size, instantior.inter_cell);
         InstantiatePCB_Part(worldpos, edge, ref pcb_parts, instantior);
+
+        // we place 2 rails if we can
+        float rail_translation = (instantior.cell_size + instantior.inter_cell) / 2f * (1f / 24f);
+        if (translation.x == 0f)
+        {
+            Vector2 left_rail = worldpos - new Vector2(rail_translation, 0f);
+            if (!outlines_rails_pos.Contains(left_rail))
+            {
+                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                InstantiatePCB_Part(left_rail, rail, ref pcb_parts, instantior);
+                outlines_rails_pos.Add(left_rail);
+            }
+            Vector2 right_rail = worldpos + new Vector2(rail_translation, 0f);
+            if (!outlines_rails_pos.Contains(right_rail))
+            {
+                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                InstantiatePCB_Part(right_rail, rail, ref pcb_parts, instantior);
+                outlines_rails_pos.Add(right_rail);
+            }
+        }
+        else if (translation.y == 0f)
+        {
+            Vector2 down_rail = worldpos - new Vector2(0f, rail_translation);
+            if (!outlines_rails_pos.Contains(down_rail))
+            {
+                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                InstantiatePCB_Part(down_rail, rail, ref pcb_parts, instantior);
+                outlines_rails_pos.Add(down_rail);
+            }
+            Vector2 up_rail = worldpos + new Vector2(0f, rail_translation);
+            if (!outlines_rails_pos.Contains(up_rail))
+            {
+                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                InstantiatePCB_Part(up_rail, rail, ref pcb_parts, instantior);
+                outlines_rails_pos.Add(up_rail);
+            }
+        }
     }
     private void build_outline_big_corner(Vector2Int position, List<Vector2Int> translations, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
         Sprite big_corner = BoardController.Instance.PCB_PartsBank.GetBigCornerMatchingWith(translations);
         Vector2 worldpos = GridCell.GetWorldPosition(position, instantior.cell_size, instantior.inter_cell);
         InstantiatePCB_Part(worldpos, big_corner, ref pcb_parts, instantior);
+
+
+        // we place 2 rails if we can
+        float rail_translation = (instantior.cell_size + instantior.inter_cell) / 2f * (1f / 24f);
+        foreach (Vector2Int opposite_translation in translations)
+        {
+            Vector2Int translation = opposite_translation * new Vector2Int(-1,-1);
+            Vector2 rail = worldpos + new Vector2( rail_translation*translation.x, rail_translation*translation.y );
+            if (outlines_rails_pos.Contains(rail)) { continue; }
+            Sprite sprite = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdgeFromBigCorner(big_corner, translation);
+            InstantiatePCB_Part(rail, sprite, ref pcb_parts, instantior);
+            outlines_rails_pos.Add(rail);
+        }
     }
 
     private void InstantiatePCB_Part(Vector3 position, Sprite sprite, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
