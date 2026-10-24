@@ -53,12 +53,10 @@ public class ComponentsManager : MonoBehaviour
             {
                 SetAlphaOfComponent(comp, 1f);
                 comp.ScaleUp();
-                // other_comp.Renderer.material = hover_material;
                 continue;
             }
             SetAlphaOfComponent(other_comp, faded_alpha);
-            comp.ResetScale();
-            // other_comp.Renderer.material = base_material;
+            other_comp.ResetScale();
         }
         hovered_component = comp;
         if (log_hovers) { Debug.Log($"(CompManager) Hovered compoenent {comp.name}"); }
@@ -80,6 +78,7 @@ public class ComponentsManager : MonoBehaviour
     }
     private static void SetAlphaOfComponent(Component comp, float alpha)
     {
+        if (comp == null) { return; }
         comp.Renderer.color = new Color
         (
             comp.Renderer.color.r,

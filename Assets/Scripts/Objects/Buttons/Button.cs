@@ -6,21 +6,41 @@ public class Button : MonoBehaviour
     private Animator animator;
     public Animator Animator => animator;
 
+    [SerializeField] private bool scaled_up = false;
+    [SerializeField] private bool logs = false;
+
+
     private void Start()
     {
         animator = GetComponentInChildren<Animator>(includeInactive: true);
     }
+
+
+    ///
+    //
+    ///  ENTRY POINTS
+    //
+    ///
+
+
+    // HOVER ANIMATION
     public void ScaleUp()
     {
-        // slowly rise the scale
+        if (logs) { Debug.Log($"(Button) Scaling up {name}"); }
         animator.Play("scale_up");
+        scaled_up = true;
     }
     public void ResetScale()
     {
-        if (animator.transform.localScale.x <= 1f) { return; }
-        // if scale > 1 we were hovered, we play a little animation depopup
-        animator.Play("depopup");
+        if (logs) { Debug.Log($"(Button) Resetting scale of {name}"); }
+        if (scaled_up)
+        {
+            if (logs) { Debug.Log($"(Button) Depopping up {name}"); }
+            animator.Play("depopup");
+        }
+        scaled_up = false;
     }
+
 
     public virtual void OnClick()
     {

@@ -67,8 +67,20 @@ public class ComponentBank : MonoBehaviour
     public string name = ""; // IC88, MC-32-X, Rizor 77, Red5-o
     public string type_of_component = ""; // cpu, chip etc
     public Vector2Int size = new Vector2Int();
+    public Vector2Int offset = new Vector2Int(); // when we need to move down/up/left/right the sr for any reason
     public Vector2Int bg_size = new Vector2Int();
     public int max_HP = 1;
+
+    public string GetDetails()
+    {
+        string debug = "";
+        debug += $"\n - name : {name}";
+        debug += $"\n - type : {type_of_component}";
+        debug += $"\n - max_HP : {max_HP}";
+        debug += $"\n - size : {size}";
+        debug += $"\n - bg_size : {bg_size}";
+        return debug;
+    }
     // public Sprite sprite;
     // public List<ConnectionPoint> ???? something like this to store the wire points ?
 }

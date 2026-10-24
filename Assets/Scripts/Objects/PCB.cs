@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class PCB : MonoBehaviour
 {
@@ -16,21 +17,39 @@ public class PCB : MonoBehaviour
 
 
     // PCB GENERATION
-    public void Generate()
+    public async void Generate()
     {
         Componer.DestroyExistingComponents();
 
+        // wait to ensure the components are really destroyed
+        await Task.Yield();
+        await Task.Yield();
+
         // choose a random number from the gen parameters
         int comp_to_generate = UnityEngine.Random.Range(gen_para.components_min_max.x, gen_para.components_min_max.y+1);
-        ComponentHolderGenerationHelper chgh = new ComponentHolderGenerationHelper(comp_to_generate);
+        GridGenerationHelper ggh = new GridGenerationHelper(comp_to_generate);
 
         for (int i=0; i<comp_to_generate; i++)
         {
             Component comp = BoardController.Instance.CompBank.CreateRandomComponent(Componer.transform);
-            chgh.PositionInFreeCell(comp, gen_para.cell_size);
+            ggh.PositionInFreeCell(comp, gen_para.cell_size, gen_para.inter_size);
         }
 
+        // generate the pcb board
+        generate_pcb_board(ggh);
+
         Componer.GrabExistingComponents();
+    }
+
+    private async void generate_pcb_board(GridGenerationHelper ggh)
+    {
+        // we trim the grid so we have the smallest pcb
+        // ggh.Trim();
+
+        // we place wires & rocks
+
+        // we place description & title in an empty cell
+
     }
 
 
@@ -39,6 +58,7 @@ public class PCB : MonoBehaviour
     [SerializeField] private Animator front_pcb;
     [SerializeField] private Animator back_pcb;
     [SerializeField] private Animator components_pcb;
+    [SerializeField] private Animator buttons_pcb;
     [SerializeField] private bool showing_front = true;
     public bool IsShowingFront => showing_front;
     private Coroutine current_coroutine = null;
@@ -70,6 +90,7 @@ public class PCB : MonoBehaviour
         front_pcb.Play("show");
         back_pcb.Play("hide");
         components_pcb.Play("hide");
+        buttons_pcb.Play("hide");
 
         while (front_pcb.GetCurrentAnimatorStateInfo(0).IsName("show"))
         {
@@ -87,6 +108,7 @@ public class PCB : MonoBehaviour
         front_pcb.Play("hide");
         back_pcb.Play("show");
         components_pcb.Play("show");
+        buttons_pcb.Play("show");
 
         while (front_pcb.GetCurrentAnimatorStateInfo(0).IsName("hide"))
         {
@@ -124,21 +146,27 @@ public class PCB : MonoBehaviour
 {
     public Vector2Int components_min_max = new Vector2Int();
     public int cell_size = 18;
+    public int inter_size = 7;
     public Vector2Int total_life_min_max = new Vector2Int();
     public Vector2Int shards_min_max = new Vector2Int();
     public Vector2Int virus_min_max = new Vector2Int();
 }
 
-public class ComponentHolderGenerationHelper
+public class GridGenerationHelper
 {
-    private static bool logs = true;
+    private static bool logs = false;
     public Vector2Int grid_size;
     public Dictionary<Vector2Int,string> cells;
-    public ComponentHolderGenerationHelper(int component_count)
+    // public List<GridCell> cells ;
+    public GridGenerationHelper(int component_count)
     {
         cells = new Dictionary<Vector2Int, string>();
+        // cells = new List<GridCell>();
         if (component_count <= 1) { grid_size = new Vector2Int(1,1); }
-        else if (component_count <= 6) { grid_size = new Vector2Int(3,3); }
+        else if (component_count <= 8) { grid_size = new Vector2Int(3, 3); }
+        else if (component_count <= 13) { grid_size = new Vector2Int(5, 3); }
+        else if (component_count <= 22) { grid_size = new Vector2Int(5, 5); }
+        else if (component_count <= 31) { grid_size = new Vector2Int(7, 5); }
         else { grid_size = new Vector2Int(7,7); }
 
         generate_empty_grid();
@@ -152,8 +180,10 @@ public class ComponentHolderGenerationHelper
         // calculate the center offset
         Vector2Int center_offset = Vector2Int.zero;
         if (grid_size.x == 3) { center_offset.x = -1; }
+        else if (grid_size.x == 5) { center_offset.x = -2; }
         else if (grid_size.x == 7) { center_offset.x = -3; }
         if (grid_size.y == 3) { center_offset.y = -1; }
+        else if (grid_size.y == 5) { center_offset.y = -2; }
         else if (grid_size.y == 7) { center_offset.y = -3; }
 
         if (logs) { Debug.Log($"(CHGH) Generating grid of size {grid_size} : center_offset is now {center_offset}"); }
@@ -197,17 +227,30 @@ public class ComponentHolderGenerationHelper
         cells[cell] = comp_name;
         if (logs) { Debug.Log(get_grid_details()); }
     }
-
-    public void PositionInFreeCell(Component comp, int cell_size)
+    public void PositionInFreeCell(Component comp, int cell_size, int inter_cell)
     {
         Vector2Int cell = GetFreeCell();
-        comp.transform.localPosition = new Vector3
-        (
-            cell.x * cell_size * (1f / 24f),
-            cell.y * cell_size * (1f / 24f),
-            comp.transform.localPosition.z
-        );
-        if (logs) { Debug.Log($"(CHGH) Positionning {comp.name} in cell {cell} at world position {comp.transform.localPosition}"); }
+
+        float x = cell.x * cell_size * (1f / 24f) + Mathf.Sign(cell.x) * cell.x * inter_cell;
+        float y = cell.x * cell_size * (1f / 24f) + Mathf.Sign(cell.y) * cell.y * inter_cell;
+
+        comp.transform.localPosition = new Vector3 ( x, y, comp.transform.localPosition.z );
+        if (logs) { Debug.Log($"(CHGH) Positionning {comp.name} in cell {cell} at world position {x},{y}"); }
         OccupyCell(cell, comp.name);
+    }
+
+    public class GridCell
+    {
+        public int x;
+        public int y;
+        public CellType type = CellType.Empty;
+        public string value = "";
+    }
+    public enum CellType
+    {
+        Empty,
+        Component,
+        Desc,
+        Title
     }
 }
