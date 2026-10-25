@@ -21,6 +21,10 @@ public class Hoverable : MonoBehaviour
     //
     ///
 
+    // ON HOVER
+    public virtual void OnHover() { }
+    public virtual void OnUnhover() { }
+
 
     // HOVER ANIMATION
     public virtual void ScaleUp()

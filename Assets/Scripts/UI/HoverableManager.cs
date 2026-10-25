@@ -33,6 +33,7 @@ public class HoverableManager : MonoBehaviour
             other_hoverable.ResetScale();
         }
         current_hover = hoverable;
+        hoverable.OnHover();
         if (log_hovers) { Debug.Log($"(CompManager) Hovered compoenent {hoverable.name}"); }
     }
     public virtual void Unhover() => Unhover(current_hover);
@@ -45,6 +46,7 @@ public class HoverableManager : MonoBehaviour
         {
             set_alpha_of_hoverable(other, 1f);
             other.ResetScale();
+            other.OnUnhover();
         }
         current_hover = null;
         if (log_hovers) { Debug.Log($"({GetType().Name}) Unhover {hoverable.name}"); }

@@ -18,6 +18,8 @@ public class Component : Hoverable, Damageable
 
     [Header("Components References")]
     [SerializeField] protected Animator fx_animator;
+    [SerializeField] protected HP_Bar bar;
+    
 
     ///
     //
@@ -31,17 +33,19 @@ public class Component : Hoverable, Damageable
         this.name = Prefix.ToString() + "_" + data.name;
         Prefix++;
 
-
         // set full life to it
+        MaxHP = data.max_HP;
         max_life = data.max_HP * 2; // multiply by 2 because we have 2 steps
         life = max_life;
+        bar.Target(this);
+        bar.gameObject.SetActive(false);
 
         // this.animator.Play(data.name + "_full", 1);
         play_life_anim();
 
         // calculate the local offset based on the size vector
-        float half_offset = .5f / 24f;
-        float full_offset = 1f / 24f;
+        float half_px = .5f / 24f;
+        float px = 1f / 24f;
         bg_sr.transform.localScale = new Vector3
         (
             data.bg_size.x,
@@ -50,20 +54,26 @@ public class Component : Hoverable, Damageable
         );
         bg_sr.transform.localPosition = new Vector3
         (
-            data.bg_size.x % 2 == 0 ? 0f : half_offset,
-            data.bg_size.y % 2 == 0 ? 0f : half_offset,
+            data.bg_size.x % 2 == 0 ? 0f : half_px,
+            data.bg_size.y % 2 == 0 ? 0f : half_px,
+            0f
+        );
+        bar.transform.localPosition = new Vector3
+        (
+            data.bg_size.x % 2 == 0 ? 0f : half_px,
+            data.bg_size.y / 2f / 24f + 4*px,
             0f
         );
         sr.transform.localPosition = new Vector3
         (
-            data.size.x % 2 == 0 ? 0f : half_offset,
-            data.size.y % 2 == 0 ? 0f : half_offset,
+            data.size.x % 2 == 0 ? 0f : half_px,
+            data.size.y % 2 == 0 ? 0f : half_px,
             0f
         );
         sr.transform.localPosition += new Vector3
         (
-            data.offset.x * full_offset,
-            data.offset.y * full_offset,
+            data.offset.x * px,
+            data.offset.y * px,
             0f
         );
 
@@ -141,12 +151,34 @@ public class Component : Hoverable, Damageable
     }
 
 
+
+
+
+    ///
+    //
+    ///  HOVER
+    //
+    ///
+
+    public override void OnHover()
+    {
+        bar.gameObject.SetActive(true);
+    }
+    public override void OnUnhover()
+    {
+        bar.gameObject.SetActive(false);
+    }
+
+
+
+
     ///
     //
     ///  HEALING / DAMAGING
     //
     ///
     [Header("Life")]
+    public int MaxHP = 0;
     [SerializeField] protected int life;
     [SerializeField] protected int max_life;
     public int MaxLife { get => max_life; set => max_life = value; }
@@ -159,10 +191,12 @@ public class Component : Hoverable, Damageable
     public void OnPress()
     {
         fx_animator.Play("fx_heal");
+        animator.Play("slow_fix", 0);
     }
     public void OnRelease()
     {
         fx_animator.Play("fx_idle");
+        ScaleUp();
     }
 
     // HEALING
@@ -170,7 +204,9 @@ public class Component : Hoverable, Damageable
     {
         life = max_life;
         play_life_anim();
+        bar.RefreshLife();
         Debug.Log($"(Component) {name} of type {data.type_of_component} was healed ! Has now {life} / {max_life} HP.       ({LifePercentage})");
+        ScaleUp();
     }
     
 
@@ -186,6 +222,7 @@ public class Component : Hoverable, Damageable
         Debug.Log($"(Component) {name} of type {data.type_of_component} took damage. Has now {life} / {max_life} HP.       ({LifePercentage})");
 
         play_life_anim();
+        bar.RefreshLife();
     }
     private void play_life_anim()
     {

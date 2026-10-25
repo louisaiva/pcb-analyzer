@@ -40,7 +40,6 @@ public class ComponentsManager : HoverableManager
 
 
 
-
     // CLICKING
     protected Coroutine holding_coroutine = null;
     [SerializeField] protected float hold_delay = 0.5f;
@@ -84,10 +83,15 @@ public class ComponentsManager : HoverableManager
     // MAIN METHODS
     public void DamageComponent(Component comp)
     {
-        string anim = click_anim[UnityEngine.Random.Range(0, click_anim.Count)];
-        while (comp.Animator.GetCurrentAnimatorStateInfo(0).IsName(anim))
+        string anim = "";
+        if (comp.Life == 1) { anim = "break"; }
+        else
         {
             anim = click_anim[UnityEngine.Random.Range(0, click_anim.Count)];
+            while (comp.Animator.GetCurrentAnimatorStateInfo(0).IsName(anim))
+            {
+                anim = click_anim[UnityEngine.Random.Range(0, click_anim.Count)];
+            }
         }
         comp.Animator.Play(anim);
         comp.Damage();
