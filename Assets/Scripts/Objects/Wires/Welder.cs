@@ -138,7 +138,8 @@ public class Welder : MonoBehaviour
     {
         Wire wire = Instantiate(wire_prefab);
         wire.transform.SetParent(wires_parent);
-        
+        wire.transform.localScale = Vector3.one;
+
         return wire;
     }
 }

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Component : MonoBehaviour
+public class Component : Hoverable
 {
     public static int Prefix = 0;
 
@@ -15,90 +15,8 @@ public class Component : MonoBehaviour
     public Vector2Int RailPosition => CellPosition*2;
     public Vector2 WorldPosition => animator.transform.position;
 
-
-    [Header("Components")]
-    [SerializeField] private SpriteRenderer bg_sr;
-    [SerializeField] private SpriteRenderer sr;
-    public SpriteRenderer Renderer => sr;
-    [SerializeField] private Animator animator;
-    public Animator Animator => animator;
-    // [SerializeField] private Collider2D hover_collider;
-    [SerializeField] private bool scaled_up = false;
-    [SerializeField] private bool logs = false;
-
-
-
-    ///
-    //
-    ///  ENTRY POINTS
-    //
-    ///
-
-
-    // HOVER ANIMATION
-    public void ScaleUp()
-    {
-        if (logs) { Debug.Log($"(Component) Scaling up {name}"); }
-        animator.Play("scale_up");
-        scaled_up = true;
-    }
-    public void ResetScale()
-    {
-        if (logs) { Debug.Log($"(Component) Resetting scale of {name}"); }
-        // if (sr.transform.localScale.x <= 1f) { return; }
-        if (scaled_up)
-        {
-            if (logs) { Debug.Log($"(Component) Depopping up {name}"); }
-            animator.Play("depopup");
-        }
-        // else { animator.Play("") }
-        // if scale > 1 we were hovered, we play a little animation depopup
-        scaled_up = false;
-    }
-
-    // ON CLICK
-    public void OnClick()
-    {
-    }
-
-
-
-
-    ///
-    //
-    ///  WELD HANDLING
-    //
-    ///
-    private List<Weld> welds = new List<Weld>();
-    public Weld GetRandomFreeWeld()
-    {
-        List<Weld> free_welds = welds.Where(w => !w.used).ToList();
-        if (free_welds.Count == 0) { return null; }
-        return free_welds[UnityEngine.Random.Range(0,free_welds.Count)];
-    }
-
-    public Weld GetClosestFreeWeldFrom(Component b)
-    {
-        if (b == this) { return null; } // can't wire ourselves
-        return GetClosestFreeWeldFrom(b.WorldPosition);
-    }
-    public Weld GetClosestFreeWeldFrom(Vector2 world_position)
-    {
-        List<Weld> free_welds = welds.Where(w => !w.used).ToList();
-        if (free_welds.Count == 0) { return null; }
-        Weld best_weld = null;
-        float smallest_distance = float.MaxValue;
-        for (int i=0; i<free_welds.Count;i++)
-        {
-            Vector2 direction = free_welds[i].world_position - world_position;
-            if (direction.magnitude > smallest_distance) { continue; }
-            smallest_distance = direction.magnitude;
-            best_weld = free_welds[i];
-        }
-        return best_weld;
-    }
-
-
+    [Header("Components References")]
+    [SerializeField] protected Animator fx_animator;
 
     ///
     //
@@ -146,6 +64,39 @@ public class Component : MonoBehaviour
 
     }
 
+    ///
+    //
+    ///  WELD HANDLING
+    //
+    ///
+    private List<Weld> welds = new List<Weld>();
+    public Weld GetRandomFreeWeld()
+    {
+        List<Weld> free_welds = welds.Where(w => !w.used).ToList();
+        if (free_welds.Count == 0) { return null; }
+        return free_welds[UnityEngine.Random.Range(0,free_welds.Count)];
+    }
+
+    public Weld GetClosestFreeWeldFrom(Component b)
+    {
+        if (b == this) { return null; } // can't wire ourselves
+        return GetClosestFreeWeldFrom(b.WorldPosition);
+    }
+    public Weld GetClosestFreeWeldFrom(Vector2 world_position)
+    {
+        List<Weld> free_welds = welds.Where(w => !w.used).ToList();
+        if (free_welds.Count == 0) { return null; }
+        Weld best_weld = null;
+        float smallest_distance = float.MaxValue;
+        for (int i=0; i<free_welds.Count;i++)
+        {
+            Vector2 direction = free_welds[i].world_position - world_position;
+            if (direction.magnitude > smallest_distance) { continue; }
+            smallest_distance = direction.magnitude;
+            best_weld = free_welds[i];
+        }
+        return best_weld;
+    }
     public void RefreshWelds()
     {
         // creates welds
@@ -161,7 +112,6 @@ public class Component : MonoBehaviour
             welds.Add(weld);
         }
     }
-
     private Vector2 calculate_weld_position(Vector2 pixel)
     {
         Vector2 position = new Vector2(animator.transform.position.x, animator.transform.position.y);
@@ -170,17 +120,32 @@ public class Component : MonoBehaviour
         Debug.Log($"(Component) {name} has a new Weld with pixel offset {pixel} && world_pos {position}. Animator is located at {animator.transform.position}");
         return position;
     }
-
     private void OnDrawGizmos()
     {
         if (welds.Count == 0) { return; }
-        
+
         Gizmos.color = Color.red;
         float radius = 0.03f;
         foreach (Weld weld in welds)
         {
             Gizmos.DrawSphere(weld.world_position, radius);
         }
+    }
+
+
+    ///
+    //
+    ///  HEALING
+    //
+    ///
+
+    public void OnPress()
+    {
+        fx_animator.Play("fx_heal");
+    }
+    public void OnRelease()
+    {
+        fx_animator.Play("fx_idle");
     }
 
 }

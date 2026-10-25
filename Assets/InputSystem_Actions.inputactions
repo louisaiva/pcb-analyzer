@@ -17,7 +17,7 @@
                 },
                 {
                     "name": "mouse_click",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "49c4e18b-c6a0-4d61-a7dc-fac882343584",
                     "expectedControlType": "",
                     "processors": "",
@@ -41,7 +41,7 @@
                     "name": "",
                     "id": "74e5966f-3568-4b22-b08e-a1c1e86b065b",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "mouse_click",

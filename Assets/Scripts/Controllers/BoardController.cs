@@ -16,25 +16,38 @@ public class BoardController : MonoBehaviour
     public PCB_Bank PCBank;
     public StickerBank StickerBank;
 
-    public void OnButtonHover(Button btn)
+    public void OnHover(Hoverable hoverable)
     {
-        BtnManager.HoverButton(btn);
+        if (hoverable is Button button)
+        {
+            BtnManager.Hover(button);
+            CompManager.Unhover();
+        }
+        else if (hoverable is Component comp)
+        {
+            CompManager.Hover(comp);
+            BtnManager.Unhover();
+        }
     }
-    public void OnComponentHover(Component comp)
-    {
-        CompManager.HoverComponent(comp);
-    }
-
     public void OnNothingHovered()
     {
-        BtnManager.UnhoverButton();
-        CompManager.UnhoverComponent();
+        BtnManager.Unhover();
+        CompManager.Unhover();
     }
 
-    public void OnMouseClick()
+    public void OnMousePress()
     {
-        if (PCB.IsShowingFront) { PCB.Flip(); return; }
-        if (BtnManager.HasHoveredButton(out Button btn)) { BtnManager.ClickOnButton(btn); return; }
-        if (CompManager.HasHoveredComponent(out Component comp)) { CompManager.ClickOnComponent(comp); }
+        // if (CompManager.HasHoveredComponent(out Component comp)) { CompManager.StartHolding(comp); }
+        BtnManager.OnMousePress();
+        CompManager.OnMousePress();
+    }
+
+    public void OnMouseRelease()
+    {
+        // if (PCB.IsShowingFront) { PCB.Flip(); return; }
+        // if (BtnManager.HasHover(out Button btn)) { BtnManager.ClickOnButton(btn); return; }
+        BtnManager.OnMouseRelease();
+        CompManager.OnMouseRelease();
+        // if (CompManager.HasHoveredComponent(out Component comp)) { CompManager.MouseUpOn(comp); }
     }
 }

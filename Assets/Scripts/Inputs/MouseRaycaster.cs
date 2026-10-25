@@ -7,11 +7,10 @@ public class MouseRaycaster : MonoBehaviour
 {
 
     [SerializeField] private InputActionReference mouse_pos;
+    [SerializeField] private InputActionReference mouse_click;
     [SerializeField] private bool log_mouse_pos = false;
     [SerializeField] private bool log_hits = false;
 
-
-    [SerializeField] private InputActionReference mouse_click;
 
 
     private ContactFilter2D component_filter = new ContactFilter2D();
@@ -52,37 +51,27 @@ public class MouseRaycaster : MonoBehaviour
         {
             if (hits[i].collider == null) { continue; }
             if (log_hits) { Debug.Log("Hitted " + hits[i].collider.name); }
-            if (try_to_hit_component(hits[i].collider)) { return; }
-            if (try_to_hit_button(hits[i].collider)) { return; }
+            if (try_to_hit_hoverable(hits[i].collider)) { return; }
         }
 
         BoardController.Instance.OnNothingHovered();
     }
 
-    private bool try_to_hit_component(Collider2D collider)
+    private bool try_to_hit_hoverable(Collider2D collider)
     {
         if (collider.transform.parent == null) { return false; }
-        if (!collider.transform.parent.TryGetComponent(out Component hitted_component)) { return false; }
+        if (!collider.transform.parent.TryGetComponent(out Hoverable hover)) { return false; }
 
         // send event to the BoardManager
-        BoardController.Instance.OnComponentHover(hitted_component);
+        BoardController.Instance.OnHover(hover);
         return true;
     }
-
-    private bool try_to_hit_button(Collider2D collider)
-    {
-        if (collider.transform.parent == null) { return false; }
-        if (!collider.transform.parent.TryGetComponent(out Button hitted_button)) { return false; }
-
-        // send event to the BoardManager
-        BoardController.Instance.OnButtonHover(hitted_button);
-        return true;
-    }
-
 
 
     private void OnMouseClick(InputAction.CallbackContext context)
     {
-        BoardController.Instance.OnMouseClick();
+        // Debug.Log($"(Mouse) Getting click : {context.ReadValue<float>()}");
+        if (context.ReadValue<float>() > .5f) { BoardController.Instance.OnMousePress(); }
+        else { BoardController.Instance.OnMouseRelease(); }
     }
 }

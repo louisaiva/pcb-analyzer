@@ -27,8 +27,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3406490527358355426}
   m_Father: {fileID: 0}
@@ -45,6 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e1642505e64a2f4aa74cb5acbbfb768, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonFlip
+  bg_sr: {fileID: 8342750672850348328}
+  sr: {fileID: 8342750672850348328}
+  animator: {fileID: 9053559844822941857}
+  scaled_up: 0
+  logs: 0
 --- !u!1 &6788241575650430095
 GameObject:
   m_ObjectHideFlags: 0

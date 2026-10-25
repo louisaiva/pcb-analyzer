@@ -1,23 +1,10 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
-public class ComponentsManager : MonoBehaviour
+public class ComponentsManager : HoverableManager
 {
-    [SerializeField] private List<Component> components = new List<Component>();
-
-    [Header("Hover")]
-    [SerializeField] private Component hovered_component = null;
-    [SerializeField] private Material base_material;
-    [SerializeField] private Material hover_material;
-    [SerializeField] private float faded_alpha = .9f;
-
-    [Header("Click animations")]
-    [SerializeField] private List<string> click_anim = new List<string>();
-
-    [Header("Logs")]
-    [SerializeField] private bool log_hovers = false;
-
-
     // COMPONENTs GRABBING
     private void Start()
     {
@@ -29,74 +16,74 @@ public class ComponentsManager : MonoBehaviour
         {
             Destroy(comp.gameObject);
         }
-        components.Clear();
+        hoverables.Clear();
     }
     public void GrabExistingComponents()
     {
-        components.Clear();
+        hoverables.Clear();
         foreach (Component comp in GetComponentsInChildren<Component>(includeInactive: false))
         {
-            if (components.Contains(comp)) { continue; }
-            components.Add(comp);
+            if (hoverables.Contains(comp)) { continue; }
+            hoverables.Add(comp);
         }
     }
 
-    // HOVERING
-    public void HoverComponent(Component comp)
+    // GETTERS
+    public Component GetRandomComponent()
     {
-        if (comp == null) { return; }
-        if (comp == hovered_component) { return; }
-        if (!components.Contains(comp)) { return; }
-        foreach (Component other_comp in components)
-        {
-            if (comp == other_comp)
-            {
-                SetAlphaOfComponent(comp, 1f);
-                comp.ScaleUp();
-                continue;
-            }
-            SetAlphaOfComponent(other_comp, faded_alpha);
-            other_comp.ResetScale();
-        }
-        hovered_component = comp;
-        if (log_hovers) { Debug.Log($"(CompManager) Hovered compoenent {comp.name}"); }
+        List<Component> components = GetComponents();
+        if (components.Count == 0) { return null; }
+        return components[UnityEngine.Random.Range(0, components.Count)];
     }
-    public void UnhoverComponent() => UnhoverComponent(hovered_component);
-    public void UnhoverComponent(Component comp)
-    {
-        if (comp == null) { return; }
-        if (comp != hovered_component) { return; }
-        if (!components.Contains(comp)) { return; }
-        foreach (Component other_comp in components)
-        {
-            SetAlphaOfComponent(other_comp, 1f);
-            other_comp.ResetScale();
-            // other_comp.Renderer.material = base_material;
-        }
-        hovered_component = null;
-        if (log_hovers) { Debug.Log($"(CompManager) Unhover compoenent {comp.name}"); }
-    }
-    private static void SetAlphaOfComponent(Component comp, float alpha)
-    {
-        if (comp == null) { return; }
-        comp.Renderer.color = new Color
-        (
-            comp.Renderer.color.r,
-            comp.Renderer.color.g,
-            comp.Renderer.color.b,
-            alpha
-        );
-    }
-    public bool HasHoveredComponent(out Component comp)
-    {
-        comp = hovered_component;
-        return comp != null;
-    }
+    public List<Component> GetComponents() { return hoverables.ConvertAll(h => (Component)h); }
+
+
+
+
 
     // CLICKING
-    public void ClickOnComponent(Component comp)
+    protected Coroutine holding_coroutine = null;
+    [SerializeField] protected float hold_delay = 0.5f;
+    [SerializeField] protected Component holding_comp = null;
+    public virtual bool HasHolding<T>(out T holding) where T : Component
     {
+        holding = (T)holding_comp;
+        return holding != null;
+    }
 
+    // ENTRY POINTS    
+    public override void OnMousePress()
+    {
+        if (holding_coroutine != null) { return; }
+        if (!HasHover(out Component comp)) { return; }
+        holding_coroutine = StartCoroutine(HoldCoroutine());
+    }
+    public override void OnMouseRelease()
+    {
+        if (holding_coroutine != null)
+        {
+            StopCoroutine(holding_coroutine);
+            holding_coroutine = null;
+        }
+
+        if (HasHolding(out Component comp))
+        {
+            comp.OnRelease();
+            holding_comp = null;
+            return;
+        }
+
+        if (HasHover(out comp))
+        {
+            DamageComponent(comp);
+            return;
+        }
+
+    }
+    
+    // MAIN METHODS
+    public void DamageComponent(Component comp)
+    {
         string anim = click_anim[UnityEngine.Random.Range(0, click_anim.Count)];
         while (comp.Animator.GetCurrentAnimatorStateInfo(0).IsName(anim))
         {
@@ -105,13 +92,14 @@ public class ComponentsManager : MonoBehaviour
         comp.Animator.Play(anim);
         comp.OnClick();
     }
-
-
-    // GETTERS
-    public Component GetRandomComponent()
+    public IEnumerator HoldCoroutine()
     {
-        if (components.Count == 0) { return null; }
-        return components[UnityEngine.Random.Range(0,components.Count)];
+        Component comp = (Component)current_hover;
+
+        yield return new WaitForSeconds(hold_delay);
+
+        holding_comp = comp;
+        holding_comp.OnPress();
+        holding_coroutine = null;
     }
-    public List<Component> GetComponents() { return new List<Component>(components); }
 }

@@ -7,6 +7,7 @@ public class ComponentBank : MonoBehaviour
     
     public List<ComponentData> bank = new List<ComponentData>();
     public Component prefab;
+    public bool log = false;
 
 
     public Component CreateRandomComponent(Transform parent)
@@ -26,8 +27,9 @@ public class ComponentBank : MonoBehaviour
     {
         if (!TryGetTemplate(template, out ComponentData data)) { return null; }
         Component comp = Instantiate(prefab);
-        Debug.Log($"(CompBank) Creating component {data.name} of type {data.type_of_component}");
+        if (log) { Debug.Log($"(CompBank) Creating component {data.name} of type {data.type_of_component}"); }
         comp.FeedData(data);
+        comp.transform.localScale = Vector3.one;
         return comp;
     }
 
