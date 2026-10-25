@@ -1136,6 +1136,96 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 553548521}
   m_CullTransparentMesh: 1
+--- !u!1 &562024520
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 562024521}
+  - component: {fileID: 562024524}
+  - component: {fileID: 562024523}
+  - component: {fileID: 562024522}
+  m_Layer: 0
+  m_Name: rocks
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &562024521
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562024520}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3705596314140424951}
+  m_Father: {fileID: 1247259377}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &562024522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562024520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2d61d697af3bf48ae666771b933a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PCB_Caller
+--- !u!95 &562024523
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562024520}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 840f59773c33ff84c9504379a3a24369, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &562024524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562024520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0c52661e44db0468be49695b66eb72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RocksManager
+  hoverables:
+  - {fileID: 3705596314140424952}
+  current_hover: {fileID: 0}
+  faded_alpha: 1
+  click_anim:
+  - hit
+  - hit2
+  - hit3
+  log_hovers: 0
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1789,6 +1879,7 @@ Transform:
   - {fileID: 1795266388}
   - {fileID: 781577853}
   - {fileID: 1788035530}
+  - {fileID: 562024521}
   - {fileID: 1680240826}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1825,10 +1916,11 @@ MonoBehaviour:
   front_rails: {fileID: 644352082}
   pcb_parts: []
   front_pcb: {fileID: 1795266389}
-  back_pcb: {fileID: 781577854}
-  components_pcb: {fileID: 1788035532}
-  buttons_pcb: {fileID: 714798834}
-  wires_pcb: {fileID: 1680240828}
+  back_pcbs:
+  - {fileID: 781577854}
+  - {fileID: 1788035532}
+  - {fileID: 562024523}
+  - {fileID: 1680240828}
   showing_front: 1
   log_generation: 0
 --- !u!114 &1247259379
@@ -1876,8 +1968,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardController
   PCB_Manager: {fileID: 1263582488}
-  BtnManager: {fileID: 714798832}
-  CompManager: {fileID: 1788035531}
+  Btner: {fileID: 714798832}
+  Comper: {fileID: 1788035531}
+  Rocker: {fileID: 562024524}
   CompBank: {fileID: 182882398}
   PCB: {fileID: 1247259378}
   PCBank: {fileID: 182882400}
@@ -3252,6 +3345,79 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1001 &2996167010385061716
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 562024521}
+    m_Modifications:
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.32977
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.14435
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4325879662741148145, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+      propertyPath: m_Name
+      value: rock
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+--- !u!4 &3705596314140424951 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3741607844581607916, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+  m_PrefabInstance: {fileID: 2996167010385061716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3705596314140424952 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4147657896350807160, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+  m_PrefabInstance: {fileID: 2996167010385061716}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e5386c11aae8f440ba9aade90d0ea12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Rock
 --- !u!1001 &3811098116039623032
 PrefabInstance:
   m_ObjectHideFlags: 0

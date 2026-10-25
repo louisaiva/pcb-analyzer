@@ -222,10 +222,7 @@ public class PCB : MonoBehaviour
 
     [Header("Animations")]
     [SerializeField] private Animator front_pcb;
-    [SerializeField] private Animator back_pcb;
-    [SerializeField] private Animator components_pcb;
-    [SerializeField] private Animator buttons_pcb;
-    [SerializeField] private Animator wires_pcb;
+    [SerializeField] private List<Animator> back_pcbs;
     [SerializeField] private bool showing_front = true;
     public bool IsShowingFront => showing_front;
     private Coroutine current_coroutine = null;
@@ -236,12 +233,13 @@ public class PCB : MonoBehaviour
 
 
     // PCB FLIPPING
+    public bool IsScrewed => GetComponentInChildren<Screw>(includeInactive: false) != null;
     public void Flip()
     {
         if (current_coroutine != null) { return; }
 
         // ensure we don't have any screws
-        if (GetComponentInChildren<Screw>(includeInactive:false))
+        if (IsScrewed)
         {
             current_coroutine = StartCoroutine("UnscrewThenShowFront");
             return;
@@ -259,10 +257,10 @@ public class PCB : MonoBehaviour
         Debug.Log($"Showing FRONT of {name}");
 
         front_pcb.Play("show");
-        back_pcb.Play("hide");
-        components_pcb.Play("hide");
-        buttons_pcb.Play("hide");
-        wires_pcb.Play("hide");
+        foreach (Animator animator in back_pcbs)
+        {
+            animator.Play("hide");
+        }
 
         while (front_pcb.GetCurrentAnimatorStateInfo(0).IsName("show"))
         {
@@ -278,10 +276,10 @@ public class PCB : MonoBehaviour
         Debug.Log($"Showing BACK of {name}");
 
         front_pcb.Play("hide");
-        back_pcb.Play("show");
-        components_pcb.Play("show");
-        buttons_pcb.Play("show");
-        wires_pcb.Play("show");
+        foreach (Animator animator in back_pcbs)
+        {
+            animator.Play("show");
+        }
 
         while (front_pcb.GetCurrentAnimatorStateInfo(0).IsName("hide"))
         {

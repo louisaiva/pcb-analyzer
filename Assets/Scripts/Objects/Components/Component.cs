@@ -178,10 +178,10 @@ public class Component : Hoverable, Damageable
     //
     ///
     [Header("Life")]
-    public int MaxHP = 0;
     [SerializeField] protected int life;
     [SerializeField] protected int max_life;
     public int MaxLife { get => max_life; set => max_life = value; }
+    public int MaxHP { get; private set; }
     public int Life { get => life; set => life = value; }
     public float LifePercentage => Life / (float)MaxLife;
     public bool IsDamaged => life != max_life;

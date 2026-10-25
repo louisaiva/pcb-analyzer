@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3804727802988551771}
   - component: {fileID: 6205691003865574623}
   m_Layer: 0
-  m_Name: hp
+  m_Name: rock_hp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82,7 +82,7 @@ SpriteRenderer:
   m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 424871660, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}
+  m_Sprite: {fileID: 2052634602, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -105,6 +105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HP
   sr: {fileID: 3804727802988551771}
-  full: {fileID: 424871660, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}
-  mid: {fileID: -2019311172, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}
-  dead: {fileID: 630859577, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}
+  full: {fileID: 2052634602, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}
+  mid: {fileID: 1276696980, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}
+  dead: {fileID: 1216182961, guid: 421adb4c733ec2940b20e55e0265e4d4, type: 3}

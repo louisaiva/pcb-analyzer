@@ -10,8 +10,9 @@ public class BoardController : MonoBehaviour
 
 
     public PCB_Manager PCB_Manager;
-    public ButtonsManager BtnManager;
-    public ComponentsManager CompManager;
+    public ButtonsManager Btner;
+    public ComponentsManager Comper;
+    public RocksManager Rocker;
     public ComponentBank CompBank;
     public PCB PCB;
     public PCB_Bank PCBank;
@@ -21,34 +22,43 @@ public class BoardController : MonoBehaviour
     {
         if (hoverable is Button button)
         {
-            BtnManager.Hover(button);
-            CompManager.Unhover();
+            Btner.Hover(button);
+            Comper.Unhover();
+            Rocker.Unhover();
         }
         else if (hoverable is Component comp)
         {
-            CompManager.Hover(comp);
-            BtnManager.Unhover();
+            Comper.Hover(comp);
+            Btner.Unhover();
+            Rocker.Unhover();
+        }
+        else if (hoverable is Rock rock)
+        {
+            Rocker.Hover(rock);
+            Btner.Unhover();
+            Comper.Unhover();
         }
     }
     public void OnNothingHovered()
     {
-        BtnManager.Unhover();
-        CompManager.Unhover();
+        Btner.Unhover();
+        Comper.Unhover();
+        Rocker.Unhover();
     }
 
     public void OnMousePress()
     {
         // if (CompManager.HasHoveredComponent(out Component comp)) { CompManager.StartHolding(comp); }
-        BtnManager.OnMousePress();
-        CompManager.OnMousePress();
+        Btner.OnMousePress();
+        Comper.OnMousePress();
+        Rocker.OnMousePress();
     }
 
     public void OnMouseRelease()
     {
-        // if (PCB.IsShowingFront) { PCB.Flip(); return; }
-        // if (BtnManager.HasHover(out Button btn)) { BtnManager.ClickOnButton(btn); return; }
-        BtnManager.OnMouseRelease();
-        CompManager.OnMouseRelease();
-        // if (CompManager.HasHoveredComponent(out Component comp)) { CompManager.MouseUpOn(comp); }
+        if (PCB.IsShowingFront && !PCB.Timer.IsRunning) { PCB.Flip(); return; }
+        Btner.OnMouseRelease();
+        Comper.OnMouseRelease();
+        Rocker.OnMouseRelease();
     }
 }

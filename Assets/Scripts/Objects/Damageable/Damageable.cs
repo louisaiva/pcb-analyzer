@@ -4,6 +4,7 @@ public interface Damageable
 {
     public GameObject gameObject { get; }
     public int MaxLife { get; set; }
+    public int MaxHP { get; }
     public int Life { get; set; }
 
     public void Damage();

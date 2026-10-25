@@ -4,7 +4,7 @@ using UnityEngine;
 public class HP_Bar : MonoBehaviour
 {
     public List<HP> hps = new List<HP>();
-    public Component target;
+    public Damageable target;
     public HP prefab;
     public float inter_hp = 4f / 24f;
 
@@ -20,11 +20,11 @@ public class HP_Bar : MonoBehaviour
         Clear();
         target = null;
     }
-    public void Target(Component comp, bool centered = true)
+    public void Target(Damageable dmg, bool centered = true)
     {
         Clear();
 
-        int hp_count = comp.MaxHP;
+        int hp_count = dmg.MaxHP;
         float total_width = inter_hp * (hp_count - 1);
         float left = centered ? - total_width / 2f : 0f;
         List<float> hp_positions = new List<float>();
@@ -39,7 +39,7 @@ public class HP_Bar : MonoBehaviour
             hps.Add(hp);
         }
 
-        target = comp;
+        target = dmg;
         RefreshLife();
     }
     private HP create_hp(Vector2 pos)

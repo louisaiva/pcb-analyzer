@@ -18,7 +18,7 @@ public class MouseRaycaster : MonoBehaviour
     private void Start()
     {
         component_filter.useTriggers = true;
-        component_filter.SetLayerMask(LayerMask.GetMask("Components", "Buttons"));
+        component_filter.SetLayerMask(LayerMask.GetMask("Components", "Buttons", "Rocks", "Bugs"));
         // Debug.Log(component_filter);
     }
 
