@@ -42,7 +42,7 @@ public class Board
         else if (grid_size.y == 5) { center_offset.y = -2; }
         else if (grid_size.y == 7) { center_offset.y = -3; }
 
-        if (logs) { Debug.Log($"(CHGH) Generating grid of size {grid_size} : center_offset is now {center_offset}"); }
+        if (logs) { Debug.Log($"(Board) Generating grid of size {grid_size} : center_offset is now {center_offset}"); }
 
         // creating the cells
         for (int y = 0; y < grid_size.y; y++)
@@ -50,13 +50,9 @@ public class Board
             for (int x = 0; x < grid_size.x; x++)
             {
                 Vector2Int pos = new Vector2Int(x, y) + center_offset;
-                if (logs) { Debug.Log($"(CHGH) Creating cell ({x},{y}) offseted in {pos}"); }
+                if (logs) { Debug.Log($"(Board) Creating cell ({x},{y}) offseted in {pos}"); }
                 // cells.Add(cell,"");
-                BoardCell cell = new BoardCell()
-                {
-                    x = pos.x,
-                    y = pos.y,
-                };
+                BoardCell cell = new BoardCell(pos);
                 cells.Add(cell);
             }
         }
@@ -88,7 +84,7 @@ public class Board
         comp.transform.localPosition = new Vector3(pos.x, pos.y, comp.transform.localPosition.z);
         comp.CellPosition = cell.Position;
         comp.RefreshWelds();
-        if (logs) { Debug.Log($"(CHGH) Positionning {comp.name} in cell {cell.Position} at world position {pos}"); }
+        if (logs) { Debug.Log($"(Board) Positionning {comp.name} in cell {cell.Position} at world position {pos}"); }
         OccupyCell(cell, comp.name);
     }
     public void TrimRecursively(int max_iterations = 100)
@@ -141,6 +137,136 @@ public class Board
             cell.value = "";
         }
     }
+    public void AddBackDescriptionCells()
+    {
+        // we first try to get 2 empty cells one on the other
+        BoardCell up_desc = find_existing_up_desc();
+        if (up_desc == null)
+        {
+            up_desc = create_desc_next_to_2_vertical_cells();
+        }
+
+        if (up_desc == null)
+        {
+            Debug.LogError($"(Board) Could not add description cells !!!\n" + get_grid_details());
+        }
+        if (logs)
+        {
+            Debug.Log($"(Board) Successfully added description cells, with up cell being in {up_desc.Position} !!!\n" + get_grid_details());
+        }
+
+        FillUpBlanks(); // need to fill up potential blanks since we added new cells
+    }
+
+    public void FillUpBlanks()
+    {
+        int min_x = cells.Min(c => c.x);
+        int min_y = cells.Min(c => c.y);
+        int max_x = cells.Max(c => c.x);
+        int max_y = cells.Max(c => c.y);
+
+        for (int y=min_y;y<max_y;y++)
+        {
+            for (int x = min_x; x < max_x; x++)
+            {
+                // check if there is no cell and we have at least 3 neigh
+                Vector2Int pos = new Vector2Int(x,y);
+                if (TryGetCell(pos, out BoardCell cell)) { continue; } // we have one
+                if (GetNeighboursCount(pos) < 3) { continue; }
+                cell = new BoardCell(pos);
+                cells.Add(cell);
+            }
+        }
+    }
+
+    // DESCRIPTION
+    private BoardCell find_existing_up_desc()
+    {
+        foreach (BoardCell cell in cells)
+        {
+            if (!cell.Empty) { continue; }
+
+            // check if we have an empty cell right below it
+            if (TryGetCell(cell.Position + Vector2Int.down, out BoardCell below_cell)
+                && below_cell.Empty)
+            {
+                // this is it !! we find it, we save the data into the cells
+                cell.SetTypeAndValue(CellType.Desc,"up");
+                below_cell.SetTypeAndValue(CellType.Desc, "down");
+                return cell;
+            }
+        }
+        return null;
+    }
+    private BoardCell create_desc_next_to_2_vertical_cells()
+    {
+        // we find the best matching spot, which means 2 vertical cells with empty/no neighbours on the same direction (R or L)
+        // the best matching spot means the x closest to 0
+
+        BoardCell best = null;
+        int smallest_x = int.MaxValue;
+        int side = 0;
+        foreach (BoardCell cell in cells)
+        {
+            if (cell.y < 0 || cell.y > 1) { continue; } // ensure we don't create below -1 and above +2
+            int result = has_two_empty_cells_on_side(cell);
+            if (result == 0) { continue; }
+            if (smallest_x < Mathf.Abs(cell.x)) { continue; }
+            best = cell;
+            smallest_x = Mathf.Abs(cell.x);
+            side = result;
+        }
+        if (best == null) { return null; }
+
+        // now we try to create the cells
+        Vector2Int up = best.Position + (side < 0f ? Vector2Int.left : Vector2Int.right);
+        Vector2Int down = best.Position + Vector2Int.down + (side < 0f ? Vector2Int.left : Vector2Int.right);
+        BoardCell up_cell, down_cell;
+
+        if (TryGetCell(up, out up_cell)) { up_cell.SetTypeAndValue(CellType.Desc, "up"); }
+        else
+        {
+            up_cell = new BoardCell(up, CellType.Desc, "up");
+            cells.Add(up_cell);
+        }
+
+        if (TryGetCell(down, out down_cell)) { down_cell.SetTypeAndValue(CellType.Desc, "down"); }
+        else
+        {
+            down_cell = new BoardCell(down, CellType.Desc, "down");
+            cells.Add(down_cell);
+        }
+
+        return up_cell;
+    }
+    private int has_two_empty_cells_on_side(BoardCell cell)
+    {
+        // returns 0 if not matching
+        // return 1 if on the right
+        // -1 if on left
+
+        // tries left
+        if (!TryGetCell(cell.Position + Vector2Int.left, out BoardCell left) || left.Empty)
+        {
+            if (!TryGetCell(cell.Position + Vector2Int.left + Vector2Int.down, out BoardCell down_left) || down_left.Empty)
+            {
+                return -1;
+            }
+        }
+
+        // tries right
+        if (!TryGetCell(cell.Position + Vector2Int.right, out BoardCell right) || right.Empty)
+        {
+            if (!TryGetCell(cell.Position + Vector2Int.right + Vector2Int.down, out BoardCell down_right) || down_right.Empty)
+            {
+                return 1;
+            }
+        }
+
+        return 0;
+    }
+
+
 
 
     // GETTERS
@@ -166,7 +292,7 @@ public class Board
         List<Vector2Int> free_cells = new List<Vector2Int>(); // cells.Where(c => string.IsNullOrEmpty(c.Value));
         foreach (BoardCell cell in cells)
         {
-            if (cell.type != CellType.Empty) { continue; }
+            if (!cell.Empty) { continue; }
             free_cells.Add(cell.Position);
         }
         if (free_cells.Count == 0) { return new Vector2Int(-888, -888); }
@@ -177,7 +303,7 @@ public class Board
         List<BoardCell> free_cells = new List<BoardCell>(); // cells.Where(c => string.IsNullOrEmpty(c.Value));
         foreach (BoardCell cell in cells)
         {
-            if (cell.type != CellType.Empty) { continue; }
+            if (!cell.Empty) { continue; }
             free_cells.Add(cell);
         }
         return free_cells;
@@ -190,7 +316,7 @@ public class Board
     }
     private string get_grid_details()
     {
-        string debug = $"(CHGH) GRID DETAILS : of size {grid_size}\n";
+        string debug = $"(Board) GRID DETAILS : of size {grid_size}\n";
         foreach (BoardCell cell in cells)
         {
             debug += $"\n - {cell.Position} - {cell.type.ToString()}";
@@ -209,6 +335,7 @@ public class Board
         Vector2Int.right
     };
     public int GetNeighboursCount(BoardCell cell) => GetNeighbours(cell.Position, out List<Vector2Int> translations);
+    public int GetNeighboursCount(Vector2Int position) => GetNeighbours(position, out List<Vector2Int> translations);
     public int GetNeighbours(Vector2Int position, out List<Vector2Int> translations)
     {
         translations = new List<Vector2Int>();
@@ -288,8 +415,6 @@ public class Board
     }
     private void build_outline_corner_or_nothing(Vector2Int position, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
-        // for now we do nothing
-        // later we want to check if we have a neighbour in the 8 neighbours
         int neighbours = GetExteriorNeighbours(position, out List<Vector2Int> translations);
         if (neighbours == 0) { return; } // we touch nothing, we do nothing
         if (neighbours != 1) // bad news we need to draw more things ?

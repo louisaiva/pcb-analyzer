@@ -10,7 +10,23 @@ public class BoardCell
     public Vector2Int Position => new Vector2Int(x, y);
     public Vector2Int RailPosition => Position * 2;
     public CellType type = CellType.Empty;
+    public bool Empty => type == CellType.Empty;
     public string value = "";
+
+    public BoardCell(Vector2Int position, CellType type = CellType.Empty, string v="")
+    {
+        this.x = position.x;
+        this.y = position.y;
+        this.type = type;
+        this.value = v;
+        Debug.Log($"(BC) created new {type} cell in {x},{y}. value is {this.value}");
+    }
+
+    public void SetTypeAndValue(CellType type, string v="")
+    {
+        this.type = type;
+        this.value = v;
+    }
 
     public static Vector2 GetWorldPosition(Vector2Int position, int cell_size, int inter_cell)
     {

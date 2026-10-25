@@ -22,6 +22,8 @@ public class PCB : MonoBehaviour
     public SpriteRenderer rail_prefab;
     public SpriteRenderer rail_node_prefab;
     public SpriteRenderer sticker_prefab;
+    public SpriteRenderer desc_back_prefab;
+    public SpriteRenderer desc_front_prefab;
     [SerializeField] private Transform back_parts;
     [SerializeField] private Transform back_rails;
     [SerializeField] private Transform front_parts;
@@ -64,15 +66,16 @@ public class PCB : MonoBehaviour
         // we trim the grid so we have the smallest pcb
         board.TrimRecursively(gen_para.trim_iterations);
 
+        // we place description & title in an empty cell
+        board.AddBackDescriptionCells();
+
         // get 2 random empty cells
         BoardCell stick1 = board.GetEmptyCell();
         if (stick1 != null) { stick1.type = CellType.Sticker; }
         BoardCell stick2 = board.GetEmptyCell();
         if (stick2 != null) { stick2.type = CellType.Sticker; }
 
-        // we place wires & rocks
 
-        // we place description & title in an empty cell
         // we place screws ?
 
         // we build the outline
@@ -92,6 +95,9 @@ public class PCB : MonoBehaviour
     {
         board.Flip();
         board.FreeAllCells();
+
+        // we place description & title in an empty cell
+        board.AddBackDescriptionCells();
 
         // get 2 random empty cells
         BoardCell stick1 = board.GetEmptyCell();
@@ -124,7 +130,7 @@ public class PCB : MonoBehaviour
 
             // check if cell.type == sticker
             if (cell.type == CellType.Sticker) { create_sticker(sr.transform); }
-            // if (cell.type == CellType.Desc) { create_sticker(sr.transform); }
+            if (cell.type == CellType.Desc && cell.value == "up") { create_description(sr.transform, is_back); }
 
 
             build_rails_around(cell, ref rails_placed, board, is_back);
@@ -165,7 +171,16 @@ public class PCB : MonoBehaviour
             SpriteRenderer sr = create_pcb_line(rail_prefab, BoardController.Instance.PCBank.GetLineHorizontal(skin), pos, is_back);
             pcb_parts.Add(sr);
             placed_rails.Add(pos);
-            board.AddRail(sr.GetComponent<Rail>(), rails_pos[i], Axis.Horizontal);
+            Rail rail = sr.GetComponent<Rail>();
+            board.AddRail(rail, rails_pos[i], Axis.Horizontal);
+
+            // check if the rail is going over the description so we disable it
+            if (cell.type != CellType.Desc) { continue; }
+            if (   (i == 0 /* U */ && cell.value == "down")
+                || (i == 1 /* D */ && cell.value == "up"))
+            {
+                rail.disabled = true;
+            }
         }
     }
     private SpriteRenderer create_pcb_line(SpriteRenderer prefab, Sprite sprite, Vector3 position, bool is_back = true)
@@ -194,7 +209,13 @@ public class PCB : MonoBehaviour
         sr.transform.localPosition = Vector3.zero;
         sr.transform.localScale = Vector3.one;
     }
-
+    private void create_description(Transform parent, bool is_back = true)
+    {
+        SpriteRenderer sr = Instantiate(is_back ? desc_back_prefab : desc_front_prefab);
+        sr.transform.SetParent(parent);
+        sr.transform.localPosition = Vector3.zero;
+        sr.transform.localScale = Vector3.one;
+    }
 
 
     [Header("Animations")]

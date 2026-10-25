@@ -50,7 +50,8 @@ public class Rail : RailNode
 
 
     // LANES HANDLING
-    public override bool Full => !HasFreeLane();
+    public bool disabled = false;
+    public override bool Full => !HasFreeLane() || disabled;
     public bool HasFreeLane()
     {
         for (int i = 0; i < 3; i++)

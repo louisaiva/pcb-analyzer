@@ -1261,7 +1261,6 @@ MonoBehaviour:
   - hit
   - hit2
   - hit3
-  - break
   log_hovers: 0
 --- !u!114 &714798833
 MonoBehaviour:
@@ -1725,6 +1724,8 @@ MonoBehaviour:
   rail_prefab: {fileID: 464693801687803716, guid: 53e73a3d5b55d3745ad0b5956e828dc9, type: 3}
   rail_node_prefab: {fileID: 464693801687803716, guid: 087580974700c994fa7fbe3f077a460b, type: 3}
   sticker_prefab: {fileID: 8717737673186348595, guid: 0bef24c5165b18f4ba4f29f327a6de6b, type: 3}
+  desc_back_prefab: {fileID: 8717737673186348595, guid: 530ede909ff3afd48ac23d0cc3888437, type: 3}
+  desc_front_prefab: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
   back_parts: {fileID: 731871816}
   back_rails: {fileID: 1731199835}
   front_parts: {fileID: 1746849484}
