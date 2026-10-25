@@ -98,15 +98,16 @@ public class Wire : MonoBehaviour
         Vector2 direction = finish - start;
         float distance = direction.magnitude;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        float scaled_dist = distance * 24f;
 
         line.transform.position = start;
+        if (scaled_dist > 1f) { line.transform.position = start - direction.normalized * 0.5f * (1f/24f); }
 
         // Rotate to face the finish point
         line.transform.rotation = Quaternion.Euler(0f, 0f, angle);
 
         // Scale along the sprite's local X axis
-        line.transform.localScale = new Vector3(distance*24f, 1f, 1f);
-
+        line.transform.localScale = (scaled_dist > 1f) ? new Vector3(scaled_dist + 1f, 1f, 1f) : new Vector3(scaled_dist, 1f, 1f);
         return line;
     }
 

@@ -3,9 +3,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Animations;
 
-public class Rail : MonoBehaviour
+public class Rail : RailNode
 {
-    public Vector2Int RailPosition;
     private List<Lane> lanes = new List<Lane>();
     public Axis axis = Axis.Horizontal;
     public bool Horizontal => axis == Axis.Horizontal;
@@ -51,6 +50,7 @@ public class Rail : MonoBehaviour
 
 
     // LANES HANDLING
+    public override bool Full => !HasFreeLane();
     public bool HasFreeLane()
     {
         for (int i = 0; i < 3; i++)
@@ -58,6 +58,20 @@ public class Rail : MonoBehaviour
             if (lanes[i].wire == null) { return true; }
         }
         return false;
+    }
+    public bool IsLaneFree(int px)
+    {
+        Lane lane = GetLaneByPX(px);
+        if (lane == null) { return false; }
+        return lane.wire == null;
+    }
+    public Lane GetLaneByPX(int px)
+    {
+        foreach (Lane lane in lanes)
+        {
+            if (lane.pixel_offset == px) { return lane; }
+        }
+        return null;
     }
     public Lane GetFreeLane()
     {
@@ -69,6 +83,10 @@ public class Rail : MonoBehaviour
     {
         Lane lane = GetFreeLane();
         if (lane == null) { Debug.LogError($"(Rail) {name} has no free lanes to wire {wire.name} !!"); return null; }
+        return WireLane(lane, wire);
+    }
+    public Lane WireLane(Lane lane, Wire wire)
+    {
         lane.wire = wire;
         return lane;
     }
@@ -81,6 +99,8 @@ public class Rail : MonoBehaviour
         }
         return null;
     }
+
+
 }
 
 public class Lane
@@ -95,7 +115,8 @@ public class Lane
         this.pixel_offset= px_offset;
     }
 
-    public Vector2 GetJonction(Weld weld)
+    public Vector2 GetJonction(Weld weld) { return GetJonction(weld.world_position); }
+    public Vector2 GetJonction(Vector2 world_position)
     {
         // we need to find the meeting point between the weld and the lane
 
@@ -103,12 +124,26 @@ public class Lane
         if (!rail.Horizontal) // the x of the lane, and the y of the weld
         {
             xpos = rail.transform.position.x + pixel_offset * (1f / 24f);
-            ypos = weld.world_position.y;
+            ypos = world_position.y;
             return new Vector2(xpos,ypos);
         }
 
         // horizontal --> // the y of the lane, the x of the weld
-        xpos = weld.world_position.x;
+        xpos = world_position.x;
+        ypos = rail.transform.position.y + pixel_offset * (1f / 24f);
+        return new Vector2(xpos, ypos);
+    }
+    public Vector2 GetCentralLanePosition()
+    {
+        float xpos, ypos;
+        if (!rail.Horizontal) // the x of the lane, and y of the rail
+        {
+            xpos = rail.transform.position.x + pixel_offset * (1f / 24f);
+            ypos = rail.transform.position.y;
+            return new Vector2(xpos, ypos);
+        }
+        // horizontal --> // the y of the lane, the x of the rail
+        xpos = rail.transform.position.x;
         ypos = rail.transform.position.y + pixel_offset * (1f / 24f);
         return new Vector2(xpos, ypos);
     }

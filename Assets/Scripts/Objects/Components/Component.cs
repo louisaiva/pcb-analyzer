@@ -80,14 +80,17 @@ public class Component : MonoBehaviour
     public Weld GetClosestFreeWeldFrom(Component b)
     {
         if (b == this) { return null; } // can't wire ourselves
-
+        return GetClosestFreeWeldFrom(b.WorldPosition);
+    }
+    public Weld GetClosestFreeWeldFrom(Vector2 world_position)
+    {
         List<Weld> free_welds = welds.Where(w => !w.used).ToList();
         if (free_welds.Count == 0) { return null; }
         Weld best_weld = null;
         float smallest_distance = float.MaxValue;
         for (int i=0; i<free_welds.Count;i++)
         {
-            Vector2 direction = free_welds[i].world_position - b.WorldPosition;
+            Vector2 direction = free_welds[i].world_position - world_position;
             if (direction.magnitude > smallest_distance) { continue; }
             smallest_distance = direction.magnitude;
             best_weld = free_welds[i];

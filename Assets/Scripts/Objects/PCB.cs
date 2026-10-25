@@ -100,7 +100,7 @@ public class PCB : MonoBehaviour
             SpriteRenderer sr = create_pcb_line(rail_node_prefab, BoardController.Instance.PCB_PartsBank.GetLineMid(), pos);
             pcb_parts.Add(sr);
             placed_rails.Add(pos);
-            board.AddRailNode(sr.GetComponent<RailNode>(), rails_pos[i]);
+            board.AddRailCross(sr.GetComponent<RailCross>(), rails_pos[i]);
         }
         positions = cell.GetVerticalRailsWorldPositions(PCB.cell_size, PCB.inter_cell, out rails_pos);
         for (int i = 0; i < positions.Count; i++)

@@ -2,11 +2,7 @@ using UnityEngine;
 
 public class RailNode : MonoBehaviour
 {
-
     public Vector2Int RailPosition;
-
-    public void Init(Vector2Int position)
-    {
-        RailPosition = position;
-    }
+    public virtual bool Full => false;
+    public Vector2 WorldPosition => transform.position;
 }

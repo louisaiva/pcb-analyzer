@@ -367,17 +367,17 @@ public class Board
     ///
 
     private List<Rail> rails = new List<Rail>();
-    private List<RailNode> rail_nodes = new List<RailNode>();
+    private List<RailCross> rail_crosses = new List<RailCross>();
 
     public void AddRail(Rail rail, Vector2Int rail_pos, Axis axis)
     {
         rail.Init(rail_pos,axis);
         rails.Add(rail);
     }
-    public void AddRailNode(RailNode rail_node, Vector2Int rail_pos)
+    public void AddRailCross(RailCross rail_node, Vector2Int rail_pos)
     {
         rail_node.Init(rail_pos);
-        rail_nodes.Add(rail_node);
+        rail_crosses.Add(rail_node);
     }
     public Rail GetWeldRail(Weld weld)
     {
@@ -387,5 +387,13 @@ public class Board
             if (rail.RailPosition == rail_pos) { return rail; }
         }
         return null;
+    }
+
+    public List<RailNode> GetBoardRailNodes()
+    {
+        List<RailNode> nodes = new List<RailNode>();
+        nodes.AddRange(rails);
+        nodes.AddRange(rail_crosses);
+        return nodes;
     }
 }

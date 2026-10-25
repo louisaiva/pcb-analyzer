@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2280629632787829524}
   - component: {fileID: 464693801687803716}
-  - component: {fileID: 3074986032679816678}
+  - component: {fileID: 5508863414879164530}
   m_Layer: 0
-  m_Name: rail_node
+  m_Name: rail_cross
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &3074986032679816678
+--- !u!114 &5508863414879164530
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5796145717850980470}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fddf9098897cf884b8bddb75565badb9, type: 3}
+  m_Script: {fileID: 11500000, guid: 39cfa144a17fba54c89d74c5d9e63f38, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RailNode
+  m_EditorClassIdentifier: Assembly-CSharp::RailCross
   RailPosition: {x: 0, y: 0}
