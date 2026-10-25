@@ -147,6 +147,7 @@ public class PCB : MonoBehaviour
     [SerializeField] private Animator back_pcb;
     [SerializeField] private Animator components_pcb;
     [SerializeField] private Animator buttons_pcb;
+    [SerializeField] private Animator wires_pcb;
     [SerializeField] private bool showing_front = true;
     public bool IsShowingFront => showing_front;
     private Coroutine current_coroutine = null;
@@ -183,6 +184,7 @@ public class PCB : MonoBehaviour
         back_pcb.Play("hide");
         components_pcb.Play("hide");
         buttons_pcb.Play("hide");
+        wires_pcb.Play("hide");
 
         while (front_pcb.GetCurrentAnimatorStateInfo(0).IsName("show"))
         {
@@ -201,6 +203,7 @@ public class PCB : MonoBehaviour
         back_pcb.Play("show");
         components_pcb.Play("show");
         buttons_pcb.Play("show");
+        wires_pcb.Play("show");
 
         while (front_pcb.GetCurrentAnimatorStateInfo(0).IsName("hide"))
         {
