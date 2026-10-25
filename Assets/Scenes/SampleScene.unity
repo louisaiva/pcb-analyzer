@@ -559,6 +559,53 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: f80b29fa2ab45c547810506c8a784e96, type: 2}
+--- !u!1 &478142298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 478142300}
+  - component: {fileID: 478142299}
+  m_Layer: 0
+  m_Name: broken_comp
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &478142299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478142298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9c56136e9c0d8439e667bc5d4bb992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BrokenComponents
+  Fixed: 0
+  Quantity: 0
+  ShowEvenIfFixed: 0
+--- !u!4 &478142300
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 478142298}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1263582487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1007,12 +1054,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'PCB flipper 0.6
+  m_text: 'PCB flipper 0.7
 
-    front pcb !!'
+    gameplay'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 1f11b8e1a2246274d99f6cd67e688624, type: 2}
+  m_sharedMaterial: {fileID: 5380508362412983842, guid: 1f11b8e1a2246274d99f6cd67e688624, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1589,6 +1636,50 @@ MonoBehaviour:
   line_edge_D: {fileID: 2065739601, guid: 107ee3ff1a0761443bc5520be67827dd, type: 3}
   line_edge_R: {fileID: 570335646, guid: 107ee3ff1a0761443bc5520be67827dd, type: 3}
   line_edge_L: {fileID: -1619004765, guid: 107ee3ff1a0761443bc5520be67827dd, type: 3}
+--- !u!1 &936136092
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 936136093}
+  - component: {fileID: 936136094}
+  m_Layer: 0
+  m_Name: elapsed_time
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &936136093
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936136092}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1263582487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &936136094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 936136092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce9024a5f8fca24439c4dbdc30f2259f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElapsedTime
 --- !u!4 &971962511 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2287905493371838939, guid: bc770ffeb1ec3694199c6c39bb0ee74a, type: 3}
@@ -1673,6 +1764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1247259377}
   - component: {fileID: 1247259378}
+  - component: {fileID: 1247259379}
   m_Layer: 0
   m_Name: pcb
   m_TagString: Untagged
@@ -1714,6 +1806,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PCB
   Componer: {fileID: 1788035531}
   Welder: {fileID: 1680240825}
+  Timer: {fileID: 1247259379}
   gen_para:
     components_min_max: {x: 1, y: 12}
     trim_iterations: 2
@@ -1724,7 +1817,7 @@ MonoBehaviour:
   rail_prefab: {fileID: 464693801687803716, guid: 53e73a3d5b55d3745ad0b5956e828dc9, type: 3}
   rail_node_prefab: {fileID: 464693801687803716, guid: 087580974700c994fa7fbe3f077a460b, type: 3}
   sticker_prefab: {fileID: 8717737673186348595, guid: 0bef24c5165b18f4ba4f29f327a6de6b, type: 3}
-  desc_back_prefab: {fileID: 8717737673186348595, guid: 530ede909ff3afd48ac23d0cc3888437, type: 3}
+  desc_back_prefab: {fileID: 4215206442620877739, guid: 530ede909ff3afd48ac23d0cc3888437, type: 3}
   desc_front_prefab: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
   back_parts: {fileID: 731871816}
   back_rails: {fileID: 1731199835}
@@ -1738,6 +1831,20 @@ MonoBehaviour:
   wires_pcb: {fileID: 1680240828}
   showing_front: 1
   log_generation: 0
+--- !u!114 &1247259379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1247259376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d10a66c814549949b813b714c908424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PCB_Timer
+  elapsed_time: 0
+  timer_running: 0
 --- !u!1 &1263582485
 GameObject:
   m_ObjectHideFlags: 0
@@ -1748,6 +1855,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1263582487}
   - component: {fileID: 1263582486}
+  - component: {fileID: 1263582488}
   m_Layer: 0
   m_Name: board
   m_TagString: Untagged
@@ -1767,6 +1875,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5ee2ce9180817418b2683db4e8feca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardController
+  PCB_Manager: {fileID: 1263582488}
   BtnManager: {fileID: 714798832}
   CompManager: {fileID: 1788035531}
   CompBank: {fileID: 182882398}
@@ -1785,9 +1894,30 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 478142300}
+  - {fileID: 1538332365}
+  - {fileID: 936136093}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1263582488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1263582485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc15c32e26c6fc4498396fc8f6f0fed2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PCB_Manager
+  pcb: {fileID: 1247259378}
+  problems:
+  - {fileID: 478142299}
+  - {fileID: 1538332364}
+  infos:
+  - {fileID: 936136094}
 --- !u!1001 &1292581984
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2086,6 +2216,53 @@ Transform:
   - {fileID: 1973877623}
   - {fileID: 1342536281}
   m_Father: {fileID: 1247259377}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1538332363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1538332365}
+  - component: {fileID: 1538332364}
+  m_Layer: 0
+  m_Name: dead_wires
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1538332364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538332363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49cc84ce52ea0dc4e982c85e321509d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeadWires
+  Fixed: 0
+  Quantity: 0
+  ShowEvenIfFixed: 0
+--- !u!4 &1538332365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538332363}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1263582487}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1617161388 stripped
 Transform:

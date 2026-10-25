@@ -9,6 +9,7 @@ public class BoardController : MonoBehaviour
     }
 
 
+    public PCB_Manager PCB_Manager;
     public ButtonsManager BtnManager;
     public ComponentsManager CompManager;
     public ComponentBank CompBank;

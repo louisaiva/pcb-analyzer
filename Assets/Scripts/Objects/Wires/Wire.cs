@@ -9,6 +9,7 @@ public class Wire : MonoBehaviour
     [SerializeField] private Color connected_color;
     [SerializeField] private Color disconnected_color;
     [SerializeField] private bool connected = false;
+    public bool Connected => connected;
 
 
     [Header("Logs")]

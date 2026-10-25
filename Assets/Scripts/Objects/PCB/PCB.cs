@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 
 public class PCB : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class PCB : MonoBehaviour
     [Header("References")]
     public ComponentsManager Componer;
     public Welder Welder;
+    public PCB_Timer Timer;
 
     public static int cell_size = 20;
     public static int inter_cell = 7;
@@ -295,6 +297,8 @@ public class PCB : MonoBehaviour
         Debug.Log($"UNSCREWING {name}");
         List<Screw> screws = transform.GetComponentsInChildren<Screw>().ToList();
         // screws.RemoveAll(s => s == null); // useful ?
+
+        Timer.StartTimer();
 
         foreach (Screw screw in screws)
         {

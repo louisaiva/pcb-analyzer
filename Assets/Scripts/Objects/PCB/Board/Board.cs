@@ -203,13 +203,22 @@ public class Board
         // we find the best matching spot, which means 2 vertical cells with empty/no neighbours on the same direction (R or L)
         // the best matching spot means the x closest to 0
 
+        // translations
+        List<Vector2Int> lefts = new List<Vector2Int>() { Vector2Int.left, Vector2Int.left + Vector2Int.down };
+        List<Vector2Int> rights = new List<Vector2Int>() { Vector2Int.right, Vector2Int.right + Vector2Int.down };
+
         BoardCell best = null;
         int smallest_x = int.MaxValue;
         int side = 0;
         foreach (BoardCell cell in cells)
         {
             if (cell.y < 0 || cell.y > 1) { continue; } // ensure we don't create below -1 and above +2
-            int result = has_two_empty_cells_on_side(cell);
+            int result = 0;
+
+            // check translations
+            if (all_cells_are_empty_or_nonexistant_in_translations(cell, lefts)) { result = -1; }
+            else if (all_cells_are_empty_or_nonexistant_in_translations(cell, rights)) { result = 1; }
+
             if (result == 0) { continue; }
             if (smallest_x < Mathf.Abs(cell.x)) { continue; }
             best = cell;
@@ -239,31 +248,14 @@ public class Board
 
         return up_cell;
     }
-    private int has_two_empty_cells_on_side(BoardCell cell)
+    private bool all_cells_are_empty_or_nonexistant_in_translations(BoardCell cell, List<Vector2Int> translations)
     {
-        // returns 0 if not matching
-        // return 1 if on the right
-        // -1 if on left
-
-        // tries left
-        if (!TryGetCell(cell.Position + Vector2Int.left, out BoardCell left) || left.Empty)
+        // return false if any translation is existing non empty cell
+        foreach (Vector2Int trans in translations)
         {
-            if (!TryGetCell(cell.Position + Vector2Int.left + Vector2Int.down, out BoardCell down_left) || down_left.Empty)
-            {
-                return -1;
-            }
+            if (TryGetCell(cell.Position + trans, out BoardCell other) && !other.Empty) { return false;}
         }
-
-        // tries right
-        if (!TryGetCell(cell.Position + Vector2Int.right, out BoardCell right) || right.Empty)
-        {
-            if (!TryGetCell(cell.Position + Vector2Int.right + Vector2Int.down, out BoardCell down_right) || down_right.Empty)
-            {
-                return 1;
-            }
-        }
-
-        return 0;
+        return true;
     }
 
 

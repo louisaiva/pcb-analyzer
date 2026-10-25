@@ -11,6 +11,7 @@ public class Welder : MonoBehaviour
     public RailPathfinder Railer = null;
 
     [SerializeField] private List<Wire> wires;
+    public List<Wire> Wires => new List<Wire>(wires);
 
     [SerializeField] private bool logs = false;
     [SerializeField] private bool log_lanes_assignement = false;
