@@ -11,6 +11,7 @@ public class PCB : MonoBehaviour
 
     [Header("References")]
     public ComponentsManager Componer;
+    public RocksManager Rocker;
     public Welder Welder;
     public PCB_Timer Timer;
 

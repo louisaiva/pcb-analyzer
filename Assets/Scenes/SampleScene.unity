@@ -510,6 +510,53 @@ MonoBehaviour:
     sprite: {fileID: 2113413480, guid: f06afcfa35d77b649b3be45cdc6de2b1, type: 3}
   - apparition_freq: 0.1
     sprite: {fileID: 1883674630, guid: f06afcfa35d77b649b3be45cdc6de2b1, type: 3}
+--- !u!1 &267471027
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 267471029}
+  - component: {fileID: 267471028}
+  m_Layer: 0
+  m_Name: scraper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &267471028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267471027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53ffdec6ce0074545975faae822c2e15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Scraper
+  Fixed: 0
+  Quantity: 0
+  ShowEvenIfFixed: 0
+--- !u!4 &267471029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 267471027}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1263582487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &284672032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1896,6 +1943,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PCB
   Componer: {fileID: 1788035531}
+  Rocker: {fileID: 562024524}
   Welder: {fileID: 1680240825}
   Timer: {fileID: 1247259379}
   gen_para:
@@ -1990,6 +2038,7 @@ Transform:
   m_Children:
   - {fileID: 478142300}
   - {fileID: 1538332365}
+  - {fileID: 267471029}
   - {fileID: 936136093}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2009,6 +2058,7 @@ MonoBehaviour:
   problems:
   - {fileID: 478142299}
   - {fileID: 1538332364}
+  - {fileID: 267471028}
   infos:
   - {fileID: 936136094}
 --- !u!1001 &1292581984

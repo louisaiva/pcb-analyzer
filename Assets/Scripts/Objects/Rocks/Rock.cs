@@ -72,16 +72,25 @@ public class Rock : Hoverable, Damageable
     }
     private void play_life_anim()
     {
-        if (life >= 5) { animator.Play("colony", 1); }
+        if (life >= 6) { animator.Play("colony2", 1); }
+        else if (life >= 5) { animator.Play("colony", 1); }
+        else if (life >= 4) { animator.Play("nest2", 1); }
         else if (life >= 3) { animator.Play("nest", 1); }
-        else { animator.Play("rock", 1); }
+        else if (life >= 2) { animator.Play("rock2", 1); }
+        else if (life >= 1) { animator.Play("rock", 1); }
+        else { animator.Play("die", 1); }
     }
     public async void Die()
     {
-        while (animator.GetCurrentAnimatorStateInfo(0).IsName("break"))
+        animator.Play("die", 1);
+        bar.gameObject.SetActive(false);
+        bg_sr.GetComponent<Collider2D>().enabled = false;
+        while (animator.GetCurrentAnimatorStateInfo(1).IsName("die"))
         {
             await Task.Yield();
         }
+
+        await Task.Delay(3000);
 
         Destroy(this.gameObject);
     }
