@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RailCross : RailNode
 {
-    public async void Init(Vector2Int position)
+    public void Init(Vector2Int position)
     {
         RailPosition = position;
     }

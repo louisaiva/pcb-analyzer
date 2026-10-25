@@ -141,9 +141,6 @@ public class Welder : MonoBehaviour
         
         return wire;
     }
-
-
-
 }
 
 

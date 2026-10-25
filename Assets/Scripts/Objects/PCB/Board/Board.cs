@@ -124,7 +124,23 @@ public class Board
         if (logs) { Debug.Log($"(Board) Trimmed grid. Removed {count_before_triming - cells.Count} cells"); }
         return count_before_triming - cells.Count;
     }
-
+    public void Flip()
+    {
+        // we want to mirror the grid by the horizontal axis
+        // we simply flip the sign of the y CellPosition !
+        foreach (BoardCell cell in cells)
+        {
+            cell.y = -cell.y;
+        }
+    }
+    public void FreeAllCells()
+    {
+        foreach (BoardCell cell in cells)
+        {
+            cell.type = CellType.Empty;
+            cell.value = "";
+        }
+    }
 
 
     // GETTERS
@@ -282,13 +298,13 @@ public class Board
             return;
         }
 
-        Sprite corner = BoardController.Instance.PCB_PartsBank.GetCornerMatchingWith(translations[0]);
+        Sprite corner = BoardController.Instance.PCBank.GetCornerMatchingWith(translations[0], instantior.skin);
         Vector2 worldpos = BoardCell.GetWorldPosition(position, PCB.cell_size, PCB.inter_cell);
         InstantiatePCB_Part(worldpos, corner, ref pcb_parts, instantior);
     }
     private void build_outline_edge(Vector2Int position, Vector2Int translation, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
-        Sprite edge = BoardController.Instance.PCB_PartsBank.GetEdgeMatchingWith(translation);
+        Sprite edge = BoardController.Instance.PCBank.GetEdgeMatchingWith(translation, instantior.skin);
         Vector2 worldpos = BoardCell.GetWorldPosition(position, PCB.cell_size, PCB.inter_cell);
         InstantiatePCB_Part(worldpos, edge, ref pcb_parts, instantior);
 
@@ -299,14 +315,14 @@ public class Board
             Vector2 left_rail = worldpos - new Vector2(rail_translation, 0f);
             if (!outlines_rails_pos.Contains(left_rail))
             {
-                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                Sprite rail = BoardController.Instance.PCBank.GetOutlineRailEdge(translation, instantior.skin);
                 InstantiatePCB_Part(left_rail, rail, ref pcb_parts, instantior, is_rail: true);
                 outlines_rails_pos.Add(left_rail);
             }
             Vector2 right_rail = worldpos + new Vector2(rail_translation, 0f);
             if (!outlines_rails_pos.Contains(right_rail))
             {
-                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                Sprite rail = BoardController.Instance.PCBank.GetOutlineRailEdge(translation, instantior.skin);
                 InstantiatePCB_Part(right_rail, rail, ref pcb_parts, instantior, is_rail: true);
                 outlines_rails_pos.Add(right_rail);
             }
@@ -316,14 +332,14 @@ public class Board
             Vector2 down_rail = worldpos - new Vector2(0f, rail_translation);
             if (!outlines_rails_pos.Contains(down_rail))
             {
-                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                Sprite rail = BoardController.Instance.PCBank.GetOutlineRailEdge(translation, instantior.skin);
                 InstantiatePCB_Part(down_rail, rail, ref pcb_parts, instantior, is_rail: true);
                 outlines_rails_pos.Add(down_rail);
             }
             Vector2 up_rail = worldpos + new Vector2(0f, rail_translation);
             if (!outlines_rails_pos.Contains(up_rail))
             {
-                Sprite rail = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdge(translation);
+                Sprite rail = BoardController.Instance.PCBank.GetOutlineRailEdge(translation, instantior.skin);
                 InstantiatePCB_Part(up_rail, rail, ref pcb_parts, instantior, is_rail: true);
                 outlines_rails_pos.Add(up_rail);
             }
@@ -331,7 +347,7 @@ public class Board
     }
     private void build_outline_big_corner(Vector2Int position, List<Vector2Int> translations, ref List<SpriteRenderer> pcb_parts, InstantiaterParameter instantior)
     {
-        Sprite big_corner = BoardController.Instance.PCB_PartsBank.GetBigCornerMatchingWith(translations);
+        Sprite big_corner = BoardController.Instance.PCBank.GetBigCornerMatchingWith(translations, instantior.skin);
         Vector2 worldpos = BoardCell.GetWorldPosition(position, PCB.cell_size, PCB.inter_cell);
         InstantiatePCB_Part(worldpos, big_corner, ref pcb_parts, instantior);
 
@@ -343,7 +359,7 @@ public class Board
             Vector2Int translation = opposite_translation * new Vector2Int(-1, -1);
             Vector2 rail = worldpos + new Vector2(rail_translation * translation.x, rail_translation * translation.y);
             if (outlines_rails_pos.Contains(rail)) { continue; }
-            Sprite sprite = BoardController.Instance.PCB_PartsBank.GetOutlineRailEdgeFromBigCorner(big_corner, translation);
+            Sprite sprite = BoardController.Instance.PCBank.GetOutlineRailEdgeFromBigCorner(big_corner, translation, instantior.skin);
             InstantiatePCB_Part(rail, sprite, ref pcb_parts, instantior, is_rail: true);
             outlines_rails_pos.Add(rail);
         }
@@ -354,6 +370,7 @@ public class Board
         sr.transform.SetParent(is_rail ? instantior.rails_parent : instantior.parts_parent);
         sr.sprite = sprite;
         sr.transform.localPosition = position;
+        sr.transform.localScale = Vector3.one;
         pcb_parts.Add(sr);
     }
 

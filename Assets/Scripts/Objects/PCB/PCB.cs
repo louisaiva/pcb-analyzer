@@ -21,12 +21,15 @@ public class PCB : MonoBehaviour
     public SpriteRenderer pcb_part_prefab;
     public SpriteRenderer rail_prefab;
     public SpriteRenderer rail_node_prefab;
+    public SpriteRenderer sticker_prefab;
     [SerializeField] private Transform back_parts;
     [SerializeField] private Transform back_rails;
+    [SerializeField] private Transform front_parts;
+    [SerializeField] private Transform front_rails;
     [SerializeField] private List<SpriteRenderer> pcb_parts = new List<SpriteRenderer>();
 
 
-    // PCB GENERATION
+    // PCB GENERATION main methods
     public async void Generate()
     {
         Componer.DestroyExistingComponents();
@@ -53,51 +56,93 @@ public class PCB : MonoBehaviour
         Componer.GrabExistingComponents();
 
         // generate the pcb board
-        generate_pcb_board(board);
-
+        build_back_board(board);
+        build_front_board(board);
     }
-    private void generate_pcb_board(Board board)
+    private void build_back_board(Board board)
     {
         // we trim the grid so we have the smallest pcb
-        board.TrimRecursively(1);
+        board.TrimRecursively(gen_para.trim_iterations);
+
+        // get 2 random empty cells
+        BoardCell stick1 = board.GetEmptyCell();
+        if (stick1 != null) { stick1.type = CellType.Sticker; }
+        BoardCell stick2 = board.GetEmptyCell();
+        if (stick2 != null) { stick2.type = CellType.Sticker; }
 
         // we place wires & rocks
 
         // we place description & title in an empty cell
         // we place screws ?
 
+        // we build the outline
+        InstantiaterParameter instantiator = new InstantiaterParameter
+        {
+            skin = "back",
+            prefab = pcb_part_prefab,
+            parts_parent = back_parts,
+            rails_parent = back_rails
+        };
+        build_board(board, instantiator, is_back: true);
+
+        // we wire the board
+        Welder.WireBoard(board, Componer);
+    }
+    private void build_front_board(Board board)
+    {
+        board.Flip();
+        board.FreeAllCells();
+
+        // get 2 random empty cells
+        BoardCell stick1 = board.GetEmptyCell();
+        if (stick1 != null) { stick1.type = CellType.Sticker; }
+        BoardCell stick2 = board.GetEmptyCell();
+        if (stick2 != null) { stick2.type = CellType.Sticker; }
+
+        // we build the outline
+        InstantiaterParameter instantiator = new InstantiaterParameter
+        {
+            skin = "front",
+            prefab = pcb_part_prefab,
+            parts_parent = front_parts,
+            rails_parent = front_rails
+        };
+        build_board(board, instantiator, is_back: false);
+    }
+
+
+    // PCB generation mid level methods
+    private void build_board(Board board, InstantiaterParameter instantiator, bool is_back=true)
+    {
         // we build the grid + rails
         List<Vector2> rails_placed = new List<Vector2>();
         foreach (BoardCell cell in board.cells)
         {
             // if (cell)
-            SpriteRenderer sr = create_pcb_part(BoardController.Instance.PCB_PartsBank.GetCellSprite(cell.type), cell);
+            SpriteRenderer sr = create_pcb_part(BoardController.Instance.PCBank.GetCellSprite(cell.type, is_back ? "back" : "front"), cell, is_back);
             pcb_parts.Add(sr);
-            build_rails_around(cell, ref rails_placed, board);
+
+            // check if cell.type == sticker
+            if (cell.type == CellType.Sticker) { create_sticker(sr.transform); }
+            // if (cell.type == CellType.Desc) { create_sticker(sr.transform); }
+
+
+            build_rails_around(cell, ref rails_placed, board, is_back);
         }
 
-        // we build the outline
-        InstantiaterParameter instantiator = new InstantiaterParameter
-        {
-            prefab = pcb_part_prefab,
-            parts_parent = back_parts,
-            rails_parent = back_rails
-        };
         board.BuildPCB_Outline(ref pcb_parts, instantiator);
-
-
-        // we wire the board
-        Welder.WireBoard(board, Componer);
     }
-    private void build_rails_around(BoardCell cell, ref List<Vector2> placed_rails, Board board)
+    private void build_rails_around(BoardCell cell, ref List<Vector2> placed_rails, Board board, bool is_back=true)
     {
+        string skin = is_back ? "back" : "front";
+
         // we build the rails of this
         List<Vector2> positions = cell.GetMiddleRailsWorldPositions(PCB.cell_size, PCB.inter_cell, out List<Vector2Int> rails_pos);
         for (int i=0; i< positions.Count; i++)
         {
             Vector2 pos = positions[i];
             if (placed_rails.Contains(pos)) { continue; }
-            SpriteRenderer sr = create_pcb_line(rail_node_prefab, BoardController.Instance.PCB_PartsBank.GetLineMid(), pos);
+            SpriteRenderer sr = create_pcb_line(rail_node_prefab, BoardController.Instance.PCBank.GetLineMid(skin), pos, is_back);
             pcb_parts.Add(sr);
             placed_rails.Add(pos);
             board.AddRailCross(sr.GetComponent<RailCross>(), rails_pos[i]);
@@ -107,7 +152,7 @@ public class PCB : MonoBehaviour
         {
             Vector2 pos = positions[i];
             if (placed_rails.Contains(pos)) { continue; }
-            SpriteRenderer sr = create_pcb_line(rail_prefab, BoardController.Instance.PCB_PartsBank.GetLineVertical(), pos);
+            SpriteRenderer sr = create_pcb_line(rail_prefab, BoardController.Instance.PCBank.GetLineVertical(skin), pos, is_back);
             pcb_parts.Add(sr);
             placed_rails.Add(pos);
             board.AddRail(sr.GetComponent<Rail>(), rails_pos[i], Axis.Vertical);
@@ -117,7 +162,7 @@ public class PCB : MonoBehaviour
         {
             Vector2 pos = positions[i];
             if (placed_rails.Contains(pos)) { continue; }
-            SpriteRenderer sr = create_pcb_line(rail_prefab, BoardController.Instance.PCB_PartsBank.GetLineHorizontal(), pos);
+            SpriteRenderer sr = create_pcb_line(rail_prefab, BoardController.Instance.PCBank.GetLineHorizontal(skin), pos, is_back);
             pcb_parts.Add(sr);
             placed_rails.Add(pos);
             board.AddRail(sr.GetComponent<Rail>(), rails_pos[i], Axis.Horizontal);
@@ -126,18 +171,28 @@ public class PCB : MonoBehaviour
     private SpriteRenderer create_pcb_line(SpriteRenderer prefab, Sprite sprite, Vector3 position, bool is_back = true)
     {
         SpriteRenderer sr = Instantiate(prefab);
-        sr.transform.SetParent(is_back ? back_rails : front_pcb.transform);
+        sr.transform.SetParent(is_back ? back_rails : front_rails);
         sr.sprite = sprite;
         sr.transform.localPosition = position;
+        sr.transform.localScale = Vector3.one;
         return sr;
     }
-    private SpriteRenderer create_pcb_part(Sprite sprite, BoardCell cell, bool is_back=true)
+    private SpriteRenderer create_pcb_part(Sprite sprite, BoardCell cell, bool is_back = true)
     {
         SpriteRenderer sr = Instantiate(pcb_part_prefab);
-        sr.transform.SetParent( is_back ? back_parts : front_pcb.transform );
+        sr.transform.SetParent(is_back ? back_parts : front_parts);
         sr.sprite = sprite;
         sr.transform.localPosition = cell.GetWorldPosition(PCB.cell_size, PCB.inter_cell);
+        sr.transform.localScale = Vector3.one;
         return sr;
+    }
+    private void create_sticker(Transform parent)
+    {
+        SpriteRenderer sr = Instantiate(sticker_prefab);
+        sr.transform.SetParent(parent);
+        sr.sprite = BoardController.Instance.StickerBank.GetRandomSprite();
+        sr.transform.localPosition = Vector3.zero;
+        sr.transform.localScale = Vector3.one;
     }
 
 
@@ -240,6 +295,7 @@ public class PCB : MonoBehaviour
 [Serializable] public class PCB_GenerationParameter
 {
     public Vector2Int components_min_max = new Vector2Int();
+    [Range(0,3)] public int trim_iterations = 1;
     public Vector2Int total_life_min_max = new Vector2Int();
     public Vector2Int shards_min_max = new Vector2Int();
     public Vector2Int virus_min_max = new Vector2Int();
@@ -248,6 +304,7 @@ public class PCB : MonoBehaviour
 
 public class InstantiaterParameter
 {
+    public string skin;
     public SpriteRenderer prefab;
     public Transform parts_parent;
     public Transform rails_parent;

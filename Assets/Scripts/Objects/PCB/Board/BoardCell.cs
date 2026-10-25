@@ -90,5 +90,5 @@ public enum CellType
     Empty,
     Component,
     Desc,
-    Title
+    Sticker
 }

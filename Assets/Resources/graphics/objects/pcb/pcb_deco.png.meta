@@ -1,0 +1,471 @@
+fileFormatVersion: 2
+guid: f06afcfa35d77b649b3be45cdc6de2b1
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 9133947851171254334
+    second: pcb_deco_0
+  - first:
+      213: -7017325382615919587
+    second: pcb_deco_1
+  - first:
+      213: -6151779079216018273
+    second: pcb_deco_2
+  - first:
+      213: -3154680637746345466
+    second: pcb_deco_3
+  - first:
+      213: 387910988610468041
+    second: pcb_deco_4
+  - first:
+      213: 1691715083508081794
+    second: pcb_deco_5
+  - first:
+      213: 5861107658053000783
+    second: pcb_deco_6
+  - first:
+      213: -6042065012221264427
+    second: pcb_deco_7
+  - first:
+      213: 3822521976274337315
+    second: pcb_deco_8
+  - first:
+      213: -7912885986291949925
+    second: pcb_deco_9
+  - first:
+      213: 211989533897715112
+    second: pcb_deco_10
+  - first:
+      213: 7717753243357295840
+    second: pcb_deco_11
+  - first:
+      213: 5493141722587924440
+    second: pcb_deco_12
+  - first:
+      213: -8020862924503545117
+    second: pcb_deco_13
+  - first:
+      213: -6109303944920273849
+    second: pcb_deco_14
+  - first:
+      213: -5648735569341990618
+    second: pcb_deco_15
+  - first:
+      213: -6853552466767159057
+    second: pcb_deco_16
+  - first:
+      213: -6972043116465474570
+    second: pcb_deco_17
+  - first:
+      213: -9034675818866470168
+    second: pcb_deco_18
+  - first:
+      213: 6430692671862917341
+    second: pcb_deco_19
+  - first:
+      213: -4086938824695610270
+    second: pcb_deco_20
+  - first:
+      213: -9108181625432354740
+    second: pcb_deco_21
+  - first:
+      213: 3224156125167386477
+    second: pcb_deco_22
+  - first:
+      213: 6541108771413196657
+    second: pcb_deco_23
+  - first:
+      213: -2818833709442857352
+    second: pcb_deco_24
+  - first:
+      213: 330543163194840141
+    second: pcb_deco_25
+  - first:
+      213: -4025437817001500772
+    second: pcb_deco_26
+  - first:
+      213: 9072034715534656438
+    second: pcb_deco_27
+  - first:
+      213: -2398268573532869923
+    second: pcb_deco_28
+  - first:
+      213: -9006260420148715628
+    second: pcb_deco_29
+  - first:
+      213: 2681604729887574736
+    second: pcb_deco_30
+  - first:
+      213: 1622972205919886070
+    second: pcb_deco_31
+  - first:
+      213: -8261881705867833980
+    second: pcb_deco_32
+  - first:
+      213: 7920259279622724234
+    second: pcb_deco_33
+  - first:
+      213: 7805749263045440240
+    second: pcb_deco_34
+  - first:
+      213: 4635884140281244020
+    second: pcb_deco_35
+  - first:
+      213: 8458224596272222443
+    second: pcb_deco_36
+  - first:
+      213: 394628066914357734
+    second: pcb_deco_37
+  - first:
+      213: -3557699065681140758
+    second: pcb_deco_38
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 48
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: pcb_deco_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f4433e954abde94c9c21d5b1d74c987
+      internalID: -1941717329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_1
+      rect:
+        serializedVersion: 2
+        x: 68
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9597bb22399ed94cbadcaee01aa120e
+      internalID: 791226018
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_2
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e321d246ff82444facbae58a0204c7b
+      internalID: 659512283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_3
+      rect:
+        serializedVersion: 2
+        x: 204
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e419e36df1d3e1a448664c074e0804ae
+      internalID: 743780345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_4
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2e78f77149bfae49883d39156e9dcbe
+      internalID: -450112504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_5
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6b4798d0f74cae548a12a4d9d92b1d8a
+      internalID: 1620677948
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_6
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b329cabaae327594abe5291ac53097a2
+      internalID: -77931661
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_7
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3be3ce68d3f3fa74181be30bf2911070
+      internalID: 2113413480
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: pcb_deco_8
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 0
+        width: 68
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 94d0dd508f4ac4547bcb292a0ccf068e
+      internalID: 1883674630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries:
+      - key: SpriteEditor.SliceOnImport
+        value: True
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":true,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":68.0,"y":68.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":true,"isAlternate":false}'
+    nameFileIdTable:
+      pcb_deco_0: -1941717329
+      pcb_deco_1: 791226018
+      pcb_deco_2: 659512283
+      pcb_deco_3: 743780345
+      pcb_deco_4: -450112504
+      pcb_deco_5: 1620677948
+      pcb_deco_6: -77931661
+      pcb_deco_7: 2113413480
+      pcb_deco_8: 1883674630
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
