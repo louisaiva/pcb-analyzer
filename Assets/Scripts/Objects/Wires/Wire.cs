@@ -24,11 +24,14 @@ public class Wire : MonoBehaviour
 
     private void Update() 
     {
-        // check if all the lines are enabled, if
+        if (start == null || end == null) { return; }
         update_connection();
     }
     private void update_connection()
     {
+        if (start.component.IsDamaged) { disconnect(); return; }
+        if (end.component.IsDamaged) { disconnect(); return; }
+
         foreach (SpriteRenderer line in lines)
         {
             if (log) { Debug.Log($"Checking line {line.name} : {line.gameObject.activeInHierarchy} - {line.gameObject.activeSelf}"); }
@@ -46,6 +49,7 @@ public class Wire : MonoBehaviour
         foreach (SpriteRenderer line in lines)
         {
             line.color = connected_color;
+            line.sortingOrder = 0;
         }
         connected = true;
         if (log) { Debug.Log($"Wire {name} is now connected !"); }
@@ -56,6 +60,7 @@ public class Wire : MonoBehaviour
         foreach (SpriteRenderer line in lines)
         {
             line.color = disconnected_color;
+            line.sortingOrder = -1;
         }
         connected = false;
         if (log) { Debug.Log($"Wire {name} is now disconnected :/"); }
@@ -68,6 +73,8 @@ public class Wire : MonoBehaviour
     ///  BUILDING THE WIRE
     //
     ///
+    private Weld start = null;
+    private Weld end = null;
 
     public void Clear()
     {
@@ -77,9 +84,11 @@ public class Wire : MonoBehaviour
         }
         lines.Clear();
     }
-    public void BuildWire(Weld start, List<Vector2> path, Weld exit)
+    public void BuildWire(Weld start, List<Vector2> path, Weld end)
     {
         Clear();
+        this.start = start;
+        this.end = end;
 
         lines.Add(create_line(start.world_position, path[0]));
 
@@ -88,9 +97,8 @@ public class Wire : MonoBehaviour
             lines.Add(create_line(path[i],path[i+1]));
         }
 
-        lines.Add(create_line(path.LastOrDefault(), exit.world_position));
+        lines.Add(create_line(path.LastOrDefault(), end.world_position));
     }
-
     private SpriteRenderer create_line(Vector2 start, Vector2 finish)
     {
         SpriteRenderer line = Instantiate(line_prefab, transform);

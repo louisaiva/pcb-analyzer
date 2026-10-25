@@ -5,7 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Component : Hoverable
+public class Component : Hoverable, Damageable
 {
     public static int Prefix = 0;
 
@@ -14,6 +14,7 @@ public class Component : Hoverable
     public Vector2Int CellPosition;
     public Vector2Int RailPosition => CellPosition*2;
     public Vector2 WorldPosition => animator.transform.position;
+
 
     [Header("Components References")]
     [SerializeField] protected Animator fx_animator;
@@ -29,7 +30,14 @@ public class Component : Hoverable
         this.data = data;
         this.name = Prefix.ToString() + "_" + data.name;
         Prefix++;
-        this.animator.Play(data.name + "_idle", 1);
+
+
+        // set full life to it
+        max_life = data.max_HP * 2; // multiply by 2 because we have 2 steps
+        life = max_life;
+
+        // this.animator.Play(data.name + "_full", 1);
+        play_life_anim();
 
         // calculate the local offset based on the size vector
         float half_offset = .5f / 24f;
@@ -117,7 +125,7 @@ public class Component : Hoverable
         Vector2 position = new Vector2(animator.transform.position.x, animator.transform.position.y);
         position.x += pixel.x * (1f / 24f);
         position.y += pixel.y * (1f / 24f);
-        Debug.Log($"(Component) {name} has a new Weld with pixel offset {pixel} && world_pos {position}. Animator is located at {animator.transform.position}");
+        // Debug.Log($"(Component) {name} has a new Weld with pixel offset {pixel} && world_pos {position}. Animator is located at {animator.transform.position}");
         return position;
     }
     private void OnDrawGizmos()
@@ -135,10 +143,19 @@ public class Component : Hoverable
 
     ///
     //
-    ///  HEALING
+    ///  HEALING / DAMAGING
     //
     ///
+    [Header("Life")]
+    [SerializeField] protected int life;
+    [SerializeField] protected int max_life;
+    public int MaxLife { get => max_life; set => max_life = value; }
+    public int Life { get => life; set => life = value; }
+    public float LifePercentage => Life / (float)MaxLife;
+    public bool IsDamaged => life != max_life;
+    public bool IsDead => life <= 0;
 
+    // INPUT ENTRY
     public void OnPress()
     {
         fx_animator.Play("fx_heal");
@@ -148,4 +165,36 @@ public class Component : Hoverable
         fx_animator.Play("fx_idle");
     }
 
+    // HEALING
+    public void Heal()
+    {
+        life = max_life;
+        play_life_anim();
+        Debug.Log($"(Component) {name} of type {data.type_of_component} was healed ! Has now {life} / {max_life} HP.       ({LifePercentage})");
+    }
+    
+
+    // DAMAGE & DIE
+    public virtual void Damage()
+    {
+        if (IsDead) { return; }
+
+        fx_animator.Play("fx_hurt");
+
+        life -= 1;
+        if (life == 0) { Die(); }
+        Debug.Log($"(Component) {name} of type {data.type_of_component} took damage. Has now {life} / {max_life} HP.       ({LifePercentage})");
+
+        play_life_anim();
+    }
+    private void play_life_anim()
+    {
+        if (!IsDamaged) { animator.Play(data.name + "_full", 1); }
+        else if (LifePercentage > 0f) { animator.Play(data.name + "_mid", 1); }
+        else { animator.Play(data.name + "_dead", 1); }
+    }
+    public void Die()
+    {
+        Debug.Log($"(Component) {name} of type {data.type_of_component} just died ://///    RIP");
+    }
 }

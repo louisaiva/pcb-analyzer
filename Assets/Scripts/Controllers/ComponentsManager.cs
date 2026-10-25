@@ -90,7 +90,7 @@ public class ComponentsManager : HoverableManager
             anim = click_anim[UnityEngine.Random.Range(0, click_anim.Count)];
         }
         comp.Animator.Play(anim);
-        comp.OnClick();
+        comp.Damage();
     }
     public IEnumerator HoldCoroutine()
     {

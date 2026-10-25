@@ -46,7 +46,6 @@ public class Hoverable : MonoBehaviour
     // ON CLICK
     public virtual void OnClick()
     {
+        
     }
-
-
 }

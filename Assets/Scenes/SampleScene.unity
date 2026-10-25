@@ -2595,7 +2595,6 @@ MonoBehaviour:
   - hit3
   - break
   log_hovers: 0
-  is_holding: 0
   hold_delay: 0.5
   holding_comp: {fileID: 0}
 --- !u!95 &1788035532
@@ -3338,6 +3337,8 @@ MonoBehaviour:
     welds: []
   CellPosition: {x: 0, y: 0}
   fx_animator: {fileID: 0}
+  life: 0
+  max_life: 0
 --- !u!1001 &8852092999403895700
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3469,6 +3470,7 @@ GameObject:
   - component: {fileID: 5273239730626979084}
   - component: {fileID: 5241910332953969252}
   - component: {fileID: 8327083427814560139}
+  - component: {fileID: 9031337292217970305}
   m_Layer: 0
   m_Name: fx
   m_TagString: Untagged
@@ -3476,6 +3478,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &9031337292217970305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9031337292217970304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e582d4ca65347544a08780c5aae09f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ComponentCaller
+  component: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
