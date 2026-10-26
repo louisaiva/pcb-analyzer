@@ -389,6 +389,7 @@ public class PCB : MonoBehaviour
         Rocker.DisableSpawning();
 
         front_pcb.Play("show");
+        AudioManager.LazyInstance.PlaySFX("pcb_flip");
         foreach (Animator animator in back_pcbs)
         {
             animator.Play("hide");
@@ -408,6 +409,7 @@ public class PCB : MonoBehaviour
         Debug.Log($"Showing BACK of {name}");
 
         front_pcb.Play("hide");
+        AudioManager.LazyInstance.PlaySFX("pcb_flip");
         foreach (Animator animator in back_pcbs)
         {
             animator.Play("show");

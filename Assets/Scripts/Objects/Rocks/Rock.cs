@@ -100,6 +100,7 @@ public class Rock : Hoverable, Damageable
 
         play_life_anim();
         bar.RefreshLife();
+        AudioManager.LazyInstance.PlaySFX("rock_dmg");
     }
     private void play_life_anim()
     {
@@ -116,6 +117,7 @@ public class Rock : Hoverable, Damageable
         cross.Rocked = false;
 
         animator.Play("die", 1);
+        AudioManager.LazyInstance.PlaySFX("rock_die");
         bar.gameObject.SetActive(false);
         bg_sr.GetComponent<Collider2D>().enabled = false;
         while (animator.GetCurrentAnimatorStateInfo(1).IsName("die"))

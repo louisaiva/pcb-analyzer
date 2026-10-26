@@ -208,15 +208,18 @@ public class AttackState : BugState
     {
         bb.bug.Animator.Play("bat_attack", 1);
         bb.target.Damage();
+        AudioManager.LazyInstance.PlaySFX("bug_attack");
     }
     public async void fat_attack(BugBehaviour bb)
     {
         bb.bug.Animator.Play("fat_attack", 1);
+        AudioManager.LazyInstance.PlaySFX("bug_attack");
         bb.target.Damage();
 
         await Task.Delay(500);
 
         bb.bug.Animator.Play("fat_attack", 1);
+        AudioManager.LazyInstance.PlaySFX("bug_attack");
         bb.target.Damage();
     }
 }

@@ -297,10 +297,12 @@ MonoBehaviour:
   hoverables: []
   current_hover: {fileID: 0}
   faded_alpha: 1
+  sfx_hover: none
   click_anim:
   - hit
   - hit2
   - hit3
+  sfx_click: none
   log_hovers: 0
   activated: 0
   pcb: {fileID: 0}
@@ -712,10 +714,12 @@ MonoBehaviour:
   hoverables: []
   current_hover: {fileID: 0}
   faded_alpha: 1
+  sfx_hover: comp_hover
   click_anim:
   - hit
   - hit2
   - hit3
+  sfx_click: none
   log_hovers: 0
   hold_delay: 0.3
   holding_comp: {fileID: 0}
@@ -834,10 +838,12 @@ MonoBehaviour:
   hoverables: []
   current_hover: {fileID: 0}
   faded_alpha: 1
+  sfx_hover: none
   click_anim:
   - hit
   - hit2
   - hit3
+  sfx_click: none
   log_hovers: 0
 --- !u!95 &3219938308449131462
 Animator:

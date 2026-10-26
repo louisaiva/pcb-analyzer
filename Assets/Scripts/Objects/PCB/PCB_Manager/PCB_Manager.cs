@@ -60,6 +60,8 @@ public class PCB_Manager : MonoBehaviour
         this.pcb = pcb;
         BoardController.Instance.ConnectPCB(pcb);
         // here we may want to reset some things ?
+
+        AudioManager.LazyInstance.PlaySFX("pcb_slide");
     }
     
     
@@ -85,6 +87,7 @@ public class PCB_Manager : MonoBehaviour
         this.pcb.Fixed = true;
         Debug.Log($"FIXED "+pcb.name);
         PCB next = generator.GenerateNext();
+        AudioManager.LazyInstance.PlaySFX("pcb_done");
         next.Unlocked = true;
 
         // wait 3 seconds

@@ -192,6 +192,7 @@ public class Component : Hoverable, Damageable
     {
         fx_animator.Play("fx_heal");
         animator.Play("slow_fix", 0);
+        AudioManager.LazyInstance.PlaySFX("comp_heal");
     }
     public void OnRelease()
     {
@@ -229,6 +230,7 @@ public class Component : Hoverable, Damageable
 
         play_life_anim();
         bar.RefreshLife();
+        AudioManager.LazyInstance.PlaySFX("comp_dmg");
     }
     private void play_life_anim()
     {
@@ -239,5 +241,6 @@ public class Component : Hoverable, Damageable
     public void Die()
     {
         Debug.Log($"(Component) {name} of type {data.type_of_component} just died ://///    RIP");
+        AudioManager.LazyInstance.PlaySFX("comp_die");
     }
 }

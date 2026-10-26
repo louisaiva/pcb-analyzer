@@ -67,6 +67,7 @@ public class Bug : Hoverable, Damageable
 
         animator.Play(Tier +"_damaged", 1);
         fx_animator.Play("fx_bleed");
+        AudioManager.LazyInstance.PlaySFX("bug_dmg");
 
         life -= 1;
         refresh_tier();
@@ -97,6 +98,7 @@ public class Bug : Hoverable, Damageable
     public async void Die()
     {
         animator.Play(Tier + "_die", 1);
+        AudioManager.LazyInstance.PlaySFX("bug_die");
         bar.gameObject.SetActive(false);
         bb.Stop();
         bb.enabled = false;

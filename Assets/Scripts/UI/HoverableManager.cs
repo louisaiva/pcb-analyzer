@@ -9,9 +9,11 @@ public class HoverableManager : MonoBehaviour
     [Header("Hover")]
     [SerializeField] protected Hoverable current_hover = null;
     [SerializeField] protected float faded_alpha = .9f;
+    [SerializeField] protected string sfx_hover = "none";
 
     [Header("Click animations")]
     [SerializeField] protected List<string> click_anim = new List<string>();
+    [SerializeField] protected string sfx_click = "none";
 
     [Header("Logs")]
     [SerializeField] protected bool log_hovers = false;
@@ -35,6 +37,7 @@ public class HoverableManager : MonoBehaviour
         }
         current_hover = hoverable;
         hoverable.OnHover();
+        AudioManager.LazyInstance.PlaySFX(sfx_hover);
         if (log_hovers) { Debug.Log($"(CompManager) Hovered compoenent {hoverable.name}"); }
     }
     public virtual void Unhover() => Unhover(current_hover);
@@ -83,5 +86,6 @@ public class HoverableManager : MonoBehaviour
         }
         hoverable.Animator.Play(anim);
         hoverable.OnClick();
+        AudioManager.LazyInstance.PlaySFX(sfx_click);
     }
 }
