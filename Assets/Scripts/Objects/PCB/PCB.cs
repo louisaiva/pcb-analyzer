@@ -33,6 +33,8 @@ public class PCB : MonoBehaviour
     public SpriteRenderer sticker_prefab;
     public SpriteRenderer desc_back_prefab;
     public SpriteRenderer desc_pcb_index;
+    public Rock rock_prefab;
+    
     // public SpriteRenderer desc_front_prefab;
     [SerializeField] private Transform back_parts;
     [SerializeField] private Transform back_rails;
@@ -80,8 +82,9 @@ public class PCB : MonoBehaviour
 
         Componer.GrabExistingComponents();
 
+
         // generate the pcb board
-        build_back_board(board);
+        build_back_board(board, plan);
 
         await Task.Yield();
         await Task.Yield();
@@ -90,7 +93,7 @@ public class PCB : MonoBehaviour
         if (!showing_front) { FlipInstantly(); }
         build_front_board(board);
     }
-    private void build_back_board(Board board)
+    private void build_back_board(Board board, BoardPlan plan)
     {
         // we trim the grid so we have the smallest pcb
         board.TrimRecursively(gen_para.trim_iterations);
@@ -116,6 +119,14 @@ public class PCB : MonoBehaviour
             rails_parent = back_rails
         };
         build_board(board, instantiator, is_back: true);
+
+        // generate rocks
+        for (int i = 0; i < plan.rocks.Count; i++)
+        {
+            RailCross cross = board.GetRandomCross();
+            Rock rock = create_rock(plan.rocks[i], cross);
+        }
+
 
         // we wire the board
         Welder.WireBoard(board, Componer);
@@ -150,6 +161,17 @@ public class PCB : MonoBehaviour
     }
 
 
+    private Rock create_rock(int life, RailCross cross)
+    {
+        Rock rock = Instantiate(rock_prefab);
+        rock.transform.SetParent(Rocker.transform);
+        rock.transform.localPosition = cross.WorldPosition - (Vector2)transform.position;
+        rock.transform.localScale = Vector3.one;
+        Rocker.AddRock(rock);
+        rock.InitRock(life,cross);
+        return rock;
+    }
+
     // PCB generation mid level methods
     private void build_board(Board board, InstantiaterParameter instantiator, bool is_back=true)
     {
@@ -173,6 +195,8 @@ public class PCB : MonoBehaviour
 
             build_rails_around(cell, ref rails_placed, board, is_back);
         }
+
+        // place rocks here ?
 
         board.BuildPCB_Outline(ref pcb_parts, instantiator);
     }

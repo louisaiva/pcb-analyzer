@@ -20,6 +20,10 @@ public class RocksManager : HoverableManager
     }
 
     // MAIN METHODS
+    public void AddRock(Rock rock)
+    {
+        hoverables.Add(rock);
+    }
     public void DamageRock(Rock rock)
     {
         // if we are 1 we will play the die animation either way so it is ok :)

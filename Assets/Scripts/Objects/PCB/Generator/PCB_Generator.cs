@@ -8,12 +8,28 @@ public class PCB_Generator : MonoBehaviour
     public List<BoardPlan> plans = new List<BoardPlan>();
     public List<PCB> pcbs = new List<PCB>();
     public int Count => pcbs.Count;
+    public List<SpriteRenderer> front_descs;
+    public SpriteRenderer end_of_demo_desc;
+    public bool MANUAL_PLANS_DONE = false;
 
     public PCB GenerateNext()
     {
         BoardPlan plan = null;
         if (plans.Count > 0) { plan = plans[0]; plans.RemoveAt(0); }
-        else { Debug.LogError("NO MORE PLAN !!!"); return null; }
+        
+        // else { Debug.LogError("NO MORE PLAN !!!"); return null; }
+        else
+        {
+            plan = GenerateRandomPlan();
+            if (!MANUAL_PLANS_DONE)
+            {
+                plan.front_desc = end_of_demo_desc;
+            }
+            MANUAL_PLANS_DONE = true;
+        }
+
+
+
         plan.index = pcbs.Count + 1;
         Debug.Log($"Generating board for plan {plan} : PCB " + plan.index);
 
@@ -28,7 +44,40 @@ public class PCB_Generator : MonoBehaviour
         return pcb;
     }
 
+    public BoardPlan GenerateRandomPlan()
+    {
+        BoardPlan plan = new BoardPlan();
+        plan.wires_per_components = UnityEngine.Random.Range(2,5);
+        
+        List<ComponentPlan> comps = new List<ComponentPlan>();
+        int comp_nb = UnityEngine.Random.Range(4, 13);
+        for (int i=0; i<comp_nb;i++)
+        {
+            comps.Add(BoardController.Instance.CompBank.GetRandomComponentPlan());
+        }
+        plan.components = comps;
 
+        List<int> rocks = new List<int>();
+        int rock_nb = UnityEngine.Random.Range(0, 8);
+        for (int i = 0; i < rock_nb; i++)
+        {
+            rocks.Add(UnityEngine.Random.Range(1, 7));
+        }
+        plan.rocks = rocks;
+
+        List<int> bugs = new List<int>();
+        int bug_nb = UnityEngine.Random.Range(0, 3);
+        for (int i = 0; i < bug_nb; i++)
+        {
+            bugs.Add(UnityEngine.Random.Range(1, 4));
+        }
+        plan.bugs = bugs;
+
+        plan.front_desc = front_descs[UnityEngine.Random.Range(0, front_descs.Count)];
+        return plan;
+    }
+
+    // GETTERS
     public PCB GetClosestUnlockedIndex(int index)
     {
         PCB best = null;
@@ -53,7 +102,6 @@ public class PCB_Generator : MonoBehaviour
         }
         return debug;
     }
-
 }
 
 [Serializable] public class BoardPlan

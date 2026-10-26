@@ -12,7 +12,7 @@ public class ComponentBank : MonoBehaviour
 
     public Component CreateRandomComponent(Transform parent)
     {
-        string template = get_random_template();
+        string template = GetRandomTemplate();
         // string template = "IC66";
         return CreateComponentFromTemplate(template,parent);
     }
@@ -45,14 +45,24 @@ public class ComponentBank : MonoBehaviour
         }
         return false;
     }
-    private string get_random_template()
+    public string GetRandomTemplate()
     {
         if (bank == null || bank.Count == 0) { return null; }
         int index = UnityEngine.Random.Range(0,bank.Count);
         return bank[index].name;
     }
-
-
+    public ComponentPlan GetRandomComponentPlan()
+    {
+        if (bank == null || bank.Count == 0) { return null; }
+        int index = UnityEngine.Random.Range(0, bank.Count);
+        ComponentData data = bank[index];
+        int comp_life = UnityEngine.Random.Range(0, data.max_HP * 2 + 1);
+        return new ComponentPlan()
+        {
+            component = data.name,
+            life = comp_life
+        };
+    }
 }
 
 

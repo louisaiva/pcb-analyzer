@@ -1042,6 +1042,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0c52661e44db0468be49695b66eb72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RocksManager
+--- !u!1 &572309903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 572309905}
+  - component: {fileID: 572309904}
+  m_Layer: 0
+  m_Name: is_screwed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &572309904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572309903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a142447e842be49889eaa11b839d27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IsScrewed
+  Fixed: 0
+  Quantity: 0
+  ShowEvenIfFixed: 0
+--- !u!4 &572309905
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 572309903}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1263582487}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,6 +1696,7 @@ Transform:
   - {fileID: 2048789582}
   - {fileID: 478142300}
   - {fileID: 1538332365}
+  - {fileID: 572309905}
   - {fileID: 267471029}
   - {fileID: 936136093}
   - {fileID: 714798831}
@@ -1672,6 +1720,7 @@ MonoBehaviour:
   - {fileID: 478142299}
   - {fileID: 1538332364}
   - {fileID: 267471028}
+  - {fileID: 572309904}
   infos:
   - {fileID: 936136094}
 --- !u!1001 &1292581984
@@ -2448,10 +2497,39 @@ MonoBehaviour:
     - component: S35
       life: 1
     wires_per_components: 2
-    rocks: 01000000
+    rocks: 0100000002000000
+    bugs: 
+    front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
+  - components:
+    - component: 4B
+      life: 0
+    - component: Red5-o
+      life: 2
+    - component: IC67
+      life: 1
+    - component: IC67
+      life: -1
+    - component: MC7-1
+      life: 3
+    - component: MC7-2
+      life: 1
+    - component: IC88
+      life: 1
+    - component: S35
+      life: 1
+    wires_per_components: 2
+    rocks: 0100000002000000030000000100000004000000
     bugs: 
     front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
   pcbs: []
+  front_descs:
+  - {fileID: 8717737673186348595, guid: e16e7ce1a5d1a524d8303e90ae122fb6, type: 3}
+  - {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
+  - {fileID: 8717737673186348595, guid: 4b550321f106d864d83a886d39d9d244, type: 3}
+  - {fileID: 8717737673186348595, guid: 50e994b81e31623489c3d2f6e040613e, type: 3}
+  - {fileID: 8717737673186348595, guid: c56e8d90e8bbb8841a1f9fde85b53015, type: 3}
+  end_of_demo_desc: {fileID: 8717737673186348595, guid: c56e8d90e8bbb8841a1f9fde85b53015, type: 3}
+  MANUAL_PLANS_DONE: 0
 --- !u!4 &2051199150
 Transform:
   m_ObjectHideFlags: 0

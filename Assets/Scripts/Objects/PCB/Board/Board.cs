@@ -346,6 +346,9 @@ public class Board
         return up_cell;
     } */
 
+
+
+
     // GETTERS
     public Vector2 GetWorldPositionOfCell(BoardCell cell, int cell_size, int inter_cell)
     {
@@ -608,6 +611,14 @@ public class Board
         return null;
     }
 
+    public RailCross GetRandomCross()
+    {
+        List<RailCross> free_crosses = rail_crosses.Where(c => !c.RockWasCreatedOnIt).ToList();
+        if (free_crosses.Count == 0) { return null; }
+        RailCross cross = free_crosses[UnityEngine.Random.Range(0,free_crosses.Count)];
+        cross.RockWasCreatedOnIt = true;
+        return cross;
+    }
     public List<RailNode> GetBoardRailNodes()
     {
         List<RailNode> nodes = new List<RailNode>();

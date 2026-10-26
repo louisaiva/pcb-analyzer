@@ -8,20 +8,19 @@ public class Rock : Hoverable, Damageable
     [Header("Components References")]
     [SerializeField] protected Animator fx_animator;
     [SerializeField] protected HP_Bar bar;
+    public RailCross cross;
 
-    private void Start()
+    public void InitRock(int life, RailCross cross)
     {
-        InitRock(6);
-    }
-
-    public void InitRock(int max_life)
-    {
-        this.max_life = max_life;
-        this.life = max_life;
+        this.max_life = life % 2 == 0 ? life : life + 1;
+        this.life = life;
+        this.cross = cross;
+        cross.Rocked = true;
 
         play_life_anim();
 
         bar.Target(this);
+        bar.gameObject.SetActive(false);
     }
 
 
@@ -82,6 +81,8 @@ public class Rock : Hoverable, Damageable
     }
     public async void Die()
     {
+        cross.Rocked = false;
+
         animator.Play("die", 1);
         bar.gameObject.SetActive(false);
         bg_sr.GetComponent<Collider2D>().enabled = false;

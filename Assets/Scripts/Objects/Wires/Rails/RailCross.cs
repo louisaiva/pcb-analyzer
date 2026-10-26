@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class RailCross : RailNode
 {
+
+    public bool Rocked = false;
+    public bool RockWasCreatedOnIt = false;
     public void Init(Vector2Int position)
     {
         RailPosition = position;
     }
 
+    public void RemoveRock()
+    {
+        Rocked = true;
+    }
 
     private List<Vector2Int> offsets = new List<Vector2Int>()
     {

@@ -55,6 +55,7 @@ MonoBehaviour:
   logs: 0
   fx_animator: {fileID: 3177480178120131066}
   bar: {fileID: 7354227908534429681}
+  cross: {fileID: 0}
   life: 0
   max_life: 0
 --- !u!1 &8937574933308675592
@@ -327,7 +328,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 204088681149081777, guid: 78ea643e741738e46bc2923f2e49f4c1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8333334
+      value: 0.375
       objectReference: {fileID: 0}
     - target: {fileID: 204088681149081777, guid: 78ea643e741738e46bc2923f2e49f4c1, type: 3}
       propertyPath: m_LocalPosition.z

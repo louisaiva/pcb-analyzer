@@ -82,23 +82,25 @@ public class Welder : MonoBehaviour
 
         Wire wire = create_wire(wire_prefab);
         start_rail.WireFreeLane(wire);
-        List<Vector2> path = wire_lanes(wire, start.world_position, end.world_position, node_path);
+        List<Vector2> path = wire_lanes(wire, start.world_position, end.world_position, node_path, out List<RailCross> crosses);
         
-        wire.BuildWire(start, path, end);
+        wire.BuildWire(start, path, end, crosses);
         wires.Add(wire);
         start.used = true;
         end.used = true;
         return true;
     }
 
-    private List<Vector2> wire_lanes(Wire wire, Vector2 start, Vector2 end, List<RailNode> node_path)
+    private List<Vector2> wire_lanes(Wire wire, Vector2 start, Vector2 end, List<RailNode> node_path, out List<RailCross> crosses)
     {
         List<Vector2> path = new List<Vector2>() { start };
+        crosses = new List<RailCross>();
 
         for (int i=0; i<node_path.Count-1;i+=2)
         {
             Rail a = (Rail)node_path[i];
             RailCross cross = (RailCross)node_path[i+1];
+            crosses.Add(cross);
             Rail b = (Rail)node_path[i+2];
 
             if (log_lanes_assignement) { Debug.Log($"(Welder) Assigning lanes between : [{a.RailPosition}] ->> [{cross.RailPosition}] ->> [{b.RailPosition}]"); }

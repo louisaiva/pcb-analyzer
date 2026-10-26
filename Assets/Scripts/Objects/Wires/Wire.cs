@@ -11,6 +11,7 @@ public class Wire : MonoBehaviour
     [SerializeField] private bool connected = false;
     [SerializeField] private bool first_check = false;
     public bool Connected => connected;
+    public List<RailCross> crosses = new List<RailCross>();
 
 
     [Header("Logs")]
@@ -33,6 +34,10 @@ public class Wire : MonoBehaviour
     {
         if (start.component.IsDamaged) { disconnect(); return; }
         if (end.component.IsDamaged) { disconnect(); return; }
+        foreach (RailCross cross in crosses)
+        {
+            if (cross.Rocked) { disconnect(); return; }
+        }
 
         foreach (SpriteRenderer line in lines)
         {
@@ -88,11 +93,12 @@ public class Wire : MonoBehaviour
         }
         lines.Clear();
     }
-    public void BuildWire(Weld start, List<Vector2> path, Weld end)
+    public void BuildWire(Weld start, List<Vector2> path, Weld end, List<RailCross> crosses)
     {
         Clear();
         this.start = start;
         this.end = end;
+        this.crosses = crosses;
 
         lines.Add(create_line(start.world_position, path[0]));
 
