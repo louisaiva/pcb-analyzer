@@ -9,15 +9,24 @@ public class BoardController : MonoBehaviour
     }
 
 
+    public PCB_Generator PCB_Generator;
     public PCB_Manager PCB_Manager;
+    public PCB PCB => PCB_Manager.pcb;
     public ButtonsManager Btner;
     public ComponentsManager Comper;
     public RocksManager Rocker;
     public ComponentBank CompBank;
-    public PCB PCB;
     public PCB_Bank PCBank;
     public StickerBank StickerBank;
 
+    // PCB CONNECTION
+    public void ConnectPCB(PCB pcb)
+    {
+        Comper = pcb.Componer;
+        Rocker = pcb.Rocker;
+    }
+
+    // MOUSE EVENTS TRANSMISSIONS
     public void OnHover(Hoverable hoverable)
     {
         if (hoverable is Button button)
@@ -45,7 +54,6 @@ public class BoardController : MonoBehaviour
         Comper.Unhover();
         Rocker.Unhover();
     }
-
     public void OnMousePress()
     {
         // if (CompManager.HasHoveredComponent(out Component comp)) { CompManager.StartHolding(comp); }
@@ -53,7 +61,6 @@ public class BoardController : MonoBehaviour
         Comper.OnMousePress();
         Rocker.OnMousePress();
     }
-
     public void OnMouseRelease()
     {
         if (PCB.IsShowingFront && !PCB.Timer.IsRunning) { PCB.Flip(); return; }

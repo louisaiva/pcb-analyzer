@@ -9,24 +9,29 @@ using System.Threading;
 public class PCB : MonoBehaviour
 {
 
+    public bool Fixed = false;
+
     [Header("References")]
     public ComponentsManager Componer;
     public RocksManager Rocker;
     public Welder Welder;
     public PCB_Timer Timer;
+    public Animator Animator;
 
     public static int cell_size = 20;
     public static int inter_cell = 7;
 
 
     [Header("Generation Parameters")]
+    public BoardPlan plan;
+    public int Index => plan.index;
     public PCB_GenerationParameter gen_para;
     public SpriteRenderer pcb_part_prefab;
     public SpriteRenderer rail_prefab;
     public SpriteRenderer rail_node_prefab;
     public SpriteRenderer sticker_prefab;
     public SpriteRenderer desc_back_prefab;
-    public SpriteRenderer desc_front_prefab;
+    // public SpriteRenderer desc_front_prefab;
     [SerializeField] private Transform back_parts;
     [SerializeField] private Transform back_rails;
     [SerializeField] private Transform front_parts;
@@ -35,8 +40,13 @@ public class PCB : MonoBehaviour
 
 
     // PCB GENERATION main methods
-    public async void Generate()
+    public async void Generate(BoardPlan plan)
     {
+        this.plan = plan;
+        this.name = "PCB n°"+plan.index;
+        Fixed = false;
+
+
         Componer.DestroyExistingComponents();
         while (pcb_parts.Count > 0)
         {
@@ -44,17 +54,24 @@ public class PCB : MonoBehaviour
             pcb_parts.RemoveAt(0);
         }
 
-        // wait to ensure the components are really destroyed
+        // wait to ensure the components are really destroyed & everything is started correctly
         await Task.Yield();
         await Task.Yield();
+        await Task.Yield();
+        await Task.Yield();
+        await Task.Yield();
+        await Task.Yield();
+
+        // we want to make sure pcb is flipped BACK before generating components
+        if (showing_front) { FlipInstantly(); }
 
         // choose a random number from the gen parameters
-        int comp_to_generate = UnityEngine.Random.Range(gen_para.components_min_max.x, gen_para.components_min_max.y+1);
-        Board board = new Board(comp_to_generate, log_generation);
-
-        for (int i=0; i<comp_to_generate; i++)
+        // int comp_to_generate = UnityEngine.Random.Range(gen_para.components_min_max.x, gen_para.components_min_max.y+1);
+        Board board = new Board(plan.components.Count, log_generation);
+        for (int i=0; i<plan.components.Count; i++)
         {
-            Component comp = BoardController.Instance.CompBank.CreateRandomComponent(Componer.transform);
+            string comp_name = plan.components[i];
+            Component comp = BoardController.Instance.CompBank.CreateComponentFromTemplate(comp_name,Componer.transform);
             board.PositionComponentInFreeCell(comp, PCB.cell_size, PCB.inter_cell);
         }
 
@@ -62,6 +79,12 @@ public class PCB : MonoBehaviour
 
         // generate the pcb board
         build_back_board(board);
+
+        await Task.Yield();
+        await Task.Yield();
+
+        // we want to make sure pcb is flipped FRONT before generating the front lol
+        if (!showing_front) { FlipInstantly(); }
         build_front_board(board);
     }
     private void build_back_board(Board board)
@@ -214,7 +237,7 @@ public class PCB : MonoBehaviour
     }
     private void create_description(Transform parent, bool is_back = true)
     {
-        SpriteRenderer sr = Instantiate(is_back ? desc_back_prefab : desc_front_prefab);
+        SpriteRenderer sr = Instantiate(is_back ? desc_back_prefab : plan.front_desc);
         sr.transform.SetParent(parent);
         sr.transform.localPosition = Vector3.zero;
         sr.transform.localScale = Vector3.one;
@@ -235,6 +258,28 @@ public class PCB : MonoBehaviour
 
     // PCB FLIPPING
     public bool IsScrewed => GetComponentInChildren<Screw>(includeInactive: false) != null;
+    public void FlipInstantly()
+    {
+        if (showing_front)
+        {
+            front_pcb.Play("hidden");
+            foreach (Animator animator in back_pcbs)
+            {
+                animator.Play("shown");
+            }
+            showing_front = false;
+            Debug.Log($"{name} is now BACK (instant)");
+            return;
+        }
+
+        front_pcb.Play("shown");
+        foreach (Animator animator in back_pcbs)
+        {
+            animator.Play("hidden");
+        }
+        showing_front = true;
+        Debug.Log($"{name} is now FRONT (instant)");
+    }
     public void Flip()
     {
         if (current_coroutine != null) { return; }

@@ -19,17 +19,12 @@ public class ComponentBank : MonoBehaviour
 
     public Component CreateComponentFromTemplate(string template, Transform parent)
     {
-        Component comp = CreateComponentFromTemplate(template);
-        comp.transform.SetParent(parent);
-        return comp;
-    }
-    public Component CreateComponentFromTemplate(string template)
-    {
         if (!TryGetTemplate(template, out ComponentData data)) { return null; }
         Component comp = Instantiate(prefab);
-        if (log) { Debug.Log($"(CompBank) Creating component {data.name} of type {data.type_of_component}"); }
         comp.FeedData(data);
+        comp.transform.SetParent(parent);
         comp.transform.localScale = Vector3.one;
+        if (log) { Debug.Log($"(CompBank) Creating component {data.name} of type {data.type_of_component}. Localscale is {comp.transform.localScale}"); }
         return comp;
     }
 
