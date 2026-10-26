@@ -7,7 +7,7 @@ public class PCB_Generator : MonoBehaviour
     public PCB pcb_prefab;
     public List<BoardPlan> plans = new List<BoardPlan>();
     public List<PCB> pcbs = new List<PCB>();
-
+    public int Count => pcbs.Count;
 
     public PCB GenerateNext()
     {
@@ -27,6 +27,33 @@ public class PCB_Generator : MonoBehaviour
         pcbs.Add(pcb);
         return pcb;
     }
+
+
+    public PCB GetClosestUnlockedIndex(int index)
+    {
+        PCB best = null;
+        int best_diff = int.MaxValue;
+        foreach (PCB pcb in pcbs)
+        {
+            if (!pcb.Unlocked) { continue; }
+            int diff = Mathf.Abs(index - pcb.Index);
+            if (diff > best_diff) { continue; }
+            best = pcb;
+            best_diff = diff;
+        }
+        if (best == null) { Debug.LogError($"(PCB_Generator) Could not find closest unlocked index pcb of index {index}. PCBs are : \n{GetDetails()}"); }
+        return best;
+    }
+    public string GetDetails()
+    {
+        string debug = Count + "PCBs";
+        foreach (PCB pcb in pcbs)
+        {
+            debug += $"\n - {pcb.name} : Unlocked ? {pcb.Unlocked} / Fixed ? {pcb.Fixed} / Side ? {(pcb.IsShowingFront ? "FRONT" : "BACK")} / Screwed ? {pcb.IsScrewed} / Components nb : {pcb.Componer.GetComponents().Count}";
+        }
+        return debug;
+    }
+
 }
 
 [Serializable] public class BoardPlan

@@ -7,18 +7,33 @@ public class PCB_Manager : MonoBehaviour
     public PCB pcb;
     public List<Problem> problems;
     public List<Info> infos;
+    private PCB_Generator generator => BoardController.Instance.PCB_Generator;
 
 
-
+    // START
     public void Start()
     {
         PCB next = BoardController.Instance.PCB_Generator.GenerateNext();
+        next.Unlocked = true;
         NavigateToPCB(next);
     }
 
 
+    // NAVIGATION
+    public void Navigate(int delta_index)
+    {
+        int next_index = delta_index + (this.pcb ? this.pcb.Index : 0);
+        PCB next_pcb = generator.GetClosestUnlockedIndex(next_index);
+        // Debug.Log("Navigating to" + next_index + " gave " + next_pcb.name);
+        NavigateToPCB(next_pcb);
+    }
     public void NavigateToPCB(PCB pcb)
     {
+        if (this.pcb != null && pcb == this.pcb)
+        {
+            pcb.Animator.Play("end_reached");
+            return;
+        }
 
         int index_dif = pcb.Index - (this.pcb == null ? 0 : this.pcb.Index);
         
@@ -39,6 +54,9 @@ public class PCB_Manager : MonoBehaviour
         BoardController.Instance.ConnectPCB(pcb);
         // here we may want to reset some things ?
     }
+    
+    
+    // UPDATE PCB
     private void Update()
     {
         bool resolved = true;
@@ -59,10 +77,14 @@ public class PCB_Manager : MonoBehaviour
         if (this.pcb.Fixed) { return; }
         this.pcb.Fixed = true;
         Debug.Log($"FIXED "+pcb.name);
-        PCB next = BoardController.Instance.PCB_Generator.GenerateNext();
+        PCB next = generator.GenerateNext();
+        next.Unlocked = true;
         NavigateToPCB(next);
+        Debug.Log($"PCB Status :" + generator.GetDetails());
     }
 
+
+    // PROBLEMS
     public int TotalProblems => problems.Sum(p => p.Quantity);
     public string GetPCB_Details()
     {

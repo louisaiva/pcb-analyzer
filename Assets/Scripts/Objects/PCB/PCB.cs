@@ -9,6 +9,7 @@ using System.Threading;
 public class PCB : MonoBehaviour
 {
 
+    public bool Unlocked = false;
     public bool Fixed = false;
 
     [Header("References")]
