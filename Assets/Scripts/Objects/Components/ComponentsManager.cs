@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -36,7 +37,10 @@ public class ComponentsManager : HoverableManager
         return components[UnityEngine.Random.Range(0, components.Count)];
     }
     public List<Component> GetComponents() { return hoverables.ConvertAll(h => (Component)h); }
-
+    public List<Component> GetAliveComponents()
+    {
+        return hoverables.ConvertAll(h => (Component)h).Where(c=>!c.IsDead).ToList();
+    }
 
 
 

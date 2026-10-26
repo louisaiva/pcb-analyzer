@@ -8,6 +8,7 @@ public class Rail : RailNode
     private List<Lane> lanes = new List<Lane>();
     public Axis axis = Axis.Horizontal;
     public bool Horizontal => axis == Axis.Horizontal;
+    public bool BugWasCreatedOnIt = false;
 
     public void Init(Vector2Int position, Axis axis)
     {

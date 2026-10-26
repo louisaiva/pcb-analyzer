@@ -15,6 +15,7 @@ public class BoardController : MonoBehaviour
     public ButtonsManager Btner;
     public ComponentsManager Comper;
     public RocksManager Rocker;
+    public BugManager Bugger;
     public ComponentBank CompBank;
     public PCB_Bank PCBank;
     public StickerBank StickerBank;
@@ -24,6 +25,7 @@ public class BoardController : MonoBehaviour
     {
         Comper = pcb.Componer;
         Rocker = pcb.Rocker;
+        Bugger = pcb.Bugger;
     }
 
     // MOUSE EVENTS TRANSMISSIONS
@@ -34,16 +36,26 @@ public class BoardController : MonoBehaviour
             Btner.Hover(button);
             Comper.Unhover();
             Rocker.Unhover();
+            Bugger.Unhover();
         }
         else if (hoverable is Component comp)
         {
             Comper.Hover(comp);
             Btner.Unhover();
             Rocker.Unhover();
+            Bugger.Unhover();
         }
         else if (hoverable is Rock rock)
         {
             Rocker.Hover(rock);
+            Btner.Unhover();
+            Comper.Unhover();
+            Bugger.Unhover();
+        }
+        else if (hoverable is Bug bug)
+        {
+            Bugger.Hover(bug);
+            Rocker.Unhover();
             Btner.Unhover();
             Comper.Unhover();
         }
@@ -53,6 +65,7 @@ public class BoardController : MonoBehaviour
         Btner.Unhover();
         Comper.Unhover();
         Rocker.Unhover();
+        Bugger.Unhover();
     }
     public void OnMousePress()
     {
@@ -60,6 +73,7 @@ public class BoardController : MonoBehaviour
         Btner.OnMousePress();
         Comper.OnMousePress();
         Rocker.OnMousePress();
+        Bugger.OnMousePress();
     }
     public void OnMouseRelease()
     {
@@ -67,5 +81,6 @@ public class BoardController : MonoBehaviour
         Btner.OnMouseRelease();
         Comper.OnMouseRelease();
         Rocker.OnMouseRelease();
+        Bugger.OnMouseRelease();
     }
 }

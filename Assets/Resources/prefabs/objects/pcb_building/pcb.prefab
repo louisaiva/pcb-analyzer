@@ -248,6 +248,96 @@ Transform:
   - {fileID: 5120382399749353045}
   m_Father: {fileID: 1889702509389567826}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2531368094496038021
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8601460751991516962}
+  - component: {fileID: 1562202376611528012}
+  - component: {fileID: 1174555686968005062}
+  - component: {fileID: 3463815575075652771}
+  m_Layer: 0
+  m_Name: bugs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8601460751991516962
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2531368094496038021}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 445473905479722757}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1562202376611528012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2531368094496038021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 026a2b2cf547934428081477fe2d0853, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BugManager
+  hoverables: []
+  current_hover: {fileID: 0}
+  faded_alpha: 1
+  click_anim:
+  - hit
+  - hit2
+  - hit3
+  log_hovers: 0
+  activated: 0
+  pcb: {fileID: 0}
+--- !u!95 &1174555686968005062
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2531368094496038021}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 840f59773c33ff84c9504379a3a24369, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3463815575075652771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2531368094496038021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba2d61d697af3bf48ae666771b933a80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PCB_Caller
 --- !u!1 &2566769916858286733
 GameObject:
   m_ObjectHideFlags: 0
@@ -286,6 +376,7 @@ Transform:
   - {fileID: 1889702509389567826}
   - {fileID: 5995384356345858295}
   - {fileID: 7167269863421610129}
+  - {fileID: 8601460751991516962}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8098782592451475568
@@ -304,6 +395,7 @@ MonoBehaviour:
   Fixed: 0
   Componer: {fileID: 8844168705639044582}
   Rocker: {fileID: 8329005696779696912}
+  Bugger: {fileID: 1562202376611528012}
   Welder: {fileID: 8119023426202109479}
   Timer: {fileID: 2545388905071770073}
   Animator: {fileID: 5351313101596486637}
@@ -326,6 +418,7 @@ MonoBehaviour:
   desc_back_prefab: {fileID: 4215206442620877739, guid: 530ede909ff3afd48ac23d0cc3888437, type: 3}
   desc_pcb_index: {fileID: 4215206442620877739, guid: 37c83c8650c6be94b83eec0baf48b06f, type: 3}
   rock_prefab: {fileID: 4147657896350807160, guid: 3dd2b5d0450c37c4681c3e75293d84fb, type: 3}
+  bug_prefab: {fileID: 3170126366346908834, guid: b4f8b385c53fa8540ac2c8de567edda1, type: 3}
   back_parts: {fileID: 4793854345113301623}
   back_rails: {fileID: 6437720688747008716}
   front_parts: {fileID: 7269576334844749515}
@@ -337,6 +430,7 @@ MonoBehaviour:
   - {fileID: 558938248716391949}
   - {fileID: 3219938308449131462}
   - {fileID: 8105214971005256588}
+  - {fileID: 1174555686968005062}
   showing_front: 1
   log_generation: 0
 --- !u!114 &2545388905071770073

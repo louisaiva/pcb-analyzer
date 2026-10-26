@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class HoverableManager : MonoBehaviour
 {
     [SerializeField] protected List<Hoverable> hoverables = new List<Hoverable>();
+    public int Count => hoverables.Count;
 
     [Header("Hover")]
     [SerializeField] protected Hoverable current_hover = null;

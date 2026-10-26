@@ -15,6 +15,7 @@ public class PCB : MonoBehaviour
     [Header("References")]
     public ComponentsManager Componer;
     public RocksManager Rocker;
+    public BugManager Bugger;
     public Welder Welder;
     public PCB_Timer Timer;
     public Animator Animator;
@@ -34,7 +35,8 @@ public class PCB : MonoBehaviour
     public SpriteRenderer desc_back_prefab;
     public SpriteRenderer desc_pcb_index;
     public Rock rock_prefab;
-    
+    public Bug bug_prefab;
+
     // public SpriteRenderer desc_front_prefab;
     [SerializeField] private Transform back_parts;
     [SerializeField] private Transform back_rails;
@@ -127,6 +129,13 @@ public class PCB : MonoBehaviour
             Rock rock = create_rock(plan.rocks[i], cross);
         }
 
+        // generate bugs
+        for (int i = 0; i < plan.bugs.Count; i++)
+        {
+            Rail rail = board.GetRandomRail();
+            Bug bug = create_bug(plan.bugs[i], rail.WorldPosition - (Vector2)transform.position);
+        }
+
 
         // we wire the board
         Welder.WireBoard(board, Componer);
@@ -168,9 +177,20 @@ public class PCB : MonoBehaviour
         rock.transform.localPosition = cross.WorldPosition - (Vector2)transform.position;
         rock.transform.localScale = Vector3.one;
         Rocker.AddRock(rock);
-        rock.InitRock(life,cross);
+        rock.InitRock(life, cross);
         return rock;
     }
+    private Bug create_bug(int life, Vector2 position)
+    {
+        Bug bug = Instantiate(bug_prefab);
+        bug.transform.SetParent(Bugger.transform);
+        bug.transform.localPosition = position;
+        bug.transform.localScale = Vector3.one;
+        Bugger.AddBug(bug);
+        bug.InitBug(life);
+        return bug;
+    }
+
 
     // PCB generation mid level methods
     private void build_board(Board board, InstantiaterParameter instantiator, bool is_back=true)
@@ -338,6 +358,7 @@ public class PCB : MonoBehaviour
     public IEnumerator ShowFrontCoroutine()
     {
         Debug.Log($"Showing FRONT of {name}");
+        Bugger.DeactivateBugs();
 
         front_pcb.Play("show");
         foreach (Animator animator in back_pcbs)
@@ -372,6 +393,8 @@ public class PCB : MonoBehaviour
         showing_front = false;
         current_coroutine = null;
         Debug.Log($"PCB {name} is now BACK");
+
+        Bugger.ActivateBugs();
     }
     public IEnumerator UnscrewThenShowFront()
     {

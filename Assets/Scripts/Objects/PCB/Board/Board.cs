@@ -619,6 +619,14 @@ public class Board
         cross.RockWasCreatedOnIt = true;
         return cross;
     }
+    public Rail GetRandomRail()
+    {
+        List<Rail> free_rails = rails.Where(r => !r.BugWasCreatedOnIt).ToList();
+        if (free_rails.Count == 0) { return null; }
+        Rail rail = free_rails[UnityEngine.Random.Range(0, free_rails.Count)];
+        rail.BugWasCreatedOnIt = true;
+        return rail;
+    }
     public List<RailNode> GetBoardRailNodes()
     {
         List<RailNode> nodes = new List<RailNode>();
