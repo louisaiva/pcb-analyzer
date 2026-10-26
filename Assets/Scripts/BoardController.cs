@@ -9,6 +9,8 @@ public class BoardController : MonoBehaviour
     }
 
 
+
+    public Vector3 WorldMouse = Vector3.zero;
     public PCB_Generator PCB_Generator;
     public PCB_Manager PCB_Manager;
     public PCB PCB => PCB_Manager.pcb;

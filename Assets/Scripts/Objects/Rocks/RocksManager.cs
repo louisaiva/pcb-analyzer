@@ -19,6 +19,21 @@ public class RocksManager : HoverableManager
 
     }
 
+    public void EnableSpawning()
+    {
+        foreach (Rock rock in hoverables)
+        {
+            rock.DisableSpawning = false;
+        }
+    }
+    public void DisableSpawning()
+    {
+        foreach (Rock rock in hoverables)
+        {
+            rock.DisableSpawning = true;
+        }
+    }
+
     // MAIN METHODS
     public void AddRock(Rock rock)
     {

@@ -34,6 +34,7 @@ public class Bug : Hoverable, Damageable
     public override void OnHover()
     {
         bar.gameObject.SetActive(true);
+        if (bb.CanDash()) { bb.SwitchState("dash"); }
     }
     public override void OnUnhover()
     {
@@ -68,11 +69,13 @@ public class Bug : Hoverable, Damageable
         fx_animator.Play("fx_bleed");
 
         life -= 1;
-        if (life == 0) { Die(); }
-        Debug.Log($"(Bug) {name} took damage. Has now {life} / {max_life} HP.       ({LifePercentage})");
-
         refresh_tier();
         bar.RefreshLife();
+
+        if (life == 0) { Die(); return; }
+        Debug.Log($"(Bug) {name} took damage. Has now {life} / {max_life} HP.       ({LifePercentage})");
+
+        bb.SwitchState("flee");
     }
     private void refresh_tier()
     {

@@ -10,6 +10,7 @@ public class MouseRaycaster : MonoBehaviour
     [SerializeField] private InputActionReference mouse_click;
     [SerializeField] private bool log_mouse_pos = false;
     [SerializeField] private bool log_hits = false;
+    public static Vector3 WorldMouse = Vector3.zero;
 
 
 
@@ -21,13 +22,10 @@ public class MouseRaycaster : MonoBehaviour
         component_filter.SetLayerMask(LayerMask.GetMask("Components", "Buttons", "Rocks", "Bugs"));
         // Debug.Log(component_filter);
     }
-
     private void OnEnable()
     {
         mouse_click.action.performed += OnMouseClick;
     }
-
-
     private void OnDisable()
     {
         mouse_click.action.performed -= OnMouseClick;
@@ -40,11 +38,11 @@ public class MouseRaycaster : MonoBehaviour
         position_of_mouse_in_screen.z = -Camera.main.transform.position.z;
         if (log_mouse_pos) { Debug.Log($"Position of mouse is : {position_of_mouse_in_screen.x} / {position_of_mouse_in_screen.y}"); }
         // this.transform.position = new Vector3(position_of_mouse.x, position_of_mouse.y, -1f);
-        Vector3 position_of_mouse_in_world = Camera.main.ScreenToWorldPoint(position_of_mouse_in_screen);
+        WorldMouse = Camera.main.ScreenToWorldPoint(position_of_mouse_in_screen);
 
         // send raycast
         RaycastHit2D[] hits = new RaycastHit2D[20];
-        Physics2D.Raycast(position_of_mouse_in_world, Camera.main.transform.forward, component_filter, hits, 10f);
+        Physics2D.Raycast(WorldMouse, Camera.main.transform.forward, component_filter, hits, 10f);
 
         // check collisions with layers
         for (int i=0;i<hits.Length;i++)
@@ -56,7 +54,6 @@ public class MouseRaycaster : MonoBehaviour
 
         BoardController.Instance.OnNothingHovered();
     }
-
     private bool try_to_hit_hoverable(Collider2D collider)
     {
         if (collider.transform.parent == null) { return false; }

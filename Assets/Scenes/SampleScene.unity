@@ -1719,6 +1719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5ee2ce9180817418b2683db4e8feca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoardController
+  WorldMouse: {x: 0, y: 0, z: 0}
   PCB_Generator: {fileID: 2051199149}
   PCB_Manager: {fileID: 1263582488}
   Btner: {fileID: 714798832}
@@ -2488,6 +2489,66 @@ MonoBehaviour:
   pcb_prefab: {fileID: 8098782592451475568, guid: 5f20ae6cb0c6f924e854eabc21647294, type: 3}
   plans:
   - components:
+    - component: IC67
+      life: 2
+    - component: MC7-2
+      life: 4
+    - component: MC7-2
+      life: 4
+    - component: MC7-2
+      life: 4
+    wires_per_components: 2
+    rocks: 
+    bugs: 
+    front_desc: {fileID: 8717737673186348595, guid: 4b550321f106d864d83a886d39d9d244, type: 3}
+  - components:
+    - component: IC67
+      life: 2
+    - component: MC7-2
+      life: 4
+    - component: MC7-2
+      life: 4
+    - component: MC7-2
+      life: 4
+    wires_per_components: 2
+    rocks: 
+    bugs: 
+    front_desc: {fileID: 8717737673186348595, guid: 4b550321f106d864d83a886d39d9d244, type: 3}
+  - components:
+    - component: IC67
+      life: 2
+    - component: MC7-2
+      life: 4
+    - component: MC7-2
+      life: 4
+    - component: MC7-2
+      life: 4
+    wires_per_components: 2
+    rocks: 
+    bugs: 
+    front_desc: {fileID: 8717737673186348595, guid: 4b550321f106d864d83a886d39d9d244, type: 3}
+  - components:
+    - component: 4B
+      life: 0
+    - component: Red5-o
+      life: 2
+    - component: IC67
+      life: 1
+    - component: IC67
+      life: -1
+    - component: MC7-1
+      life: 3
+    - component: MC7-2
+      life: 1
+    - component: IC88
+      life: 1
+    - component: S35
+      life: 1
+    wires_per_components: 2
+    rocks: 0100000002000000030000000100000004000000
+    bugs: 
+    front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
+  - components:
     - component: 4B
       life: 7
     wires_per_components: 2
@@ -2548,27 +2609,6 @@ MonoBehaviour:
       life: 1
     wires_per_components: 2
     rocks: 0100000002000000
-    bugs: 
-    front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
-  - components:
-    - component: 4B
-      life: 0
-    - component: Red5-o
-      life: 2
-    - component: IC67
-      life: 1
-    - component: IC67
-      life: -1
-    - component: MC7-1
-      life: 3
-    - component: MC7-2
-      life: 1
-    - component: IC88
-      life: 1
-    - component: S35
-      life: 1
-    wires_per_components: 2
-    rocks: 0100000002000000030000000100000004000000
     bugs: 
     front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
   pcbs: []

@@ -21,7 +21,39 @@ public class Rock : Hoverable, Damageable
 
         bar.Target(this);
         bar.gameObject.SetActive(false);
+
+        DisableSpawning = true;
+        spawn_cooldown = Random.Range(8f,15f);
     }
+
+    public bool DisableSpawning = false;
+    public float spawn_cooldown = 0f;
+    private void Update()
+    {
+        if (DisableSpawning) { return; }
+        if (spawn_cooldown > 0f)
+        {
+            spawn_cooldown -= Time.deltaTime;
+            return;
+        }
+
+        spawn_bug();
+        spawn_cooldown = Random.Range(12f, 30f);
+    }
+
+    private void spawn_bug()
+    {
+        if (life < 3) { return; }
+
+        int buglife = 1;
+        if (life == 4) { buglife = Random.Range(1, 3); }
+        if (life == 5) { buglife = Random.Range(1, 4); }
+        if (life == 6) { buglife = Random.Range(2, 5); }
+
+        Vector2 spawn_position = (Vector2)transform.position + Random.onUnitCircle * 0.08f;
+        BoardController.Instance.PCB.CreateBug(buglife,spawn_position);
+    }
+
 
 
     ///

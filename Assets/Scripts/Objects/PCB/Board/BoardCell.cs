@@ -41,6 +41,13 @@ public class BoardCell
         return new Vector2(xpos, ypos);
     }
 
+    public Vector2 GetWorldPosition()
+    {
+        float xpos = x * (PCB.cell_size + PCB.inter_cell) * (1f / 24f);
+        float ypos = y * (PCB.cell_size + PCB.inter_cell) * (1f / 24f);
+        return new Vector2(xpos, ypos);
+    }
+
     public List<Vector2> GetMiddleRailsWorldPositions(int cell_size, int inter_cell, out List<Vector2Int> rail_positions)
     {
         // 4 corners of the cell

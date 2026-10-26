@@ -36,6 +36,8 @@ public class PCB : MonoBehaviour
     public SpriteRenderer desc_pcb_index;
     public Rock rock_prefab;
     public Bug bug_prefab;
+    public Screw screw_prefab;
+    public Transform screw_parent;
 
     // public SpriteRenderer desc_front_prefab;
     [SerializeField] private Transform back_parts;
@@ -133,7 +135,7 @@ public class PCB : MonoBehaviour
         for (int i = 0; i < plan.bugs.Count; i++)
         {
             Rail rail = board.GetRandomRail();
-            Bug bug = create_bug(plan.bugs[i], rail.WorldPosition - (Vector2)transform.position);
+            Bug bug = CreateBug(plan.bugs[i], rail.WorldPosition - (Vector2)transform.position);
         }
 
 
@@ -167,6 +169,9 @@ public class PCB : MonoBehaviour
             rails_parent = front_rails
         };
         build_board(board, instantiator, is_back: false);
+
+        // we place screws
+        create_screws(board);
     }
 
 
@@ -180,7 +185,7 @@ public class PCB : MonoBehaviour
         rock.InitRock(life, cross);
         return rock;
     }
-    private Bug create_bug(int life, Vector2 position)
+    public Bug CreateBug(int life, Vector2 position)
     {
         Bug bug = Instantiate(bug_prefab);
         bug.transform.SetParent(Bugger.transform);
@@ -300,6 +305,28 @@ public class PCB : MonoBehaviour
         return sr;
     }
 
+    private void create_screws(Board board)
+    {
+        List<RailCross> crosses = front_rails.GetComponentsInChildren<RailCross>(includeInactive:false).ToList();
+        Vector2 zero_pos = board.TryGetCell(Vector2Int.zero, out BoardCell cell) ? cell.GetWorldPosition() : transform.position;
+        crosses.Sort((a,b) => Vector2.Distance(zero_pos,b.WorldPosition).CompareTo(Vector2.Distance(zero_pos, a.WorldPosition)));
+
+        int screw_nb = crosses.Count / 5;
+        if (screw_nb < 3) { screw_nb = 3; }
+
+        for (int i=0;i< screw_nb; i++)
+        {
+            if (i >= crosses.Count) { break; }
+            create_screw(crosses[i].transform);
+        }
+    }
+    private void create_screw(Transform parent)
+    {
+        Screw sr = Instantiate(screw_prefab);
+        sr.transform.SetParent(parent);
+        sr.transform.localPosition = Vector3.zero;
+        sr.transform.localScale = Vector3.one;
+    }
 
     [Header("Animations")]
     [SerializeField] private Animator front_pcb;
@@ -359,6 +386,7 @@ public class PCB : MonoBehaviour
     {
         Debug.Log($"Showing FRONT of {name}");
         Bugger.DeactivateBugs();
+        Rocker.DisableSpawning();
 
         front_pcb.Play("show");
         foreach (Animator animator in back_pcbs)
@@ -395,6 +423,7 @@ public class PCB : MonoBehaviour
         Debug.Log($"PCB {name} is now BACK");
 
         Bugger.ActivateBugs();
+        Rocker.EnableSpawning();
     }
     public IEnumerator UnscrewThenShowFront()
     {

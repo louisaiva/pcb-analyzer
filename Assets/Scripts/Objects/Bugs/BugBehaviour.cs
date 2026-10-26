@@ -9,6 +9,13 @@ public class BugBehaviour : MonoBehaviour
     public Bug bug = null;
     public string current_state_name = "";
     public Component target = null;
+    public float dash_cooldown = 0f;
+    public bool CanDash()
+    {
+        if (bug.Tier != "fat") { return false; }
+        if (dash_cooldown > 0f) { return false; }
+        return true;
+    }
 
     public void Init()
     {
@@ -17,6 +24,8 @@ public class BugBehaviour : MonoBehaviour
             new IdleState(),
             new MoveState(),
             new AttackState(),
+            new FleeState(),
+            new DashState()
         };
 
         SwitchState("move");
@@ -38,6 +47,8 @@ public class BugBehaviour : MonoBehaviour
     }
     public void UpdateBehaviour()
     {
+        if (dash_cooldown > 0f) { dash_cooldown -= Time.deltaTime; }
+
         if (current_state == null) { return; }
         current_state.UpdateState(this);
     }
@@ -65,6 +76,7 @@ public class BugBehaviour : MonoBehaviour
         {
             if (state.name == name) { return state; }
         }
+        Debug.LogError("(BugBehaviour) State "+name+" NOT FOUND !!");
         return null;
     }
 }
@@ -95,18 +107,18 @@ public class BugState
 public class IdleState : BugState
 {
     public IdleState() : base("idle") {}
+    private float cooldown = 0f;
 
-    public override async void EnterState(BugBehaviour bb)
+    public override void EnterState(BugBehaviour bb)
     {
         base.EnterState(bb);
         bb.bug.Animator.Play(bb.bug.Tier + "_idle", 1);
-
-        // ? here we can change delay range based on tier
-        int delay = UnityEngine.Random.Range(800, 3000);
-
-        await Task.Delay(delay);
-        if (!active) { return; }
-        bb.SwitchState("move");
+        cooldown = UnityEngine.Random.Range(1.2f, 3f);
+    }
+    public override void UpdateState(BugBehaviour bb)
+    {
+        cooldown -= Time.deltaTime;
+        if (cooldown <= 0f) { bb.SwitchState("move"); return; }
     }
 }
 public class MoveState : BugState
@@ -139,12 +151,12 @@ public class MoveState : BugState
     }
     public override void UpdateState(BugBehaviour bb)
     {
-        bb.bug.Animator.Play(bb.bug.Tier + "_move", 1);
 
         // get target
         Component target = bb.target;
         if (target == null) { bb.SwitchState("idle"); return; }
 
+        bb.bug.Animator.Play(bb.bug.Tier + "_move", 1);
         // get speed based on tier
         float speed = 1f;
         if (bb.bug.Tier == "fat") { speed = .33f; }
@@ -164,7 +176,7 @@ public class AttackState : BugState
     private float attack_cooldown = 0f;
     public AttackState() : base("attack") { }
 
-    public override async void EnterState(BugBehaviour bb)
+    public override void EnterState(BugBehaviour bb)
     {
         base.EnterState(bb);
         if (bb.target == null) { bb.SwitchState("idle"); return; }
@@ -206,5 +218,74 @@ public class AttackState : BugState
 
         bb.bug.Animator.Play("fat_attack", 1);
         bb.target.Damage();
+    }
+}
+public class FleeState : BugState
+{
+    public FleeState() : base("flee") { }
+    private float cooldown = 2f;
+
+    public override void EnterState(BugBehaviour bb)
+    {
+        base.EnterState(bb);
+        bb.bug.Animator.Play(bb.bug.Tier + "_move", 1);
+        bb.bug.Animator.speed = 2f;
+    }
+    public override void UpdateState(BugBehaviour bb)
+    {
+        cooldown -= Time.deltaTime;
+        if (cooldown <= 0f) { bb.SwitchState("move"); return; }
+
+        bb.bug.Animator.Play(bb.bug.Tier + "_move", 1);
+
+        // get speed based on tier
+        float speed = 2f;
+        if (bb.bug.Tier == "fat") { speed = .75f; }
+
+        // check distance from target
+        Vector2 distance = MouseRaycaster.WorldMouse - bb.bug.transform.position;
+        if (distance.magnitude <= (10f / 24f))
+        {
+            speed *= 2f;
+            bb.bug.Animator.speed = 4f;
+        }
+        else if (distance.magnitude > 3f)
+        {
+            speed /= 2f;
+            bb.bug.Animator.speed = 1f;
+        }
+        else
+        {
+            bb.bug.Animator.speed = 2f;
+        }
+
+        // move to target
+        Vector2 movement = distance.normalized * speed * Time.deltaTime;
+        bb.bug.transform.position -= (Vector3)movement;
+        bb.bug.Renderer.flipX = distance.x > 0f;
+    }
+    public override void ExitState(BugBehaviour bb)
+    {
+        base.ExitState(bb);
+        bb.bug.Animator.speed = 1f;
+    }
+}
+public class DashState : BugState
+{
+    public DashState() : base("dash") { }
+    public float dash = 20f/24f;
+
+    public override void EnterState(BugBehaviour bb)
+    {
+        base.EnterState(bb);
+        bb.bug.Animator.Play("fat_dash", 1);
+        bb.dash_cooldown = 2f;
+
+        Vector2 direction = bb.bug.Renderer.flipX ? Vector2.left : Vector2.right;
+        bb.bug.transform.position += (Vector3)direction.normalized * dash;
+    }
+    public override void UpdateState(BugBehaviour bb)
+    {
+        bb.SwitchState("move");
     }
 }
