@@ -19,7 +19,11 @@ public class ComponentBank : MonoBehaviour
 
     public Component CreateComponentFromTemplate(string template, Transform parent)
     {
-        if (!TryGetTemplate(template, out ComponentData data)) { return null; }
+        if (!TryGetTemplate(template, out ComponentData data))
+        {
+            Debug.LogWarning($"(CompBank) Creating component did not find any template for {template} !!!");
+            return null;
+        }
         Component comp = Instantiate(prefab);
         comp.FeedData(data);
         comp.transform.SetParent(parent);

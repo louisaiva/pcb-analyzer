@@ -208,7 +208,13 @@ public class Component : Hoverable, Damageable
         Debug.Log($"(Component) {name} of type {data.type_of_component} was healed ! Has now {life} / {max_life} HP.       ({LifePercentage})");
         ScaleUp();
     }
-    
+    public void SetLife(int new_life)
+    {
+        if (new_life > max_life) { new_life = max_life; }
+        life = new_life;
+        play_life_anim();
+        bar.RefreshLife();
+    }
 
     // DAMAGE & DIE
     public virtual void Damage()

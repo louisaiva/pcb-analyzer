@@ -9,6 +9,7 @@ public class Wire : MonoBehaviour
     [SerializeField] private Color connected_color;
     [SerializeField] private Color disconnected_color;
     [SerializeField] private bool connected = false;
+    [SerializeField] private bool first_check = false;
     public bool Connected => connected;
 
 
@@ -46,24 +47,26 @@ public class Wire : MonoBehaviour
     // CONNECT / DISCONNECT
     private void connect()
     {
-        if (connected) { return; }
+        if (connected && first_check) { return; }
         foreach (SpriteRenderer line in lines)
         {
             line.color = connected_color;
             line.sortingOrder = 0;
         }
         connected = true;
+        first_check = true;
         if (log) { Debug.Log($"Wire {name} is now connected !"); }
     }
     private void disconnect()
     {
-        if (!connected) { return; }
+        if (!connected && first_check) { return; }
         foreach (SpriteRenderer line in lines)
         {
             line.color = disconnected_color;
             line.sortingOrder = -1;
         }
         connected = false;
+        first_check = true;
         if (log) { Debug.Log($"Wire {name} is now disconnected :/"); }
     }
 

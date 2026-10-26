@@ -59,9 +59,16 @@ public class PCB_Generator : MonoBehaviour
 [Serializable] public class BoardPlan
 {
     [NonSerialized] public int index;
-    public List<string> components = new List<string>();
+    public List<ComponentPlan> components = new List<ComponentPlan>();
     public int wires_per_components = 2;
     public List<int> rocks = new List<int>(); // life of said rocks
     public List<int> bugs = new List<int>(); // life of said bugs
     public SpriteRenderer front_desc;
+}
+
+
+[Serializable] public class ComponentPlan
+{
+    public string component = "";
+    public int life = -1; // -1 means full life
 }

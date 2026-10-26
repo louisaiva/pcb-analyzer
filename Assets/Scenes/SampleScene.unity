@@ -1666,6 +1666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc15c32e26c6fc4498396fc8f6f0fed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PCB_Manager
+  delay_when_resolving: 2
   pcb: {fileID: 0}
   problems:
   - {fileID: 478142299}
@@ -2388,43 +2389,64 @@ MonoBehaviour:
   pcb_prefab: {fileID: 8098782592451475568, guid: 5f20ae6cb0c6f924e854eabc21647294, type: 3}
   plans:
   - components:
-    - 4B
+    - component: 4B
+      life: 7
     wires_per_components: 2
     rocks: 
     bugs: 
     front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
   - components:
-    - IC89
-    - IC66
+    - component: IC67
+      life: 1
+    - component: MC7-2
+      life: 3
     wires_per_components: 2
     rocks: 
     bugs: 
-    front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
+    front_desc: {fileID: 8717737673186348595, guid: 4b550321f106d864d83a886d39d9d244, type: 3}
   - components:
-    - MC7-1
-    - IC67
-    - IC67
+    - component: MC7-1
+      life: 0
+    - component: S35
+      life: -1
+    - component: IC89
+      life: -1
     wires_per_components: 4
     rocks: 
     bugs: 
-    front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
+    front_desc: {fileID: 8717737673186348595, guid: e16e7ce1a5d1a524d8303e90ae122fb6, type: 3}
   - components:
-    - MC7-2
-    - IC88
-    - S36
-    - UAL-2000
+    - component: IC89
+      life: -1
+    - component: UAL-2000
+      life: 0
+    - component: S36
+      life: 0
+    - component: IC66
+      life: -1
+    - component: MC7-4
+      life: -1
     wires_per_components: 2
     rocks: 01000000
     bugs: 
-    front_desc: {fileID: 8717737673186348595, guid: 6e9e7f266ea8d56439a7968a6ac2ba3e, type: 3}
+    front_desc: {fileID: 8717737673186348595, guid: 50e994b81e31623489c3d2f6e040613e, type: 3}
   - components:
-    - 4B
-    - Red5-o
-    - S35
-    - IC66
-    - IC66
-    - IC89
-    - MC7-2
+    - component: 4B
+      life: 0
+    - component: Red5-o
+      life: 2
+    - component: IC67
+      life: 1
+    - component: IC67
+      life: -1
+    - component: MC7-1
+      life: 3
+    - component: MC7-2
+      life: 1
+    - component: IC88
+      life: 1
+    - component: S35
+      life: 1
     wires_per_components: 2
     rocks: 01000000
     bugs: 
@@ -2576,7 +2598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2566769916858286733, guid: 5f20ae6cb0c6f924e854eabc21647294, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8193135463861086513, guid: 5f20ae6cb0c6f924e854eabc21647294, type: 3}
       propertyPath: m_Enabled

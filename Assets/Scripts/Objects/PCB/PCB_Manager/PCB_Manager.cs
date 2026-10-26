@@ -1,13 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class PCB_Manager : MonoBehaviour
 {
+    [Header("Parameters")]
+    public int delay_when_resolving = 3;
+
+
+    [Header("References")]
     public PCB pcb;
     public List<Problem> problems;
     public List<Info> infos;
     private PCB_Generator generator => BoardController.Instance.PCB_Generator;
+
 
 
     // START
@@ -72,13 +79,18 @@ public class PCB_Manager : MonoBehaviour
         // we fixed this pcb ! we can now go to the next one
         Resolve();
     }
-    public void Resolve()
+    public async void Resolve()
     {
         if (this.pcb.Fixed) { return; }
         this.pcb.Fixed = true;
         Debug.Log($"FIXED "+pcb.name);
         PCB next = generator.GenerateNext();
         next.Unlocked = true;
+
+        // wait 3 seconds
+        await Task.Delay(delay_when_resolving*1000);
+
+        if (this.pcb == next) { return; }
         NavigateToPCB(next);
         Debug.Log($"PCB Status :" + generator.GetDetails());
     }

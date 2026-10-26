@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3e38f97a42d6f9458aa59ec70135416, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PCB
+  Unlocked: 0
   Fixed: 0
   Componer: {fileID: 8844168705639044582}
   Rocker: {fileID: 8329005696779696912}
@@ -323,6 +324,7 @@ MonoBehaviour:
   rail_node_prefab: {fileID: 464693801687803716, guid: 087580974700c994fa7fbe3f077a460b, type: 3}
   sticker_prefab: {fileID: 8717737673186348595, guid: 0bef24c5165b18f4ba4f29f327a6de6b, type: 3}
   desc_back_prefab: {fileID: 4215206442620877739, guid: 530ede909ff3afd48ac23d0cc3888437, type: 3}
+  desc_pcb_index: {fileID: 4215206442620877739, guid: 37c83c8650c6be94b83eec0baf48b06f, type: 3}
   back_parts: {fileID: 4793854345113301623}
   back_rails: {fileID: 6437720688747008716}
   front_parts: {fileID: 7269576334844749515}

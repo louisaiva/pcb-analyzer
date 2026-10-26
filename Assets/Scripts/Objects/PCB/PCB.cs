@@ -32,6 +32,7 @@ public class PCB : MonoBehaviour
     public SpriteRenderer rail_node_prefab;
     public SpriteRenderer sticker_prefab;
     public SpriteRenderer desc_back_prefab;
+    public SpriteRenderer desc_pcb_index;
     // public SpriteRenderer desc_front_prefab;
     [SerializeField] private Transform back_parts;
     [SerializeField] private Transform back_rails;
@@ -71,8 +72,9 @@ public class PCB : MonoBehaviour
         Board board = new Board(plan.components.Count, log_generation);
         for (int i=0; i<plan.components.Count; i++)
         {
-            string comp_name = plan.components[i];
+            string comp_name = plan.components[i].component;
             Component comp = BoardController.Instance.CompBank.CreateComponentFromTemplate(comp_name,Componer.transform);
+            if (plan.components[i].life != -1) { comp.SetLife(plan.components[i].life); }
             board.PositionComponentInFreeCell(comp, PCB.cell_size, PCB.inter_cell);
         }
 
@@ -124,13 +126,17 @@ public class PCB : MonoBehaviour
         board.FreeAllCells();
 
         // we place description & title in an empty cell
-        board.AddBackDescriptionCells();
+        board.AddFrontDescriptionCells();
+
+        // get a random empty cell to show the index
+        BoardCell cell = board.GetEmptyCell();
+        if (cell != null) { cell.SetTypeAndValue(CellType.Desc,"index"); }
 
         // get 2 random empty cells
-        BoardCell stick1 = board.GetEmptyCell();
-        if (stick1 != null) { stick1.type = CellType.Sticker; }
-        BoardCell stick2 = board.GetEmptyCell();
-        if (stick2 != null) { stick2.type = CellType.Sticker; }
+        cell = board.GetEmptyCell();
+        if (cell != null) { cell.type = CellType.Sticker; }
+        cell = board.GetEmptyCell();
+        if (cell != null) { cell.type = CellType.Sticker; }
 
         // we build the outline
         InstantiaterParameter instantiator = new InstantiaterParameter
@@ -157,8 +163,13 @@ public class PCB : MonoBehaviour
 
             // check if cell.type == sticker
             if (cell.type == CellType.Sticker) { create_sticker(sr.transform); }
-            if (cell.type == CellType.Desc && cell.value == "up") { create_description(sr.transform, is_back); }
-
+            if (cell.type == CellType.Desc && cell.value == "back up") { create_description(sr.transform, desc_back_prefab); }
+            if (cell.type == CellType.Desc && cell.value == "front left") { create_description(sr.transform, plan.front_desc); }
+            if (cell.type == CellType.Desc && cell.value == "index")
+            {
+                SpriteRenderer desc_index = create_description(sr.transform, desc_pcb_index);
+                desc_index.GetComponentInChildren<TMPro.TextMeshPro>(includeInactive:true).text = "PCB " + plan.index;
+            }
 
             build_rails_around(cell, ref rails_placed, board, is_back);
         }
@@ -203,8 +214,8 @@ public class PCB : MonoBehaviour
 
             // check if the rail is going over the description so we disable it
             if (cell.type != CellType.Desc) { continue; }
-            if (   (i == 0 /* U */ && cell.value == "down")
-                || (i == 1 /* D */ && cell.value == "up"))
+            if (   (i == 0 /* U */ && cell.value == "back down")
+                || (i == 1 /* D */ && cell.value == "back up"))
             {
                 rail.disabled = true;
             }
@@ -236,12 +247,13 @@ public class PCB : MonoBehaviour
         sr.transform.localPosition = Vector3.zero;
         sr.transform.localScale = Vector3.one;
     }
-    private void create_description(Transform parent, bool is_back = true)
+    private SpriteRenderer create_description(Transform parent, SpriteRenderer prefab)
     {
-        SpriteRenderer sr = Instantiate(is_back ? desc_back_prefab : plan.front_desc);
+        SpriteRenderer sr = Instantiate(prefab/*  ? desc_back_prefab : plan.front_desc */);
         sr.transform.SetParent(parent);
         sr.transform.localPosition = Vector3.zero;
         sr.transform.localScale = Vector3.one;
+        return sr;
     }
 
 
@@ -351,7 +363,7 @@ public class PCB : MonoBehaviour
             yield return new WaitForSeconds(0.25f);
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.15f);
 
         yield return ShowBackCoroutine();
     }

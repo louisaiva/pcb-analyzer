@@ -81,7 +81,7 @@ public class Board
         if (cell == null) { return; }
         Vector2 pos = GetWorldPositionOfCell(cell, cell_size, inter_cell);
 
-        comp.transform.localPosition = new Vector3(pos.x, pos.y, comp.transform.localPosition.z);
+        comp.transform.localPosition = new Vector3(pos.x, pos.y, 0f);
         comp.CellPosition = cell.Position;
         comp.RefreshWelds();
         if (logs) { Debug.Log($"(Board) Positionning {comp.name} in cell {cell.Position} at world position {pos}"); }
@@ -148,14 +148,32 @@ public class Board
 
         if (up_desc == null)
         {
-            Debug.LogError($"(Board) Could not add description cells !!!\n" + get_grid_details());
+            Debug.LogError($"(Board) Could not add back description cells !!!\n" + get_grid_details());
         }
         if (logs)
         {
-            Debug.Log($"(Board) Successfully added description cells, with up cell being in {up_desc.Position} !!!\n" + get_grid_details());
+            Debug.Log($"(Board) Successfully added BACK description cells, with up cell being in {up_desc.Position} !!!\n" + get_grid_details());
         }
 
         FillUpBlanks(); // need to fill up potential blanks since we added new cells
+    }
+    public void AddFrontDescriptionCells()
+    {
+        // we first try to get 2 empty cells one on the other
+        BoardCell left_desc = find_existing_left_desc();
+        /* if (left_desc == null)
+        {
+            left_desc = create_desc_next_to_2_horizontal_cells();
+        } */
+
+        if (left_desc == null)
+        {
+            Debug.LogError($"(Board) Could not add front description cells !!!\n" + get_grid_details());
+        }
+        if (logs)
+        {
+            Debug.Log($"(Board) Successfully added FRONT description cells, with left cell being in {left_desc.Position} !!!\n" + get_grid_details());
+        }
     }
 
     public void FillUpBlanks()
@@ -191,8 +209,8 @@ public class Board
                 && below_cell.Empty)
             {
                 // this is it !! we find it, we save the data into the cells
-                cell.SetTypeAndValue(CellType.Desc,"up");
-                below_cell.SetTypeAndValue(CellType.Desc, "down");
+                cell.SetTypeAndValue(CellType.Desc,"back up");
+                below_cell.SetTypeAndValue(CellType.Desc, "back down");
                 return cell;
             }
         }
@@ -232,17 +250,17 @@ public class Board
         Vector2Int down = best.Position + Vector2Int.down + (side < 0f ? Vector2Int.left : Vector2Int.right);
         BoardCell up_cell, down_cell;
 
-        if (TryGetCell(up, out up_cell)) { up_cell.SetTypeAndValue(CellType.Desc, "up"); }
+        if (TryGetCell(up, out up_cell)) { up_cell.SetTypeAndValue(CellType.Desc, "back up"); }
         else
         {
-            up_cell = new BoardCell(up, CellType.Desc, "up");
+            up_cell = new BoardCell(up, CellType.Desc, "back up");
             cells.Add(up_cell);
         }
 
-        if (TryGetCell(down, out down_cell)) { down_cell.SetTypeAndValue(CellType.Desc, "down"); }
+        if (TryGetCell(down, out down_cell)) { down_cell.SetTypeAndValue(CellType.Desc, "back down"); }
         else
         {
-            down_cell = new BoardCell(down, CellType.Desc, "down");
+            down_cell = new BoardCell(down, CellType.Desc, "back down");
             cells.Add(down_cell);
         }
 
@@ -259,7 +277,74 @@ public class Board
     }
 
 
+    private BoardCell find_existing_left_desc()
+    {
+        foreach (BoardCell cell in cells)
+        {
+            if (!cell.Empty) { continue; }
 
+            // check if we have an empty cell at left
+            if (TryGetCell(cell.Position + Vector2Int.left, out BoardCell left_cell)
+                && left_cell.Empty)
+            {
+                // this is it !! we find it, we save the data into the cells
+                cell.SetTypeAndValue(CellType.Desc, "front right");
+                left_cell.SetTypeAndValue(CellType.Desc, "front left");
+                return cell;
+            }
+        }
+        return null;
+    }
+    /* private BoardCell create_desc_next_to_2_horizontal_cells()
+    {
+        // we find the best matching spot, which means 2 vertical cells with empty/no neighbours on the same direction (R or L)
+        // the best matching spot means the x closest to 0
+
+        // translations
+        List<Vector2Int> lefts = new List<Vector2Int>() { Vector2Int.left, Vector2Int.left + Vector2Int.left };
+        List<Vector2Int> rights = new List<Vector2Int>() { Vector2Int.right, Vector2Int.right + Vector2Int.right };
+
+        BoardCell best = null;
+        int smallest_x = int.MaxValue;
+        int side = 0;
+        foreach (BoardCell cell in cells)
+        {
+            if (cell.y < -1 || cell.y > 1) { continue; } // ensure we don't create below -1 and above +2
+            int result = 0;
+
+            // check translations
+            if (all_cells_are_empty_or_nonexistant_in_translations(cell, lefts)) { result = -1; }
+            else if (all_cells_are_empty_or_nonexistant_in_translations(cell, rights)) { result = 1; }
+
+            if (result == 0) { continue; }
+            if (smallest_x < Mathf.Abs(cell.x)) { continue; }
+            best = cell;
+            smallest_x = Mathf.Abs(cell.x);
+            side = result;
+        }
+        if (best == null) { return null; }
+
+        // now we try to create the cells
+        Vector2Int up = best.Position + (side < 0f ? Vector2Int.left : Vector2Int.right);
+        Vector2Int down = best.Position + Vector2Int.down + (side < 0f ? Vector2Int.left : Vector2Int.right);
+        BoardCell up_cell, down_cell;
+
+        if (TryGetCell(up, out up_cell)) { up_cell.SetTypeAndValue(CellType.Desc, "back up"); }
+        else
+        {
+            up_cell = new BoardCell(up, CellType.Desc, "back up");
+            cells.Add(up_cell);
+        }
+
+        if (TryGetCell(down, out down_cell)) { down_cell.SetTypeAndValue(CellType.Desc, "back down"); }
+        else
+        {
+            down_cell = new BoardCell(down, CellType.Desc, "back down");
+            cells.Add(down_cell);
+        }
+
+        return up_cell;
+    } */
 
     // GETTERS
     public Vector2 GetWorldPositionOfCell(BoardCell cell, int cell_size, int inter_cell)
