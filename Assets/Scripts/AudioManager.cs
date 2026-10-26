@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
@@ -20,9 +21,17 @@ public class AudioManager : MonoBehaviour
     }
 
     [SerializeField] public List<AudioBank> banks;
+    public AudioMixer mixer;
+    public bool disabled = false;
+    public void SetMixerVolume(float vol)
+    {
+        disabled = vol == 0f;
+        mixer.SetFloat("sfx", Mathf.Log10(vol)*25);
+    }
 
     public void PlaySFX(string name)
     {
+        if (disabled) { return; }
         if (name == "none") { return; }
 
         AudioSource clip = get_sfx(name);

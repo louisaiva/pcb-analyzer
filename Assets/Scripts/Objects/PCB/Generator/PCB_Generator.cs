@@ -58,7 +58,7 @@ public class PCB_Generator : MonoBehaviour
         plan.components = comps;
 
         List<int> rocks = new List<int>();
-        int rock_nb = UnityEngine.Random.Range(0, 8);
+        int rock_nb = UnityEngine.Random.Range(0, 10);
         for (int i = 0; i < rock_nb; i++)
         {
             rocks.Add(UnityEngine.Random.Range(1, 7));
@@ -66,7 +66,7 @@ public class PCB_Generator : MonoBehaviour
         plan.rocks = rocks;
 
         List<int> bugs = new List<int>();
-        int bug_nb = UnityEngine.Random.Range(0, 3);
+        int bug_nb = UnityEngine.Random.Range(0, 10);
         for (int i = 0; i < bug_nb; i++)
         {
             bugs.Add(UnityEngine.Random.Range(1, 4));
